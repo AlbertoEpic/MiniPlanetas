@@ -1,6 +1,8 @@
 # MINIPLANETAS - SQLP
 
-Landing page para el proyecto MINIPLANETAS con diseno visual y animaciones suaves.
+Web de miniplanetas y panorámicas esféricas.
+
+Landing page para el proyecto MINIPLANETAS con diseño visual y animaciones suaves.
 
 ## Comandos
 
