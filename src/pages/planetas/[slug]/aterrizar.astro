@@ -1,0 +1,235 @@
+---
+import { planetData } from '../../../data/planets';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+export function getStaticPaths() {
+	return planetData.map((planet) => ({
+		params: { slug: planet.slug },
+		props: { planet },
+	}));
+}
+
+const { planet } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+const toPublicAssetPath = (path = '') =>
+	typeof path === 'string' && normalizedBase && path.startsWith(`${normalizedBase}/`)
+		? path.slice(normalizedBase.length)
+		: path;
+const imageParam = Astro.url.searchParams.get('img');
+
+const isValidPanoPath = (path) =>
+	Boolean(toPublicAssetPath(path)?.startsWith('/pano360/')) &&
+		existsSync(fileURLToPath(new URL(`../../../../public${toPublicAssetPath(path)}`, import.meta.url)));
+
+const planetPanoImage = isValidPanoPath(planet.image360) ? planet.image360 : null;
+const queryPanoImage = isValidPanoPath(imageParam) ? imageParam : null;
+const sphericalImage = queryPanoImage || planetPanoImage || null;
+const viewerImagePath = sphericalImage ? `${normalizedBase}${toPublicAssetPath(sphericalImage)}` : null;
+const canRenderPanorama = Boolean(sphericalImage);
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{planet.name} | Aterrizaje 360°</title>
+		{!canRenderPanorama && <meta http-equiv="refresh" content={`0;url=${toBasePath(`planetas/${planet.slug}`)}`} />}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+		<style>
+			:root {
+				--text: #f7f2ff;
+				--stroke: rgba(255, 255, 255, 0.2);
+			}
+			* { box-sizing: border-box; }
+			body {
+				margin: 0;
+				background: #05030c;
+				color: var(--text);
+				font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+				height: 100vh;
+				overflow: hidden;
+			}
+			.viewer {
+				position: fixed;
+				inset: 0;
+				z-index: 1;
+			}
+			#pannellum-viewer {
+				width: 100%;
+				height: 100%;
+			}
+			.error {
+				position: fixed;
+				inset: 0;
+				display: none;
+				place-items: center;
+				text-align: center;
+				padding: 1.5rem;
+				color: #ffd3d3;
+				z-index: 3;
+			}
+			.error.is-visible {
+				display: grid;
+			}
+			.hud {
+				position: fixed;
+				top: 1rem;
+				left: 1rem;
+				display: flex;
+				gap: .6rem;
+				z-index: 2;
+			}
+			.hud button,
+			.hud a {
+				padding: .5rem .8rem;
+				border-radius: 999px;
+				border: 1px solid var(--stroke);
+				background: rgba(0, 0, 0, .4);
+				color: var(--text);
+				text-decoration: none;
+				font-size: .84rem;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		{canRenderPanorama ? (
+			<>
+				<div class="hud">
+					<button type="button" data-fullscreen>Pantalla completa</button>
+					<a href={toBasePath(`planetas/${planet.slug}`)}>Volver a la ficha</a>
+				</div>
+				<div class="viewer" data-panorama={viewerImagePath}>
+					<div id="pannellum-viewer" aria-label={`Vista esférica 360 de ${planet.name}`}></div>
+				</div>
+				<div class="error" data-error>
+					<div>
+						<p>No se pudo cargar el visor 360.</p>
+						<p>Comprueba que la imagen equirectangular sea válida y vuelve a intentarlo.</p>
+					</div>
+				</div>
+			</>
+		) : (
+			<div class="error is-visible">
+				<div>
+					<p>Este planeta no tiene imagen equirectangular disponible.</p>
+					<p><a href={toBasePath(`planetas/${planet.slug}`)}>Volver a la ficha</a></p>
+				</div>
+			</div>
+		)}
+
+		{canRenderPanorama && (
+			<script is:inline>
+			const viewerHost = document.querySelector('.viewer');
+			const panoramaSrc = viewerHost?.dataset.panorama || '';
+			const normalizedPanoramaSrc = encodeURI(panoramaSrc);
+			const errorBox = document.querySelector('[data-error]');
+			const button = document.querySelector('[data-fullscreen]');
+			const panoramaContainer = document.querySelector('#pannellum-viewer');
+			let panorama = null;
+			let initAttempts = 0;
+			let hasInitialized = false;
+
+			const showError = () => {
+				errorBox?.classList.add('is-visible');
+			};
+
+			const hideError = () => {
+				errorBox?.classList.remove('is-visible');
+			};
+
+			const tryInitPannellum = () => {
+				if (hasInitialized) {
+					return;
+				}
+
+				if (!normalizedPanoramaSrc || !panoramaContainer) {
+					showError();
+					return;
+				}
+
+				if (!window.pannellum) {
+					initAttempts += 1;
+					if (initAttempts > 20) {
+						showError();
+						return;
+					}
+					setTimeout(tryInitPannellum, 150);
+					return;
+				}
+
+				try {
+					panorama = window.pannellum.viewer('pannellum-viewer', {
+						type: 'equirectangular',
+						panorama: normalizedPanoramaSrc,
+						autoLoad: true,
+						showZoomCtrl: true,
+						showFullscreenCtrl: false,
+						showControls: true,
+						compass: false,
+						mouseZoom: true,
+						draggable: true,
+						pitch: 0,
+						yaw: 0,
+						hfov: 100,
+					});
+					hasInitialized = true;
+					hideError();
+				} catch {
+					showError();
+				}
+			};
+
+			const loadPannellumScript = (src) =>
+				new Promise((resolve, reject) => {
+					const script = document.createElement('script');
+					script.src = src;
+					script.async = true;
+					script.onload = () => resolve(true);
+					script.onerror = () => reject(new Error('No se pudo cargar ' + src));
+					document.head.appendChild(script);
+				});
+
+			(async () => {
+				if (window.pannellum) {
+					tryInitPannellum();
+					return;
+				}
+
+				try {
+					await loadPannellumScript('https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js');
+				} catch {
+					try {
+						await loadPannellumScript('https://unpkg.com/pannellum@2.5.6/build/pannellum.js');
+					} catch {
+						showError();
+						return;
+					}
+				}
+
+				tryInitPannellum();
+			})();
+
+			const goFullscreen = async () => {
+				if (!panoramaContainer || !panoramaContainer.requestFullscreen) {
+					return;
+				}
+				try {
+					await panoramaContainer.requestFullscreen();
+				} catch {
+					// El navegador puede bloquear el auto fullscreen.
+				}
+			};
+
+			button?.addEventListener('click', goFullscreen);
+			window.addEventListener('load', () => {
+				goFullscreen();
+			});
+			</script>
+		)}
+	</body>
+</html>

@@ -1,0 +1,605 @@
+---
+import { planetData } from '../../data/planets';
+
+type Planet = {
+	slug: string;
+	name: string;
+	image: string;
+	image360?: string;
+	description: string;
+	tone: string;
+	orbit: string;
+	size: string;
+};
+
+type PlanetProfile = {
+	location: string;
+	coordinates: string;
+	atmosphere: string[];
+	discoveryDate: string;
+	equipment: string;
+};
+
+export function getStaticPaths() {
+	return planetData.map((planet) => ({
+		params: { slug: planet.slug },
+		props: { planet },
+	}));
+}
+
+const { planet } = Astro.props as { planet: Planet };
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+const toAssetPath = (path = '') =>
+	path.startsWith('/') ? `${normalizedBase}${path}` : `${normalizedBase}/${path}`;
+const toPublicAssetPath = (path = '') =>
+	typeof path === 'string' && normalizedBase && path.startsWith(`${normalizedBase}/`)
+		? path.slice(normalizedBase.length)
+		: path;
+
+const planetProfiles: Record<string, PlanetProfile> = {
+	'planeta-alquezar': {
+		location: 'Alquézar, España',
+		coordinates: '42.1728, -0.0239',
+		atmosphere: ['Natural', 'Soleado', 'Sereno'],
+		discoveryDate: '2024-05-18',
+		equipment: 'Insta360 X3',
+	},
+	'planeta-bejenado': {
+		location: 'La Palma, España',
+		coordinates: '28.6905, -17.8567',
+		atmosphere: ['Volcánico', 'Natural', 'Dramático'],
+		discoveryDate: '2024-07-02',
+		equipment: 'GoPro Max',
+	},
+	'planeta-castillosaumur': {
+		location: 'Saumur, Francia',
+		coordinates: '47.2597, -0.0786',
+		atmosphere: ['Urbano', 'Histórico', 'Soleado'],
+		discoveryDate: '2024-04-11',
+		equipment: 'GoPro Hero 7 Black',
+	},
+	'planeta-castilloloarre': {
+		location: 'Loarre, España',
+		coordinates: '42.3247, -0.6247',
+		atmosphere: ['Natural', 'Histórico', 'Soleado'],
+		discoveryDate: '2026-02-18',
+		equipment: 'DJI Mini 5 Pro',
+	},
+	'planeta-vadiello': {
+		location: 'Vadiello, Huesca',
+		coordinates: '42.2900, -0.2000',
+		atmosphere: ['Natural'],
+		discoveryDate: '2021-01-24',
+		equipment: 'GoPro Hero 7 Black',
+	},
+};
+
+const defaultProfile: PlanetProfile = {
+	location: 'Ubicación por definir',
+	coordinates: '00.0000, 00.0000',
+	atmosphere: ['Natural'],
+	discoveryDate: '2025-01-01',
+	equipment: 'Cámara 360',
+};
+
+const profile = planetProfiles[planet.slug] ?? defaultProfile;
+const discoveryDate = new Date(profile.discoveryDate).toLocaleDateString('es-ES', {
+	day: '2-digit',
+	month: 'long',
+	year: 'numeric',
+});
+const sphericalImage = planet.image360;
+const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) : null;
+const hasEquirectangularImage = Boolean(
+	sphericalPublicPath?.startsWith('/pano360/')
+);
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
+		<link rel="icon" href={toBasePath('favicon.ico')} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{planet.name} | MINIPLANETAS</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap"
+		/>
+	</head>
+	<body>
+		<header class="top">
+			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
+			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<nav class="top-nav" id="main-nav">
+				<a href={toBasePath('')}>El Universo</a>
+				<a href={toBasePath('catalogo')} aria-current="page">Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
+			</nav>
+		</header>
+
+		<main class="planet-view">
+			<section class="visual">
+				<img src={toAssetPath(planet.image)} alt={`Vista grande de ${planet.name}`} loading="eager" data-main-image />
+			</section>
+
+			<section class="story">
+				<p class="eyebrow">Ficha del Planeta</p>
+				<h1>{planet.name}</h1>
+				<p class="lead">{planet.description}</p>
+				<p>
+					Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
+					composición resalta el equilibrio entre terreno, atmósfera y ritmo visual, creando una
+					lectura inmersiva en un solo vistazo.
+				</p>
+				<div class="sheet">
+					<p><strong>Ubicación original:</strong> {profile.location}</p>
+					<p><strong>Coordenadas:</strong> {profile.coordinates}</p>
+					<div class="atmosphere">
+						<strong>Atmósfera:</strong>
+						<ul>
+							{profile.atmosphere.map((tag: string) => <li>{tag}</li>)}
+						</ul>
+					</div>
+					<p><strong>Fecha de descubrimiento:</strong> {discoveryDate}</p>
+					<p><strong>Equipo técnico:</strong> {profile.equipment}</p>
+				</div>
+				<div class="meta">
+					<div>
+						<span>Tono</span>
+						<strong>{planet.tone}</strong>
+					</div>
+					<div>
+						<span>Órbita</span>
+						<strong>{planet.orbit}</strong>
+					</div>
+					<div>
+						<span>Escala</span>
+						<strong>{planet.size}</strong>
+					</div>
+				</div>
+				<div class="actions-primary">
+					<button type="button" class="highlight" data-open-fullscreen>Ver imagen a pantalla completa</button>
+					{hasEquirectangularImage && sphericalPublicPath && (
+						<a class="highlight" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
+					)}
+				</div>
+				<div class="actions-secondary">
+					<a class="solid" href={toBasePath('catalogo')}>Volver al catálogo</a>
+					<a class="ghost" href={toBasePath('')}>Ver muro universo</a>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+		</footer>
+
+		<div class="viewer" data-viewer aria-hidden="true">
+			<button class="viewer-close" type="button" aria-label="Cerrar visor" data-close-viewer>✕</button>
+			<div class="viewer-stage" data-viewer-stage>
+				<img src={toAssetPath(planet.image)} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
+			</div>
+		</div>
+
+		<script is:inline>
+			const topHeader = document.querySelector('.top');
+			const menuToggle = topHeader?.querySelector('.menu-toggle');
+			const topNav = topHeader?.querySelector('.top-nav');
+
+			if (topHeader && menuToggle && topNav) {
+				topHeader.classList.add('is-menu-ready');
+
+				const closeMenu = () => {
+					topNav.classList.remove('is-open');
+					menuToggle.setAttribute('aria-expanded', 'false');
+					menuToggle.setAttribute('aria-label', 'Abrir menú');
+				};
+
+				menuToggle.addEventListener('click', () => {
+					const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+					const shouldOpen = !isOpen;
+					topNav.classList.toggle('is-open', shouldOpen);
+					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+				});
+
+				topNav.querySelectorAll('a').forEach((link) => {
+					link.addEventListener('click', closeMenu);
+				});
+
+				window.addEventListener('resize', () => {
+					if (window.innerWidth > 780) {
+						closeMenu();
+					}
+				});
+			}
+
+			const fullButton = document.querySelector('[data-open-fullscreen]');
+			const mainImage = document.querySelector('[data-main-image]');
+			const viewer = document.querySelector('[data-viewer]');
+			const viewerStage = document.querySelector('[data-viewer-stage]');
+			const viewerImage = document.querySelector('[data-viewer-image]');
+			const closeViewerButton = document.querySelector('[data-close-viewer]');
+
+			const openViewer = () => {
+				if (!viewer || !viewerStage || !viewerImage || !mainImage) {
+					return;
+				}
+				viewerImage.setAttribute('src', mainImage.getAttribute('src') || '');
+				viewer.classList.add('is-open');
+				viewer.setAttribute('aria-hidden', 'false');
+				document.body.classList.add('viewer-open');
+				requestAnimationFrame(() => {
+					viewerStage.scrollLeft = Math.max((viewerStage.scrollWidth - viewerStage.clientWidth) / 2, 0);
+					viewerStage.scrollTop = Math.max((viewerStage.scrollHeight - viewerStage.clientHeight) / 2, 0);
+				});
+			};
+
+			const closeViewer = () => {
+				if (!viewer) {
+					return;
+				}
+				viewer.classList.remove('is-open');
+				viewer.setAttribute('aria-hidden', 'true');
+				document.body.classList.remove('viewer-open');
+			};
+
+			fullButton?.addEventListener('click', openViewer);
+			mainImage?.addEventListener('click', openViewer);
+			closeViewerButton?.addEventListener('click', closeViewer);
+			viewer?.addEventListener('click', (event) => {
+				if (event.target === viewer) {
+					closeViewer();
+				}
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') {
+					closeViewer();
+				}
+			});
+
+			if (viewerStage) {
+				let isDragging = false;
+				let startX = 0;
+				let startY = 0;
+				let startLeft = 0;
+				let startTop = 0;
+
+				viewerStage.addEventListener('mousedown', (event) => {
+					if (!viewer?.classList.contains('is-open')) {
+						return;
+					}
+					isDragging = true;
+					startX = event.clientX;
+					startY = event.clientY;
+					startLeft = viewerStage.scrollLeft;
+					startTop = viewerStage.scrollTop;
+					viewerStage.classList.add('is-dragging');
+					event.preventDefault();
+				});
+
+				window.addEventListener('mousemove', (event) => {
+					if (!isDragging) {
+						return;
+					}
+					viewerStage.scrollLeft = startLeft - (event.clientX - startX);
+					viewerStage.scrollTop = startTop - (event.clientY - startY);
+				});
+
+				window.addEventListener('mouseup', () => {
+					if (!isDragging) {
+						return;
+					}
+					isDragging = false;
+					viewerStage.classList.remove('is-dragging');
+				});
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	:global(:root) {
+		--bg-1: #07040f;
+		--bg-2: #0e162e;
+		--bg-3: #1a0936;
+		--text: #f7f2ff;
+		--muted: rgba(247, 242, 255, 0.78);
+		--accent: #ffb74d;
+		--accent-2: #4dd0e1;
+		--stroke: rgba(255, 255, 255, 0.12);
+	}
+
+	:global(*) { box-sizing: border-box; }
+	:global(body) {
+		margin: 0;
+		font-family: 'Space Grotesk', sans-serif;
+		color: var(--text);
+		background:
+			radial-gradient(circle at 85% 10%, rgba(255, 183, 77, 0.22), transparent 40%),
+			radial-gradient(circle at 8% 45%, rgba(77, 208, 225, 0.2), transparent 42%),
+			linear-gradient(150deg, var(--bg-2), var(--bg-1) 60%, var(--bg-3));
+	}
+	:global(a) { color: inherit; text-decoration: none; }
+
+	.top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 6vw;
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		background: linear-gradient(180deg, rgba(7, 4, 15, 0.92), rgba(7, 4, 15, 0.5));
+		backdrop-filter: blur(14px);
+		border-bottom: 1px solid var(--stroke);
+	}
+	.brand { font-family: 'Fraunces', serif; letter-spacing: .22em; text-transform: uppercase; font-size: .9rem; }
+	.top-nav { display: flex; gap: 1.2rem; font-size: .94rem; }
+	.menu-toggle {
+		display: none;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		border-radius: .65rem;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .78);
+		cursor: pointer;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: .28rem;
+	}
+	.menu-toggle span {
+		display: block;
+		width: 1rem;
+		height: 2px;
+		background: var(--text);
+		transition: transform 180ms ease, opacity 180ms ease;
+	}
+	.menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+	.menu-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+	.menu-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+	.top-nav a { opacity: .84; transition: opacity 200ms ease, color 200ms ease; }
+	.top-nav a:hover { opacity: 1; }
+	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
+
+	.planet-view {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 2rem;
+		align-items: start;
+		padding: 2rem 6vw 4rem;
+	}
+	.footer {
+		padding: 1rem 6vw 1.5rem;
+		border-top: 1px solid var(--stroke);
+		text-align: center;
+		font-size: .84rem;
+		color: var(--muted);
+	}
+
+	.visual {
+		border-radius: 1rem;
+		overflow: hidden;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .78);
+	}
+	.visual img {
+		width: 100%;
+		display: block;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		cursor: zoom-in;
+	}
+
+	.story { display: grid; gap: .9rem; }
+	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
+	h1 { margin: 0; font-family: 'Fraunces', serif; font-size: clamp(2rem, 3.3vw, 3rem); }
+	.lead { margin: 0; color: var(--muted); line-height: 1.7; }
+	.story p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+	.sheet {
+		display: grid;
+		gap: .5rem;
+		padding: .9rem;
+		border-radius: .9rem;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .62);
+	}
+	.sheet p { margin: 0; }
+	.atmosphere {
+		display: grid;
+		gap: .3rem;
+	}
+	.atmosphere ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		gap: .4rem;
+		flex-wrap: wrap;
+	}
+	.atmosphere li {
+		font-size: .75rem;
+		padding: .22rem .5rem;
+		border: 1px solid var(--stroke);
+		border-radius: 999px;
+		color: var(--accent-2);
+	}
+
+	.meta {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+		gap: .6rem;
+	}
+	.meta div {
+		padding: .8rem;
+		border-radius: .75rem;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .72);
+		display: grid;
+		gap: .24rem;
+	}
+	.meta span { font-size: .74rem; text-transform: uppercase; letter-spacing: .09em; color: var(--accent-2); }
+	.meta strong { font-size: .92rem; }
+
+	.actions-primary {
+		display: grid;
+		gap: .65rem;
+		justify-items: center;
+		padding: .8rem;
+		border-radius: .9rem;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		background: rgba(77, 208, 225, 0.08);
+	}
+
+	.actions-primary .highlight,
+	.actions-secondary a {
+		padding: .58rem .95rem;
+		border-radius: 999px;
+		font-size: .88rem;
+		font-family: inherit;
+		cursor: pointer;
+	}
+
+	.actions-primary .highlight {
+		width: min(100%, 26rem);
+		text-align: center;
+		border: 1px solid rgba(77, 208, 225, 0.42);
+		background: linear-gradient(120deg, rgba(255, 183, 77, 0.2), rgba(77, 208, 225, 0.24));
+		color: var(--text);
+	}
+
+	.actions-secondary {
+		display: flex;
+		gap: .7rem;
+		flex-wrap: wrap;
+	}
+
+	.actions-secondary .solid {
+		background: linear-gradient(120deg, var(--accent), var(--accent-2));
+		color: #1b0d2b;
+		font-weight: 600;
+		border: none;
+	}
+	.actions-secondary .ghost {
+		border: 1px solid var(--stroke);
+		background: transparent;
+		color: var(--text);
+	}
+
+	:global(body.viewer-open) {
+		overflow: hidden;
+	}
+
+	.viewer {
+		position: fixed;
+		inset: 0;
+		background: rgba(4, 3, 8, 0.94);
+		z-index: 100;
+		display: none;
+	}
+
+	.viewer.is-open {
+		display: block;
+	}
+
+	.viewer-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		z-index: 101;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 999px;
+		border: 1px solid var(--stroke);
+		background: rgba(0, 0, 0, 0.45);
+		color: var(--text);
+		font-size: 1.2rem;
+		cursor: pointer;
+	}
+
+	.viewer-stage {
+		position: absolute;
+		inset: 0;
+		overflow: auto;
+		cursor: grab;
+	}
+
+	.viewer-stage.is-dragging {
+		cursor: grabbing;
+	}
+
+	.viewer-stage img {
+		display: block;
+		width: auto;
+		height: auto;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		user-select: none;
+		-webkit-user-drag: none;
+	}
+
+	@media (max-width: 780px) {
+		.top {
+			flex-wrap: wrap;
+			gap: .8rem;
+			padding: .95rem 5vw;
+		}
+		.brand {
+			font-size: .78rem;
+			letter-spacing: .16em;
+		}
+		.menu-toggle {
+			display: inline-flex;
+			margin-left: auto;
+		}
+		.top-nav {
+			width: 100%;
+			flex-direction: column;
+			gap: .55rem;
+			padding-top: 0;
+			border-top: 1px solid transparent;
+			overflow: hidden;
+		}
+		.top-nav a {
+			font-size: .98rem;
+			padding: .18rem 0;
+		}
+		.top.is-menu-ready .top-nav {
+			display: flex;
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-6px);
+			pointer-events: none;
+			transition:
+				max-height 220ms ease,
+				opacity 180ms ease,
+				transform 180ms ease,
+				padding-top 180ms ease,
+				border-top-color 180ms ease;
+		}
+		.top.is-menu-ready .top-nav.is-open {
+			max-height: 16rem;
+			opacity: 1;
+			padding-top: .75rem;
+			border-top-color: var(--stroke);
+			transform: translateY(0);
+			pointer-events: auto;
+		}
+	}
+</style>

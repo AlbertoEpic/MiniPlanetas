@@ -1,0 +1,608 @@
+---
+import { planetData } from '../data/planets';
+
+type Planet = {
+	slug: string;
+	name: string;
+	image: string;
+	image360: string;
+	description: string;
+	tone: string;
+	orbit: string;
+	size: string;
+};
+
+const planets = planetData;
+const shufflePlanets = <T,>(items: T[]) => {
+	const shuffled = [...items];
+	for (let index = shuffled.length - 1; index > 0; index -= 1) {
+		const randomIndex = Math.floor(Math.random() * (index + 1));
+		[shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+	}
+	return shuffled;
+};
+const featuredPlanets = shufflePlanets(planets as Planet[]).slice(0, 3);
+const totalPlanets = planets.length;
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+const toAssetPath = (path = '') =>
+	path.startsWith('/') ? `${normalizedBase}${path}` : `${normalizedBase}/${path}`;
+const editImageUrl = toAssetPath('edit.png?v=20260220-1');
+const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
+		<link rel="icon" href={toBasePath('favicon.ico')} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>MINIPLANETAS | El Universo</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap"
+		/>
+	</head>
+	<body>
+		<header class="top">
+			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
+			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<nav class="top-nav" id="main-nav">
+				<a href={toBasePath('')} aria-current="page">El Universo</a>
+				<a href={toBasePath('catalogo')}>Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero">
+				<p class="eyebrow">Bienvenido al universo MINIPLANETAS</p>
+				<h1>Cada planeta guarda una emoción, una luz y una historia</h1>
+				<p>
+					Esta portada es una puerta al asombro: respira, elige un rumbo y déjate llevar por
+					paisajes diminutos que parecen sueños en órbita.
+				</p>
+				<div class="hero-actions">
+					<a class="cta cta-primary" href={toBasePath('catalogo')}>Entrar al catálogo</a>
+					<a class="cta" href={toBasePath('sobre')}>Conocer al creador</a>
+				</div>
+			</section>
+
+			<section class="overview" aria-label="Resumen del universo">
+				<article>
+					<p class="label">Planetas publicados</p>
+					<strong>{totalPlanets}</strong>
+				</article>
+				<article>
+					<p class="label">Recorrido recomendado</p>
+					<strong>Portada → Catálogo → Ficha → Aterrizar!</strong>
+				</article>
+				<article>
+					<p class="label">Tipo de experiencia</p>
+					<strong>Visual + técnica</strong>
+				</article>
+			</section>
+
+			<section class="featured" aria-label="Planetas destacados">
+				<div class="featured-head">
+					<h2>Destacados al azar</h2>
+					<a href={toBasePath('catalogo')}>Ver todos en el catálogo</a>
+				</div>
+				<div class="featured-grid">
+				{featuredPlanets.map((planet, index) => (
+					<a class="planet-card" href={toBasePath(`planetas/${planet.slug}`)} style={`--delay:${index * 120}ms`}>
+						<img src={toAssetPath(planet.image)} alt={`Mini planeta ${planet.name}`} loading="lazy" />
+						<div class="planet-meta">
+							<h2>{planet.name}</h2>
+							<p>{planet.description}</p>
+							<span>{planet.orbit} · {planet.size}</span>
+						</div>
+					</a>
+				))}
+				</div>
+			</section>
+
+			<section class="story" aria-label="Historia del proyecto">
+				<article class="story-card story-card--image-right">
+					<img
+						class="story-image"
+						src={portraitImageUrl}
+						alt="Retrato del creador"
+						loading="lazy"
+					/>
+					<div class="story-copy">
+						<h2>Sobre el creador</h2>
+						<p>
+							Detrás de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
+							compartir belleza. Conoce la persona que transforma lugares reales en pequeñas órbitas.
+						</p>
+						<a href={toBasePath('sobre-el-creador')}>Ir a Sobre el creador</a>
+					</div>
+				</article>
+
+				<article class="story-card story-card--image-right">
+					<img
+						class="story-image"
+						src={editImageUrl}
+						alt="Proceso de edición de un mini-planeta"
+						loading="lazy"
+					/>
+					<div class="story-copy">
+						<h2>¿Cómo nace un mini-planeta?</h2>
+						<p>
+							Todo empieza en el terreno: explorar, observar y elegir el encuadre. Después llega el
+							trabajo de edición para convertir un instante real en un mundo pequeño que invita a
+							imaginar.
+						</p>
+						<a href={toBasePath('como-nace-un-mini-planeta')}>Ver proceso completo</a>
+					</div>
+				</article>
+			</section>
+		</main>
+		<footer class="footer">
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+		</footer>
+
+		<script is:inline>
+			const topHeader = document.querySelector('.top');
+			const menuToggle = topHeader?.querySelector('.menu-toggle');
+			const topNav = topHeader?.querySelector('.top-nav');
+
+			if (topHeader && menuToggle && topNav) {
+				topHeader.classList.add('is-menu-ready');
+
+				const closeMenu = () => {
+					topNav.classList.remove('is-open');
+					menuToggle.setAttribute('aria-expanded', 'false');
+					menuToggle.setAttribute('aria-label', 'Abrir menú');
+				};
+
+				menuToggle.addEventListener('click', () => {
+					const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+					const shouldOpen = !isOpen;
+					topNav.classList.toggle('is-open', shouldOpen);
+					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+				});
+
+				topNav.querySelectorAll('a').forEach((link) => {
+					link.addEventListener('click', closeMenu);
+				});
+
+				window.addEventListener('resize', () => {
+					if (window.innerWidth > 780) {
+						closeMenu();
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	:global(:root) {
+		--bg-1: #07040f;
+		--bg-2: #0e162e;
+		--bg-3: #1a0936;
+		--text: #f7f2ff;
+		--muted: rgba(247, 242, 255, 0.78);
+		--accent: #ffb74d;
+		--accent-2: #4dd0e1;
+		--stroke: rgba(255, 255, 255, 0.12);
+	}
+
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(body) {
+		margin: 0;
+		font-family: 'Space Grotesk', sans-serif;
+		color: var(--text);
+		background:
+			radial-gradient(circle at 90% 10%, rgba(255, 183, 77, 0.2), transparent 38%),
+			radial-gradient(circle at 5% 25%, rgba(77, 208, 225, 0.2), transparent 40%),
+			linear-gradient(150deg, var(--bg-2), var(--bg-1) 60%, var(--bg-3));
+		min-height: 100vh;
+	}
+
+	:global(a) {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 6vw;
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		background: linear-gradient(180deg, rgba(7, 4, 15, 0.92), rgba(7, 4, 15, 0.5));
+		backdrop-filter: blur(14px);
+		border-bottom: 1px solid var(--stroke);
+	}
+
+	.brand {
+		font-family: 'Fraunces', serif;
+		letter-spacing: 0.22em;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+	}
+
+	.top-nav {
+		display: flex;
+		gap: 1.25rem;
+		font-size: 0.95rem;
+	}
+
+	.menu-toggle {
+		display: none;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		border-radius: 0.65rem;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, 0.78);
+		cursor: pointer;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 0.28rem;
+	}
+
+	.menu-toggle span {
+		display: block;
+		width: 1rem;
+		height: 2px;
+		background: var(--text);
+		transition: transform 180ms ease, opacity 180ms ease;
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(1) {
+		transform: translateY(6px) rotate(45deg);
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(2) {
+		opacity: 0;
+	}
+
+	.menu-toggle[aria-expanded='true'] span:nth-child(3) {
+		transform: translateY(-6px) rotate(-45deg);
+	}
+
+	.top-nav a {
+		opacity: 0.84;
+		transition: opacity 200ms ease, color 200ms ease;
+	}
+
+	.top-nav a:hover {
+		opacity: 1;
+	}
+
+	.top-nav a[aria-current='page'] {
+		opacity: 1;
+		color: var(--accent);
+		font-weight: 600;
+	}
+
+	main {
+		padding: 2rem 6vw 4rem;
+	}
+
+	.footer {
+		padding: 1rem 6vw 1.5rem;
+		border-top: 1px solid var(--stroke);
+		text-align: center;
+		font-size: 0.84rem;
+		color: var(--muted);
+	}
+
+	.hero {
+		max-width: 52rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.eyebrow {
+		margin: 0 0 0.6rem;
+		letter-spacing: 0.25em;
+		text-transform: uppercase;
+		font-size: 0.72rem;
+		color: var(--accent);
+	}
+
+	.hero h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 3.3rem);
+		font-family: 'Fraunces', serif;
+	}
+
+	.hero p {
+		color: var(--muted);
+		line-height: 1.6;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 0.8rem;
+		flex-wrap: wrap;
+		margin-top: 1.2rem;
+	}
+
+	.cta {
+		padding: 0.62rem 0.9rem;
+		border-radius: 0.75rem;
+		border: 1px solid var(--stroke);
+		background: rgba(20, 14, 35, 0.62);
+		font-size: 0.92rem;
+	}
+
+	.cta-primary {
+		border-color: rgba(255, 183, 77, 0.5);
+		background: rgba(255, 183, 77, 0.14);
+	}
+
+	.overview {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		gap: 0.8rem;
+		margin-bottom: 2rem;
+	}
+
+	.overview article {
+		padding: 0.95rem;
+		border-radius: 0.9rem;
+		background: rgba(20, 14, 35, 0.7);
+		border: 1px solid var(--stroke);
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.overview .label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.overview strong {
+		font-family: 'Fraunces', serif;
+		font-size: 1.1rem;
+		font-weight: 600;
+	}
+
+	.featured-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.8rem;
+		margin-bottom: 0.9rem;
+	}
+
+	.featured-head h2 {
+		margin: 0;
+		font-family: 'Fraunces', serif;
+	}
+
+	.featured-head a {
+		color: var(--accent-2);
+		font-size: 0.9rem;
+	}
+
+	.featured-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+
+	.story {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+		align-items: stretch;
+	}
+
+	.story-card {
+		background: rgba(20, 14, 35, 0.8);
+		border: 1px solid var(--stroke);
+		border-radius: 3px;
+		padding: 1.1rem 1.35rem;
+		display: grid;
+		gap: 0.55rem;
+		min-height: 198px;
+		height: 100%;
+	}
+
+	.story-card h2 {
+		margin: 0;
+		font-family: 'Fraunces', serif;
+		font-size: 1.2rem;
+	}
+
+	.story-card p {
+		margin: 0;
+		color: var(--muted);
+		line-height: 1.55;
+	}
+
+	.story-card a {
+		justify-self: start;
+		margin-top: 0.2rem;
+		padding: 0.46rem 0.75rem;
+		border-radius: 0.7rem;
+		border: 1px solid var(--stroke);
+		font-size: 0.88rem;
+		color: var(--accent-2);
+	}
+
+	.story-image {
+		width: 96px;
+		max-width: 100%;
+		height: auto;
+		border-radius: 0.55rem;
+		object-fit: cover;
+		filter: brightness(1.22) saturate(0.8) contrast(0.92);
+	}
+
+	.story-card--image-right {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 96px;
+		grid-template-areas: 'copy image';
+		align-items: center;
+		column-gap: 0.9rem;
+		height: 100%;
+	}
+
+	.story-card--image-right .story-copy {
+		grid-area: copy;
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		min-height: 100%;
+	}
+
+	.story-card--image-right .story-copy a {
+		margin-top: auto;
+	}
+
+	.story-card--image-right .story-image {
+		grid-area: image;
+		justify-self: end;
+		align-self: center;
+	}
+
+	.planet-card {
+		display: block;
+		background: rgba(20, 14, 35, 0.8);
+		border: 1px solid var(--stroke);
+		border-radius: 1rem;
+		overflow: hidden;
+		animation: float 8s ease-in-out infinite;
+		animation-delay: var(--delay);
+	}
+
+	.planet-card img {
+		width: 100%;
+		display: block;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+	}
+
+	.planet-meta {
+		padding: 1rem;
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.planet-meta h2 {
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	.planet-meta p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+
+	.planet-meta span {
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--accent-2);
+	}
+
+	@media (max-width: 700px) {
+		.featured-head {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.story {
+			grid-template-columns: 1fr;
+		}
+
+		.story-card {
+			border-radius: 3px;
+			min-height: auto;
+		}
+	}
+
+	@media (max-width: 780px) {
+		.top {
+			flex-wrap: wrap;
+			gap: 0.8rem;
+			padding: 0.95rem 5vw;
+		}
+
+		.brand {
+			font-size: 0.78rem;
+			letter-spacing: 0.16em;
+		}
+
+		.menu-toggle {
+			display: inline-flex;
+			margin-left: auto;
+		}
+
+		.top-nav {
+			width: 100%;
+			flex-direction: column;
+			gap: 0.55rem;
+			padding-top: 0;
+			border-top: 1px solid transparent;
+			overflow: hidden;
+		}
+
+		.top-nav a {
+			font-size: 0.98rem;
+			padding: 0.18rem 0;
+		}
+
+		.top.is-menu-ready .top-nav {
+			display: flex;
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-6px);
+			pointer-events: none;
+			transition:
+				max-height 220ms ease,
+				opacity 180ms ease,
+				transform 180ms ease,
+				padding-top 180ms ease,
+				border-top-color 180ms ease;
+		}
+
+		.top.is-menu-ready .top-nav.is-open {
+			max-height: 16rem;
+			opacity: 1;
+			padding-top: 0.75rem;
+			border-top-color: var(--stroke);
+			transform: translateY(0);
+			pointer-events: auto;
+		}
+	}
+
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+</style>
