@@ -96,6 +96,9 @@ const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) :
 const hasEquirectangularImage = Boolean(
 	sphericalPublicPath?.startsWith('/pano360/')
 );
+const fullScreenIcon = toBasePath('FullScreen.png');
+const landingIcon = toBasePath('Landing.png');
+const shareIcon = toBasePath('compartir.png');
 ---
 
 <html lang="es">
@@ -169,13 +172,26 @@ const hasEquirectangularImage = Boolean(
 						<strong>{planet.size}</strong>
 					</div>
 				</div>
-				<div class="actions-primary">
-					<button type="button" class="highlight" data-open-fullscreen title="Click para ver el planeta a pantalla completa">Ver imagen a pantalla completa</button>
+				<div class="actions-primary actions-primary-inline">
+					<button type="button" class="highlight action-card" data-open-fullscreen title="Click para ver el planeta a pantalla completa">
+						<img src={fullScreenIcon} alt="" class="action-icon" aria-hidden="true" />
+						<span>Pantalla completa</span>
+					</button>
 					{hasEquirectangularImage && sphericalPublicPath ? (
-						<a class="highlight" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer" title="Click para aterrizar en este planeta">Aterrizar en el planeta</a>
+						<a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer" title="Click para aterrizar en este planeta">
+							<img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
+							<span>Aterrizar</span>
+						</a>
 					) : (
-						<button type="button" class="highlight" disabled aria-disabled="true" title="Click para aterrizar en este planeta">Aterrizar en el planeta</button>
+						<button type="button" class="highlight action-card" disabled aria-disabled="true" title="Click para aterrizar en este planeta">
+							<img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
+							<span>Aterrizar</span>
+						</button>
 					)}
+					<button type="button" class="highlight action-card" data-share-planet title="Click para compartir este planeta">
+						<img src={shareIcon} alt="" class="action-icon" aria-hidden="true" />
+						<span>Compartir</span>
+					</button>
 				</div>
 				<div class="actions-secondary">
 					<a class="solid" href={toBasePath('catalogo')}>Volver al catálogo</a>
@@ -228,6 +244,7 @@ const hasEquirectangularImage = Boolean(
 			}
 
 			const fullButton = document.querySelector('[data-open-fullscreen]');
+			const shareButton = document.querySelector('[data-share-planet]');
 			const mainImage = document.querySelector('[data-main-image]');
 			const viewer = document.querySelector('[data-viewer]');
 			const viewerStage = document.querySelector('[data-viewer-stage]');
@@ -257,7 +274,37 @@ const hasEquirectangularImage = Boolean(
 				document.body.classList.remove('viewer-open');
 			};
 
+			const sharePlanet = async () => {
+				const shareUrl = window.location.href;
+				const shareTitle = document.title;
+
+				if (navigator.share) {
+					try {
+						await navigator.share({ title: shareTitle, url: shareUrl });
+						return;
+					} catch (error) {
+						if (error && error.name === 'AbortError') {
+							return;
+						}
+					}
+				}
+
+				try {
+					await navigator.clipboard.writeText(shareUrl);
+					alert('Enlace copiado al portapapeles');
+				} catch {
+					const tempInput = document.createElement('input');
+					tempInput.value = shareUrl;
+					document.body.appendChild(tempInput);
+					tempInput.select();
+					document.execCommand('copy');
+					document.body.removeChild(tempInput);
+					alert('Enlace copiado al portapapeles');
+				}
+			};
+
 			fullButton?.addEventListener('click', openViewer);
+			shareButton?.addEventListener('click', sharePlanet);
 			mainImage?.addEventListener('click', openViewer);
 			closeViewerButton?.addEventListener('click', closeViewer);
 			viewer?.addEventListener('click', (event) => {
@@ -459,9 +506,9 @@ const hasEquirectangularImage = Boolean(
 	.meta strong { font-size: .92rem; }
 
 	.actions-primary {
-		display: grid;
+		display: flex;
 		gap: .65rem;
-		justify-items: center;
+		align-items: stretch;
 		padding: .8rem;
 		border-radius: .9rem;
 		border: 1px solid rgba(255, 255, 255, 0.18);
@@ -478,11 +525,30 @@ const hasEquirectangularImage = Boolean(
 	}
 
 	.actions-primary .highlight {
-		width: min(100%, 26rem);
+		width: 100%;
 		text-align: center;
 		border: 1px solid rgba(77, 208, 225, 0.42);
 		background: linear-gradient(120deg, rgba(255, 183, 77, 0.2), rgba(77, 208, 225, 0.24));
 		color: var(--text);
+	}
+
+	.actions-primary .action-card {
+		display: flex;
+		flex: 1;
+		min-height: 5.35rem;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: .36rem;
+		padding: .62rem .45rem;
+		border-radius: 5px;
+	}
+
+	.actions-primary .action-icon {
+		width: 100px;
+		height: auto;
+		display: block;
+		object-fit: contain;
 	}
 
 	.actions-secondary {
@@ -602,6 +668,12 @@ const hasEquirectangularImage = Boolean(
 			border-top-color: var(--stroke);
 			transform: translateY(0);
 			pointer-events: auto;
+		}
+		.actions-primary {
+			flex-wrap: wrap;
+		}
+		.actions-primary .action-card {
+			flex: 1 1 calc(50% - .4rem);
 		}
 	}
 </style>
