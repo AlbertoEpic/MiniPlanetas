@@ -316,7 +316,16 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 	.card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 	.card > div { padding: .9rem; display: grid; gap: .5rem; }
 	.card h2 { margin: 0; font-size: 1rem; }
-	.card p { margin: 0; color: var(--muted); font-size: .9rem; }
+	.card p {
+		margin: 0;
+		color: var(--muted);
+		font-size: .9rem;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
 	.meta { display: flex; flex-wrap: wrap; gap: .45rem; }
 	.meta span {
 		font-size: .72rem;

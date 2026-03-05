@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import creatorPhoto from '../assets/creador/AlbertoEpic.jpg';
+
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
@@ -22,41 +25,63 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+			<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="main-nav" aria-expanded="false">
 				<span></span>
 				<span></span>
 				<span></span>
 			</button>
 			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('catalogo')}>Catálogo</a>
-				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('catalogo')}>Catalogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>Como nace un mini-planeta?</a>
 				<a href={toBasePath('sobre-el-creador')} aria-current="page">Sobre el creador</a>
 			</nav>
 		</header>
 
 		<main class="container">
-			<p class="eyebrow">Sobre el creador</p>
-			<h1>La mirada detrás de cada órbita</h1>
-			<p>
-				MINIPLANETAS nace de una forma de caminar el paisaje con calma: observar, esperar la
-				luz justa y rescatar detalles que suelen pasar desapercibidos.
-			</p>
-			<p>
-				Cada escena se trabaja para conservar su atmósfera original y, al mismo tiempo,
-				convertirse en un pequeño mundo que invita a detenerse, imaginar y volver a mirar.
-			</p>
-			<p>
-				Este proyecto une sensibilidad visual y técnica fotográfica para crear una colección
-				donde cada mini-planeta tiene identidad propia.
-			</p>
-			<div class="actions">
-				<a class="back" href={toBasePath('')}>Volver a portada</a>
-				<a class="back secondary" href={toBasePath('catalogo')}>Ir al catálogo</a>
-			</div>
+			<section class="about-layout">
+				<div class="about-copy">
+					<p class="eyebrow">Sobre el creador</p>
+					<h1>La mirada detras de cada orbita</h1>
+					<figure class="creator-photo creator-photo-mobile">
+						<Image
+							src={creatorPhoto}
+							alt="Retrato de Alberto, creador de MINIPLANETAS"
+							class="creator-photo-img"
+							loading="lazy"
+							sizes="(max-width: 780px) 92vw, 28rem"
+						/>
+					</figure>
+					<p>
+						MINIPLANETAS nace de una forma de caminar el paisaje con calma: observar, esperar la
+						luz justa y rescatar detalles que suelen pasar desapercibidos.
+					</p>
+					<p>
+						Cada escena se trabaja para conservar su atmosfera original y, al mismo tiempo,
+						convertirse en un pequeno mundo que invita a detenerse, imaginar y volver a mirar.
+					</p>
+					<p>
+						Este proyecto une sensibilidad visual y tecnica fotografica para crear una coleccion
+						donde cada mini-planeta tiene identidad propia.
+					</p>
+					<div class="actions">
+						<a class="back" href={toBasePath('')}>Volver a portada</a>
+						<a class="back secondary" href={toBasePath('catalogo')}>Ir al catalogo</a>
+					</div>
+				</div>
+				<figure class="creator-photo creator-photo-desktop">
+					<Image
+						src={creatorPhoto}
+						alt="Retrato de Alberto, creador de MINIPLANETAS"
+						class="creator-photo-img"
+						loading="lazy"
+						sizes="(max-width: 780px) 92vw, 28rem"
+					/>
+				</figure>
+			</section>
 		</main>
 		<footer class="footer">
-			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+			<p>(c) 2026 MINIPLANETAS .:. SQLP .:. Made with love in Tierz for the entire Universe...</p>
 		</footer>
 
 		<script is:inline>
@@ -70,7 +95,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 				const closeMenu = () => {
 					topNav.classList.remove('is-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
-					menuToggle.setAttribute('aria-label', 'Abrir menú');
+					menuToggle.setAttribute('aria-label', 'Abrir menu');
 				};
 
 				menuToggle.addEventListener('click', () => {
@@ -78,7 +103,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 					const shouldOpen = !isOpen;
 					topNav.classList.toggle('is-open', shouldOpen);
 					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menu' : 'Abrir menu');
 				});
 
 				topNav.querySelectorAll('a').forEach((link) => {
@@ -106,6 +131,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		--accent-2: #4dd0e1;
 		--stroke: rgba(255, 255, 255, 0.12);
 	}
+
 	:global(*) { box-sizing: border-box; }
 	:global(body) {
 		margin: 0;
@@ -157,9 +183,19 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
 
 	.container {
-		max-width: 52rem;
-		padding: 2.2rem 6vw 4rem;
+		padding: 2rem 6vw 4rem;
+	}
+	.about-layout {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 2rem;
+		align-items: start;
+	}
+	.about-copy {
 		display: grid;
+		flex: 1 1 60%;
+		max-width: 60rem;
 		gap: 1rem;
 	}
 	.footer {
@@ -171,6 +207,24 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	}
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
 	h1 { margin: 0; font-size: clamp(2rem, 3.2vw, 3rem); font-family: 'Fraunces', serif; }
+	.creator-photo {
+		margin: 0;
+		flex: 0 1 40%;
+		width: 100%;
+		max-width: 34rem;
+		border-radius: 1rem;
+		overflow: hidden;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .62);
+	}
+	.creator-photo-img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+	.creator-photo-mobile { display: none !important; }
+	.creator-photo-desktop { display: block !important; }
 	p { margin: 0; color: var(--muted); line-height: 1.7; }
 	.actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .5rem; }
 	.back {
@@ -188,6 +242,16 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	}
 
 	@media (max-width: 780px) {
+		.creator-photo-mobile { display: block !important; }
+		.creator-photo-desktop { display: none !important; }
+		.about-layout {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1.2rem;
+		}
+		.creator-photo {
+			max-width: 30rem;
+		}
 		.top {
 			flex-wrap: wrap;
 			gap: .8rem;

@@ -141,11 +141,13 @@ const shareIcon = toBasePath('compartir.png');
 				<p class="eyebrow">Ficha del Planeta</p>
 				<h1>{planet.name}</h1>
 				<p class="lead">{planet.description}</p>
-				<p>
-					Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
-					composición resalta el equilibrio entre terreno, atmósfera y ritmo visual, creando una
-					lectura inmersiva en un solo vistazo.
-				</p>
+				{planet.slug !== 'planeta-alquezar' && (
+					<p>
+						Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
+						composición resalta el equilibrio entre terreno, atmósfera y ritmo visual, creando una
+						lectura inmersiva en un solo vistazo.
+					</p>
+				)}
 				<div class="sheet">
 					<p><strong>Ubicación original:</strong> {profile.location}</p>
 					<p><strong>Coordenadas:</strong> {profile.coordinates}</p>
@@ -204,7 +206,11 @@ const shareIcon = toBasePath('compartir.png');
 		</footer>
 
 		<div class="viewer" data-viewer aria-hidden="true">
-			<button class="viewer-close" type="button" aria-label="Cerrar visor" data-close-viewer>✕</button>
+			<div class="viewer-controls">
+				<button class="viewer-control" type="button" aria-label="Reducir" title="Reducir" data-zoom-out>-</button>
+				<button class="viewer-control" type="button" aria-label="Ampliar" title="Ampliar" data-zoom-in>+</button>
+				<button class="viewer-control viewer-close" type="button" aria-label="Cerrar visor" title="Cerrar" data-close-viewer>x</button>
+			</div>
 			<div class="viewer-stage" data-viewer-stage>
 				<img src={toAssetPath(planet.image)} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
 			</div>
@@ -250,12 +256,70 @@ const shareIcon = toBasePath('compartir.png');
 			const viewerStage = document.querySelector('[data-viewer-stage]');
 			const viewerImage = document.querySelector('[data-viewer-image]');
 			const closeViewerButton = document.querySelector('[data-close-viewer]');
+			const zoomInButton = document.querySelector('[data-zoom-in]');
+			const zoomOutButton = document.querySelector('[data-zoom-out]');
+
+			const MIN_ZOOM = 0.6;
+			const MAX_ZOOM = 4;
+			const ZOOM_STEP = 0.2;
+			let zoomLevel = 1;
+
+			const updateZoomButtons = () => {
+				if (zoomInButton) {
+					zoomInButton.disabled = zoomLevel >= MAX_ZOOM;
+				}
+				if (zoomOutButton) {
+					zoomOutButton.disabled = zoomLevel <= MIN_ZOOM;
+				}
+			};
+
+			const applyZoom = (nextZoom, preserveCenter = true, focusClientX = null, focusClientY = null) => {
+				if (!viewerImage || !viewerStage) {
+					return;
+				}
+
+				const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
+				const previousZoom = zoomLevel;
+				if (Math.abs(clamped - previousZoom) < 0.001) {
+					updateZoomButtons();
+					return;
+				}
+
+				let localFocusX = viewerStage.clientWidth / 2;
+				let localFocusY = viewerStage.clientHeight / 2;
+				if (focusClientX !== null && focusClientY !== null) {
+					const stageRect = viewerStage.getBoundingClientRect();
+					localFocusX = focusClientX - stageRect.left;
+					localFocusY = focusClientY - stageRect.top;
+				}
+
+				const previousFocusX = viewerStage.scrollLeft + localFocusX;
+				const previousFocusY = viewerStage.scrollTop + localFocusY;
+
+				zoomLevel = clamped;
+
+				const naturalWidth = viewerImage.naturalWidth;
+				const naturalHeight = viewerImage.naturalHeight;
+				if (naturalWidth > 0 && naturalHeight > 0) {
+					viewerImage.style.width = `${naturalWidth * zoomLevel}px`;
+					viewerImage.style.height = `${naturalHeight * zoomLevel}px`;
+				}
+
+				if (preserveCenter && previousZoom > 0) {
+					const zoomRatio = zoomLevel / previousZoom;
+					viewerStage.scrollLeft = Math.max(previousFocusX * zoomRatio - localFocusX, 0);
+					viewerStage.scrollTop = Math.max(previousFocusY * zoomRatio - localFocusY, 0);
+				}
+
+				updateZoomButtons();
+			};
 
 			const openViewer = () => {
 				if (!viewer || !viewerStage || !viewerImage || !mainImage) {
 					return;
 				}
 				viewerImage.setAttribute('src', mainImage.getAttribute('src') || '');
+				applyZoom(1, false);
 				viewer.classList.add('is-open');
 				viewer.setAttribute('aria-hidden', 'false');
 				document.body.classList.add('viewer-open');
@@ -307,6 +371,11 @@ const shareIcon = toBasePath('compartir.png');
 			shareButton?.addEventListener('click', sharePlanet);
 			mainImage?.addEventListener('click', openViewer);
 			closeViewerButton?.addEventListener('click', closeViewer);
+			zoomInButton?.addEventListener('click', () => applyZoom(zoomLevel + ZOOM_STEP));
+			zoomOutButton?.addEventListener('click', () => applyZoom(zoomLevel - ZOOM_STEP));
+			viewerImage?.addEventListener('load', () => {
+				applyZoom(zoomLevel, false);
+			});
 			viewer?.addEventListener('click', (event) => {
 				if (event.target === viewer) {
 					closeViewer();
@@ -325,6 +394,20 @@ const shareIcon = toBasePath('compartir.png');
 				let startY = 0;
 				let startLeft = 0;
 				let startTop = 0;
+				let isTouchDragging = false;
+				let pinchStartDistance = 0;
+				let pinchStartZoom = 1;
+
+				const touchDistance = (firstTouch, secondTouch) => {
+					return Math.hypot(secondTouch.clientX - firstTouch.clientX, secondTouch.clientY - firstTouch.clientY);
+				};
+
+				const touchCenter = (firstTouch, secondTouch) => {
+					return {
+						x: (firstTouch.clientX + secondTouch.clientX) / 2,
+						y: (firstTouch.clientY + secondTouch.clientY) / 2
+					};
+				};
 
 				viewerStage.addEventListener('mousedown', (event) => {
 					if (!viewer?.classList.contains('is-open')) {
@@ -354,6 +437,81 @@ const shareIcon = toBasePath('compartir.png');
 					isDragging = false;
 					viewerStage.classList.remove('is-dragging');
 				});
+
+				viewerStage.addEventListener('touchstart', (event) => {
+					if (!viewer?.classList.contains('is-open')) {
+						return;
+					}
+
+					if (event.touches.length === 1) {
+						const [touch] = event.touches;
+						isTouchDragging = true;
+						pinchStartDistance = 0;
+						startX = touch.clientX;
+						startY = touch.clientY;
+						startLeft = viewerStage.scrollLeft;
+						startTop = viewerStage.scrollTop;
+						viewerStage.classList.add('is-dragging');
+					}
+
+					if (event.touches.length === 2) {
+						const [firstTouch, secondTouch] = event.touches;
+						isTouchDragging = false;
+						viewerStage.classList.remove('is-dragging');
+						pinchStartDistance = touchDistance(firstTouch, secondTouch);
+						pinchStartZoom = zoomLevel;
+					}
+				}, { passive: true });
+
+				viewerStage.addEventListener('touchmove', (event) => {
+					if (!viewer?.classList.contains('is-open')) {
+						return;
+					}
+
+					if (event.touches.length === 1 && isTouchDragging) {
+						const [touch] = event.touches;
+						viewerStage.scrollLeft = startLeft - (touch.clientX - startX);
+						viewerStage.scrollTop = startTop - (touch.clientY - startY);
+						event.preventDefault();
+					}
+
+					if (event.touches.length === 2 && pinchStartDistance > 0) {
+						const [firstTouch, secondTouch] = event.touches;
+						const currentDistance = touchDistance(firstTouch, secondTouch);
+						if (currentDistance > 0) {
+							const center = touchCenter(firstTouch, secondTouch);
+							const nextZoom = pinchStartZoom * (currentDistance / pinchStartDistance);
+							applyZoom(nextZoom, true, center.x, center.y);
+						}
+						event.preventDefault();
+					}
+				}, { passive: false });
+
+				const resetTouchInteraction = () => {
+					isTouchDragging = false;
+					pinchStartDistance = 0;
+					viewerStage.classList.remove('is-dragging');
+				};
+
+				viewerStage.addEventListener('touchend', (event) => {
+					if (event.touches.length === 1) {
+						const [touch] = event.touches;
+						isTouchDragging = true;
+						pinchStartDistance = 0;
+						startX = touch.clientX;
+						startY = touch.clientY;
+						startLeft = viewerStage.scrollLeft;
+						startTop = viewerStage.scrollTop;
+						viewerStage.classList.add('is-dragging');
+						return;
+					}
+
+					if (event.touches.length === 0) {
+						resetTouchInteraction();
+					}
+				});
+
+				viewerStage.addEventListener('touchcancel', resetTouchInteraction);
 			}
 		</script>
 	</body>
@@ -585,19 +743,34 @@ const shareIcon = toBasePath('compartir.png');
 		display: block;
 	}
 
-	.viewer-close {
+	.viewer-controls {
 		position: absolute;
 		top: 1rem;
 		right: 1rem;
 		z-index: 101;
-		width: 2.5rem;
-		height: 2.5rem;
+		display: flex;
+		gap: .55rem;
+	}
+
+	.viewer-control {
+		min-height: 2.5rem;
+		padding: .45rem .9rem;
 		border-radius: 999px;
 		border: 1px solid var(--stroke);
 		background: rgba(0, 0, 0, 0.45);
 		color: var(--text);
-		font-size: 1.2rem;
+		font-family: inherit;
+		font-size: .86rem;
 		cursor: pointer;
+	}
+
+	.viewer-control:disabled {
+		opacity: .45;
+		cursor: not-allowed;
+	}
+
+	.viewer-close {
+		font-weight: 600;
 	}
 
 	.viewer-stage {
@@ -605,6 +778,7 @@ const shareIcon = toBasePath('compartir.png');
 		inset: 0;
 		overflow: auto;
 		cursor: grab;
+		touch-action: none;
 	}
 
 	.viewer-stage.is-dragging {
@@ -674,6 +848,12 @@ const shareIcon = toBasePath('compartir.png');
 		}
 		.actions-primary .action-card {
 			flex: 1 1 calc(50% - .4rem);
+		}
+		.viewer-controls {
+			left: 1rem;
+			right: 1rem;
+			justify-content: flex-end;
+			flex-wrap: wrap;
 		}
 	}
 </style>

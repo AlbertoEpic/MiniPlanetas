@@ -5,7 +5,7 @@
 		image: '/planets/Planeta_Alquézar.jpg',
 		image360: '/pano360/PANO_SanMiguel-Alquézar.jpg',
 		description:
-			'Fortaleza luminosa en roca caliza, pensada para ideas con pulso histórico.',
+			'Planeta con claros indicios de albergar una desarrollada civilización. No está claro todavía si perdura o la vida se extinguió hace no muchos siglos. Lo que está claro que los habitantes de este pequeño asteriode dejaron su rastro en él, con construcciones de diversa índole.',
 		tone: 'Cobalto brillante',
 		orbit: 'Órbita 12',
 		size: 'Compacto',
