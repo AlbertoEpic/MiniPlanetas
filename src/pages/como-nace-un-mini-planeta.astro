@@ -1,8 +1,15 @@
 ---
+import tripodeNodalImage from '../assets/como/tripodenodal.jpg';
+import dronImage from '../assets/como/dron.jpg';
+import myriAppImage from '../assets/como/myriApp.jpg';
+import goproPanoImage from '../assets/como/goproPano.jpg';
+import procesoImage from '../assets/como/proceso.png';
+
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
 const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-Montearagón.jpg');
 ---
 
 <html lang="es">
@@ -36,28 +43,175 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		</header>
 
 		<main class="container">
-			<p class="eyebrow">Proceso creativo</p>
-			<h1>¿Cómo nace un mini-planeta?</h1>
-			<p>
-				Primero llega el territorio: caminar, estudiar el horizonte y decidir desde dónde puede
-				nacer una esfera visual con personalidad.
-			</p>
-			<p>
-				Después se captura la panorámica 360°, cuidando continuidad de luz, texturas y
-				profundidad para que la escena tenga coherencia al cerrarse en círculo.
-			</p>
-			<p>
-				En edición, la panorámica se proyecta en formato polar, se ajusta color y contraste, y se
-				reencuadra para que el resultado final conserve emoción, escala y detalle.
-			</p>
-			<p>
-				El resultado es un mundo pequeño con memoria de lugar real: una síntesis entre técnica y
-				sensibilidad.
-			</p>
-			<div class="actions">
-				<a class="back" href={toBasePath('')}>Volver a portada</a>
-				<a class="back secondary" href={toBasePath('catalogo')}>Ir al catálogo</a>
-			</div>
+			<section class="process-layout">
+				<div class="process-copy">
+					<p class="eyebrow">Proceso creativo</p>
+					<h1>¿Cómo nace un mini-planeta?</h1>
+					<div class="process-body">
+						<div class="process-text">
+							<p>
+								Primero llega el territorio: caminar, estudiar el horizonte y decidir desde dónde puede
+								nacer una esfera visual con personalidad.
+							</p>
+							<p>
+								Después se captura la panorámica 360°, cuidando continuidad de luz, texturas y
+								profundidad para que la escena tenga coherencia al cerrarse en círculo.
+							</p>
+							<p>
+								En edición, la panorámica se proyecta en formato polar, se ajusta color y contraste, y se
+								reencuadra para que el resultado final conserve emoción, escala y detalle.
+							</p>
+							<p>
+								El resultado es un mundo pequeño con memoria de lugar real: una síntesis entre técnica y
+								sensibilidad.
+							</p>
+						</div>
+						<figure class="process-photo" aria-label="Mini planeta Fiordo de Montearagón">
+							<img
+								src={processPhotoPath}
+								alt="Mini planeta Fiordo de Montearagón"
+								class="process-photo-img"
+								loading="lazy"
+							/>
+						</figure>
+					</div>
+					<section class="step-box" aria-label="Paso 1">
+						<h2>PASO 1</h2>
+						<p>
+							Una vez que he elegido el lugar, llega el momento de tomar la fotografía esférica
+							(Panorámica 360º). Existen diversas técnicas pero yo principalmente me baso en
+							estas:
+						</p>
+						<div class="step-grid" aria-label="Técnicas principales de captura 360º">
+							<article class="step-item">
+								<img
+									src={tripodeNodalImage.src}
+									alt="Cámara de fotos con trípode y rótula nodal"
+									class="step-item-image"
+									loading="lazy"
+								/>
+								<span class="step-item-title">Cámara de fotos + Trípode con rótula nodal</span>
+							</article>
+							<article class="step-item">
+								<img
+									src={dronImage.src}
+									alt="Fotografía esférica con dron DJI"
+									class="step-item-image"
+									loading="lazy"
+								/>
+								<span class="step-item-title">Fotografía esférica con el dron DJI</span>
+							</article>
+							<article class="step-item">
+								<img
+									src={myriAppImage.src}
+									alt="Fotografía esférica con teléfono y app MyriApp"
+									class="step-item-image"
+									loading="lazy"
+								/>
+								<span class="step-item-title">PanoSphere con el teléfono y la App de Cámara de Google</span>
+							</article>
+							<article class="step-item">
+								<img
+									src={goproPanoImage.src}
+									alt="Fotografías panorámicas con cámara de acción GoPro"
+									class="step-item-image"
+									loading="lazy"
+								/>
+								<span class="step-item-title">Fotografías con cámara de acción (GoPro, DJI)</span>
+							</article>
+						</div>
+					</section>
+					<section class="step-box" aria-label="Paso 2">
+						<h2>PASO 2</h2>
+						<p>
+							Si las fotografías son del drone o de la App del móvil, ya la tenemos. En los
+							otros casos, llegamos a casa con un montón de fotografías y ahora debemos
+							'coserlas' para montar la panorámica. Utilizo el software Hugin, y selecciono
+							la proyección equirectangular. Esto nos da una imagen de proporción 2X1.
+						</p>
+					</section>
+					<section class="step-box" aria-label="Paso 3">
+						<h2>PASO 3</h2>
+						<p>
+							Esto se pone emocionante: ya tenemos la foto equirectangular y ahora toca hacer
+							la magia! Pueden utilizarse programas como Gimp o Photoshop. Aplicamos el
+							efecto distorsionar, convirtiendo la imagen de coordenadas rectangulares a
+							polares.
+						</p>
+						<div class="step-highlight" aria-label="Magia matemática del Tiny Planet">
+							<p class="step-highlight-kicker">MAGIA MATEMÁTICA</p>
+							<img
+								src={procesoImage.src}
+								alt="Esquema del proceso matemático Tiny Planet"
+								class="step-highlight-image"
+								loading="lazy"
+							/>
+							<p class="step-highlight-intro">
+								<em class="step-highlight-intro-em">
+									Es un efecto visual fascinante. En este contexto, un Tiny Planet (o
+									"Pequeño Planeta") es una técnica de edición fotográfica que transforma una
+									imagen panorámica de 360° en una esfera que parece un mundo flotando en el
+									espacio.
+								</em>
+							</p>
+							<p>Aquí te explico la "magia" matemática detrás del proceso:</p>
+							<p class="step-highlight-title">El proceso: De rectángulos a círculos</p>
+							<p>
+								Todo empieza con una fotografía equirectangular. Imagina el mapa del mundo
+								(proyección de Mercator): es un rectángulo donde el eje x representa la
+								longitud (360°) y el eje y la latitud (180°).
+							</p>
+							<p>Para crear el efecto, aplicamos una transformación de coordenadas polares:</p>
+							<p>
+								<strong>La deformación:</strong> El software toma el borde inferior de tu foto rectangular y
+								lo encoge hasta convertirlo en un solo punto (el centro del planeta).
+							</p>
+							<p>
+								<strong>El estiramiento:</strong> El borde superior de la foto se estira para convertirse en la
+								circunferencia exterior (el cielo).
+							</p>
+							<p>
+								<strong>La unión:</strong> Los bordes laterales de la foto se curvan y se pegan entre sí. Por
+								eso es vital que la foto original sea una panorámica perfecta de 360°, para
+								que la "costura" no se note.
+							</p>
+							<p class="step-highlight-title">¿Cómo se ve matemáticamente?</p>
+							<p>
+								En términos simples, pasamos de un sistema de coordenadas cartesianas (x,y) a
+								uno polar (r,θ). La posición de cada píxel se redefine:
+							</p>
+							<p>
+								La distancia al centro (r) viene determinada por la altura original del píxel
+								(y).
+							</p>
+							<p>
+								El ángulo alrededor del centro (θ) viene determinado por la posición
+								horizontal (x).
+							</p>
+						</div>
+						<p>
+							<br>Ya tenemos el mini planeta! Ahora nos falta reencuadrar la imagen, podemos ajustar un poco los colores… Y listo!
+						</p>
+					</section>
+					<section class="step-box" aria-label="El Know-How">
+						<h2>EL KNOW-HOW</h2>
+						<p>
+							Evidentemente, no te desanimes si sales por ahí después de leer esto lleno de
+							ilusión por crear tu primer mini planeta... Y el resultado no es tan
+							maravilloso como pintaba en tu cabeza.
+						</p>
+						<p>
+							Es un proceso bastante artesanal, y requiere de experiencia. No te desanimes,
+							sigue jugando!
+						</p>
+					</section>
+
+					<div class="actions">
+						<a class="back" href={toBasePath('')}>Volver a portada</a>
+						<a class="back secondary" href={toBasePath('catalogo')}>Ir al catálogo</a>
+					</div>
+				</div>
+			</section>
 		</main>
 		<footer class="footer">
 			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
@@ -161,10 +315,147 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
 
 	.container {
-		max-width: 52rem;
 		padding: 2.2rem 6vw 4rem;
+	}
+	.process-layout {
+		display: block;
+	}
+	.process-copy {
 		display: grid;
 		gap: 1rem;
+	}
+	.process-body {
+		display: flex;
+		flex-direction: row;
+		align-items: start;
+		gap: 1.1rem;
+	}
+	.process-text {
+		display: grid;
+		flex: 1 1 auto;
+		gap: 1rem;
+	}
+	.step-box {
+		margin: 0;
+		padding: 1rem 1.1rem;
+		border-radius: .9rem;
+		border: 1px solid rgba(77, 208, 225, .45);
+		background: linear-gradient(135deg, rgba(77, 208, 225, .18), rgba(255, 183, 77, .12));
+	}
+	.step-box h2 {
+		margin: 0;
+		font-family: 'Fraunces', serif;
+		font-size: clamp(1.8rem, 3vw, 2.35rem);
+		letter-spacing: .08em;
+		line-height: 1;
+		color: #f7f2ff;
+	}
+	.process-text p {
+		font-size: 1.2rem;
+		font-weight: 500;
+		line-height: 1.8;
+		color: rgba(247, 242, 255, 0.92);
+	}
+	.step-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: .6rem;
+		margin-top: .85rem;
+	}
+	.step-item {
+		display: grid;
+		justify-items: center;
+		align-content: start;
+		gap: .5rem;
+		padding: .75rem .7rem;
+		border-radius: .7rem;
+		border: 1px solid rgba(255, 255, 255, .18);
+		background: rgba(8, 15, 32, .45);
+		text-align: center;
+		color: rgba(247, 242, 255, 0.95);
+	}
+	.step-item-title {
+		font-size: .88rem;
+		font-weight: 600;
+		line-height: 1.35;
+	}
+	.step-item-image {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: contain;
+		border-radius: .55rem;
+		border: 1px solid rgba(255, 255, 255, .14);
+		background: rgba(8, 15, 32, .35);
+	}
+	.step-highlight {
+		margin-top: 1rem;
+		padding: 1.05rem 1.1rem;
+		border-radius: .95rem;
+		border: 2px solid rgba(255, 183, 77, .72);
+		border-left: 6px solid var(--accent);
+		background: linear-gradient(160deg, rgba(18, 11, 35, .92), rgba(7, 20, 40, .86));
+		box-shadow:
+			0 12px 26px rgba(0, 0, 0, .28),
+			inset 0 0 0 1px rgba(255, 255, 255, .06);
+		display: block;
+	}
+	.step-highlight::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+	.step-highlight-image {
+		float: right;
+		width: 300px;
+		max-width: 100%;
+		margin: .1rem 0 .65rem 1rem;
+		border-radius: .7rem;
+		border: 1px solid rgba(255, 255, 255, .2);
+		background: rgba(6, 12, 24, .45);
+	}
+	.step-highlight p {
+		margin: 0;
+		margin-bottom: .55rem;
+		font-size: .98rem;
+		line-height: 1.62;
+		color: rgba(247, 242, 255, .94);
+	}
+	.step-highlight-intro {
+		font-style: italic !important;
+	}
+	.step-highlight-intro-em {
+		font-style: italic !important;
+	}
+	.step-highlight-kicker {
+		font-size: .72rem;
+		font-weight: 700;
+		letter-spacing: .22em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+	.step-highlight .step-highlight-title {
+		font-family: 'Fraunces', serif;
+		font-size: 1.28rem;
+		line-height: 1.3;
+		font-weight: 700;
+		letter-spacing: .02em;
+		color: #fff4de;
+	}
+	.process-photo {
+		margin: 0;
+		width: 300px;
+		height: 300px;
+		flex: 0 0 300px;
+		border-radius: 1rem;
+		overflow: hidden;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .62);
+	}
+	.process-photo-img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	.footer {
 		padding: 1rem 6vw 1.5rem;
@@ -176,7 +467,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
 	h1 { margin: 0; font-size: clamp(2rem, 3.2vw, 3rem); font-family: 'Fraunces', serif; }
 	p { margin: 0; color: var(--muted); line-height: 1.7; }
-	.actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .5rem; }
+	.actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .7rem; }
 	.back {
 		justify-self: start;
 		padding: .6rem 1rem;
@@ -192,6 +483,18 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	}
 
 	@media (max-width: 780px) {
+		.process-layout { display: block; }
+		.process-body {
+			flex-direction: column;
+			gap: 1rem;
+		}
+		.process-photo {
+			margin: 0 auto;
+			width: 100%;
+			max-width: 300px;
+			height: auto;
+			aspect-ratio: 1 / 1;
+		}
 		.top {
 			flex-wrap: wrap;
 			gap: .8rem;
@@ -237,6 +540,21 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 			border-top-color: var(--stroke);
 			transform: translateY(0);
 			pointer-events: auto;
+		}
+		.step-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		.step-highlight-image {
+			float: none;
+			width: min(100%, 320px);
+			margin: .2rem auto .7rem;
+			display: block;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.step-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
