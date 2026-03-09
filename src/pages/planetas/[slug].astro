@@ -106,6 +106,14 @@ const hasEquirectangularImage = Boolean(
 const fullScreenIcon = toBasePath('FullScreen.png');
 const landingIcon = toBasePath('Landing.png');
 const shareIcon = toBasePath('compartir.png');
+const siteUrl = Astro.site ?? new URL('https://albertoepic.github.io');
+const planetRelativeUrl = toBasePath(`planetas/${planet.slug}`);
+const planetAbsoluteUrl = new URL(planetRelativeUrl, siteUrl).toString();
+const shareImageAbsoluteUrl = new URL(toAssetPath(planet.image), siteUrl).toString();
+const shareDescription =
+	planet.description.length > 200
+		? `${planet.description.slice(0, 197)}...`
+		: planet.description;
 ---
 
 <html lang="es">
@@ -116,6 +124,21 @@ const shareIcon = toBasePath('compartir.png');
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{planet.name} | MINIPLANETAS</title>
+		<meta name="description" content={shareDescription} />
+		<link rel="canonical" href={planetAbsoluteUrl} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="MINIPLANETAS" />
+		<meta property="og:title" content={`${planet.name} | MINIPLANETAS`} />
+		<meta property="og:description" content={shareDescription} />
+		<meta property="og:url" content={planetAbsoluteUrl} />
+		<meta property="og:image" content={shareImageAbsoluteUrl} />
+		<meta property="og:image:alt" content={`Mini-planeta ${planet.name}`} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={`${planet.name} | MINIPLANETAS`} />
+		<meta name="twitter:description" content={shareDescription} />
+		<meta name="twitter:image" content={shareImageAbsoluteUrl} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
