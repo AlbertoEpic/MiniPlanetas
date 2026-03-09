@@ -172,7 +172,10 @@ const shareDescription =
 			<section class="story">
 				<p class="eyebrow">Ficha del Planeta</p>
 				<h1>{planet.name}</h1>
-				<p class="lead">{planet.description}</p>
+				<div class="lead-wrap">
+					<p class="lead is-collapsed" data-description id="planet-description-text">{planet.description}</p>
+					<button type="button" class="lead-toggle" data-toggle-description aria-controls="planet-description-text" aria-expanded="false">Leer más...</button>
+				</div>
 				{planet.slug !== 'planeta-alquezar' && (
 					<p>
 						Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
@@ -275,7 +278,7 @@ const shareDescription =
 				});
 
 				window.addEventListener('resize', () => {
-					if (window.innerWidth > 780) {
+					if (window.innerWidth > 900) {
 						closeMenu();
 					}
 				});
@@ -283,6 +286,8 @@ const shareDescription =
 
 			const fullButton = document.querySelector('[data-open-fullscreen]');
 			const shareButton = document.querySelector('[data-share-planet]');
+			const descriptionEl = document.querySelector('[data-description]');
+			const descriptionToggle = document.querySelector('[data-toggle-description]');
 			const mainImage = document.querySelector('[data-main-image]');
 			const viewer = document.querySelector('[data-viewer]');
 			const viewerStage = document.querySelector('[data-viewer-stage]');
@@ -451,6 +456,16 @@ const shareDescription =
 
 			fullButton?.addEventListener('click', openViewer);
 			shareButton?.addEventListener('click', sharePlanet);
+			descriptionToggle?.addEventListener('click', () => {
+				if (!descriptionEl || !descriptionToggle) {
+					return;
+				}
+
+				const willExpand = descriptionEl.classList.contains('is-collapsed');
+				descriptionEl.classList.toggle('is-collapsed', !willExpand);
+				descriptionToggle.textContent = willExpand ? 'Leer menos' : 'Leer más...';
+				descriptionToggle.setAttribute('aria-expanded', String(willExpand));
+			});
 			mainImage?.addEventListener('click', openViewer);
 			closeViewerButton?.addEventListener('click', closeViewer);
 			zoomInButton?.addEventListener('click', () => applyZoom(zoomLevel + ZOOM_STEP));
@@ -595,6 +610,7 @@ const shareDescription =
 
 				viewerStage.addEventListener('touchcancel', resetTouchInteraction);
 			}
+
 		</script>
 	</body>
 </html>
@@ -667,7 +683,7 @@ const shareDescription =
 
 	.planet-view {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 2rem;
 		align-items: start;
 		padding: 2rem 6vw 4rem;
@@ -697,7 +713,33 @@ const shareDescription =
 	.story { display: grid; gap: .9rem; }
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
 	h1 { margin: 0; font-family: 'Fraunces', serif; font-size: clamp(2rem, 3.3vw, 3rem); }
-	.lead { margin: 0; color: var(--muted); line-height: 1.7; }
+	.lead-wrap {
+		display: grid;
+		gap: .35rem;
+	}
+	.lead {
+		margin: 0;
+		color: var(--muted);
+		line-height: 1.7;
+	}
+	.lead.is-collapsed {
+		overflow: hidden;
+		max-height: calc(1.7em * 3);
+	}
+	.lead-toggle {
+		justify-self: start;
+		border: none;
+		background: transparent;
+		color: var(--accent-2);
+		font-family: inherit;
+		font-size: .88rem;
+		font-weight: 600;
+		padding: 0;
+		cursor: pointer;
+	}
+	.lead-toggle:hover {
+		color: var(--accent);
+	}
 	.story p { margin: 0; color: var(--muted); line-height: 1.7; }
 
 	.sheet {
@@ -878,7 +920,10 @@ const shareDescription =
 		-webkit-user-drag: none;
 	}
 
-	@media (max-width: 780px) {
+	@media (max-width: 900px) {
+		.planet-view {
+			grid-template-columns: 1fr;
+		}
 		.top {
 			flex-wrap: wrap;
 			gap: .8rem;

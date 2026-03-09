@@ -1,4 +1,4 @@
----
+﻿---
 import { planetData } from '../data/planets';
 
 const planets = planetData;
@@ -23,7 +23,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 		<link rel="icon" href={toBasePath('favicon.ico')} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>MINIPLANETAS | El Catálogo</title>
+		<title>MINIPLANETAS | El CatÃ¡logo</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -34,29 +34,29 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+			<button class="menu-toggle" type="button" aria-label="Abrir menÃº" aria-controls="main-nav" aria-expanded="false">
 				<span></span>
 				<span></span>
 				<span></span>
 			</button>
 			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('catalogo')} aria-current="page">Catálogo</a>
-				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('catalogo')} aria-current="page">CatÃ¡logo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>Â¿CÃ³mo nace un mini-planeta?</a>
 				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
 
 		<main>
 			<section class="intro">
-				<p class="eyebrow">La Búsqueda</p>
-				<h1>Catálogo técnico de planetas</h1>
+				<p class="eyebrow">La BÃºsqueda</p>
+				<h1>CatÃ¡logo tÃ©cnico de planetas</h1>
 			</section>
 
-			<section class="filters" aria-label="Filtros del catálogo">
+			<section class="filters" aria-label="Filtros del catÃ¡logo">
 				<label>
 					<span>Texto</span>
-					<input id="filter-text" type="search" placeholder="Nombre o descripción" />
+					<input id="filter-text" type="search" placeholder="Nombre o descripciÃ³n" />
 				</label>
 				<label>
 					<span>Tono</span>
@@ -106,7 +106,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 			</section>
 		</main>
 		<footer class="footer">
-			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+			<p>Â© 2026 MINIPLANETAS .:. SQLP .:. Made with â¤ï¸ in Tierz for the entire Universe...</p>
 		</footer>
 
 		<script is:inline>
@@ -120,7 +120,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 				const closeMenu = () => {
 					topNav.classList.remove('is-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
-					menuToggle.setAttribute('aria-label', 'Abrir menú');
+					menuToggle.setAttribute('aria-label', 'Abrir menÃº');
 				};
 
 				menuToggle.addEventListener('click', () => {
@@ -128,7 +128,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 					const shouldOpen = !isOpen;
 					topNav.classList.toggle('is-open', shouldOpen);
 					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menÃº' : 'Abrir menÃº');
 				});
 
 				topNav.querySelectorAll('a').forEach((link) => {
@@ -136,7 +136,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 				});
 
 				window.addEventListener('resize', () => {
-					if (window.innerWidth > 780) {
+					if (window.innerWidth > 900) {
 						closeMenu();
 					}
 				});
@@ -334,7 +334,7 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 		border-radius: 999px;
 	}
 
-	@media (max-width: 780px) {
+	@media (max-width: 900px) {
 		.top {
 			flex-wrap: wrap;
 			gap: .8rem;
@@ -383,3 +383,4 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 		}
 	}
 </style>
+

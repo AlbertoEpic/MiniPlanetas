@@ -1,4 +1,4 @@
----
+﻿---
 import { planetData } from '../data/planets';
 
 type Planet = {
@@ -51,15 +51,15 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+			<button class="menu-toggle" type="button" aria-label="Abrir menÃº" aria-controls="main-nav" aria-expanded="false">
 				<span></span>
 				<span></span>
 				<span></span>
 			</button>
 			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')} aria-current="page">El Universo</a>
-				<a href={toBasePath('catalogo')}>Catálogo</a>
-				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('catalogo')}>CatÃ¡logo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>Â¿CÃ³mo nace un mini-planeta?</a>
 				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
@@ -67,13 +67,13 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 		<main>
 			<section class="hero">
 				<p class="eyebrow">Bienvenido al universo MINIPLANETAS</p>
-				<h1>Cada planeta guarda una emoción, una luz y una historia</h1>
+				<h1>Cada planeta guarda una emociÃ³n, una luz y una historia</h1>
 				<p>
-					Esta portada es una puerta al asombro: respira, elige un rumbo y déjate llevar por
-					paisajes diminutos que parecen sueños en órbita.
+					Esta portada es una puerta al asombro: respira, elige un rumbo y dÃ©jate llevar por
+					paisajes diminutos que parecen sueÃ±os en Ã³rbita.
 				</p>
 				<div class="hero-actions">
-					<a class="cta cta-primary" href={toBasePath('catalogo')}>Entrar al catálogo</a>
+					<a class="cta cta-primary" href={toBasePath('catalogo')}>Entrar al catÃ¡logo</a>
 					<a class="cta" href={toBasePath('sobre')}>Conocer al creador</a>
 				</div>
 			</section>
@@ -85,18 +85,18 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 				</article>
 				<article>
 					<p class="label">Recorrido recomendado</p>
-					<strong>Portada → Catálogo → Ficha → Aterrizar!</strong>
+					<strong>Portada â†’ CatÃ¡logo â†’ Ficha â†’ Aterrizar!</strong>
 				</article>
 				<article>
 					<p class="label">Tipo de experiencia</p>
-					<strong>Visual + técnica</strong>
+					<strong>Visual + tÃ©cnica</strong>
 				</article>
 			</section>
 
 			<section class="featured" aria-label="Planetas destacados">
 				<div class="featured-head">
 					<h2>Destacados al azar</h2>
-					<a href={toBasePath('catalogo')}>Ver todos en el catálogo</a>
+					<a href={toBasePath('catalogo')}>Ver todos en el catÃ¡logo</a>
 				</div>
 				<div class="featured-grid">
 				{featuredPlanets.map((planet, index) => (
@@ -105,7 +105,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 						<div class="planet-meta">
 							<h2>{planet.name}</h2>
 							<p>{planet.description}</p>
-							<span>{planet.orbit} · {planet.size}</span>
+							<span>{planet.orbit} Â· {planet.size}</span>
 						</div>
 					</a>
 				))}
@@ -123,8 +123,8 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 					<div class="story-copy">
 						<h2>Sobre el creador</h2>
 						<p>
-							Detrás de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
-							compartir belleza. Conoce la persona que transforma lugares reales en pequeñas órbitas.
+							DetrÃ¡s de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
+							compartir belleza. Conoce la persona que transforma lugares reales en pequeÃ±as Ã³rbitas.
 						</p>
 						<a href={toBasePath('sobre-el-creador')}>Ir a Sobre el creador</a>
 					</div>
@@ -134,14 +134,14 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 					<img
 						class="story-image"
 						src={editImageUrl}
-						alt="Proceso de edición de un mini-planeta"
+						alt="Proceso de ediciÃ³n de un mini-planeta"
 						loading="lazy"
 					/>
 					<div class="story-copy">
-						<h2>¿Cómo nace un mini-planeta?</h2>
+						<h2>Â¿CÃ³mo nace un mini-planeta?</h2>
 						<p>
-							Todo empieza en el terreno: explorar, observar y elegir el encuadre. Después llega el
-							trabajo de edición para convertir un instante real en un mundo pequeño que invita a
+							Todo empieza en el terreno: explorar, observar y elegir el encuadre. DespuÃ©s llega el
+							trabajo de ediciÃ³n para convertir un instante real en un mundo pequeÃ±o que invita a
 							imaginar.
 						</p>
 						<a href={toBasePath('como-nace-un-mini-planeta')}>Ver proceso completo</a>
@@ -150,7 +150,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 			</section>
 		</main>
 		<footer class="footer">
-			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+			<p>Â© 2026 MINIPLANETAS .:. SQLP .:. Made with â¤ï¸ in Tierz for the entire Universe...</p>
 		</footer>
 
 		<script is:inline>
@@ -164,7 +164,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 				const closeMenu = () => {
 					topNav.classList.remove('is-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
-					menuToggle.setAttribute('aria-label', 'Abrir menú');
+					menuToggle.setAttribute('aria-label', 'Abrir menÃº');
 				};
 
 				menuToggle.addEventListener('click', () => {
@@ -172,7 +172,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 					const shouldOpen = !isOpen;
 					topNav.classList.toggle('is-open', shouldOpen);
 					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menÃº' : 'Abrir menÃº');
 				});
 
 				topNav.querySelectorAll('a').forEach((link) => {
@@ -180,7 +180,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 				});
 
 				window.addEventListener('resize', () => {
-					if (window.innerWidth > 780) {
+					if (window.innerWidth > 900) {
 						closeMenu();
 					}
 				});
@@ -546,7 +546,7 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 		}
 	}
 
-	@media (max-width: 780px) {
+	@media (max-width: 900px) {
 		.top {
 			flex-wrap: wrap;
 			gap: 0.8rem;
@@ -611,3 +611,4 @@ const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 		}
 	}
 </style>
+

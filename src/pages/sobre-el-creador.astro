@@ -1,4 +1,4 @@
----
+﻿---
 import { Image } from 'astro:assets';
 import creatorPhoto from '../assets/creador/AlbertoEpic.jpg';
 
@@ -49,7 +49,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 							alt="Retrato de Alberto, creador de MINIPLANETAS"
 							class="creator-photo-img"
 							loading="lazy"
-							sizes="(max-width: 780px) 92vw, 28rem"
+							sizes="(max-width: 900px) 92vw, 28rem"
 						/>
 					</figure>
 					<p>
@@ -75,7 +75,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 						alt="Retrato de Alberto, creador de MINIPLANETAS"
 						class="creator-photo-img"
 						loading="lazy"
-						sizes="(max-width: 780px) 92vw, 28rem"
+						sizes="(max-width: 900px) 92vw, 28rem"
 					/>
 				</figure>
 			</section>
@@ -111,7 +111,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 				});
 
 				window.addEventListener('resize', () => {
-					if (window.innerWidth > 780) {
+					if (window.innerWidth > 900) {
 						closeMenu();
 					}
 				});
@@ -241,7 +241,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		color: var(--text);
 	}
 
-	@media (max-width: 780px) {
+	@media (max-width: 900px) {
 		.creator-photo-mobile { display: block !important; }
 		.creator-photo-desktop { display: none !important; }
 		.about-layout {
@@ -300,3 +300,4 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		}
 	}
 </style>
+
