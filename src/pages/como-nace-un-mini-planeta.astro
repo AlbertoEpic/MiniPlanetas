@@ -1,4 +1,4 @@
-﻿---
+---
 import tripodeNodalImage from '../assets/como/tripodenodal.jpg';
 import dronImage from '../assets/como/dron.jpg';
 import myriAppImage from '../assets/como/myriApp.jpg';
@@ -9,7 +9,7 @@ const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
 const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
-const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jpg');
+const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-Montearagón.jpg');
 ---
 
 <html lang="es">
@@ -18,7 +18,7 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
 		<link rel="icon" href={toBasePath('favicon.ico')} />
 		<meta name="viewport" content="width=device-width" />
-		<title>MINIPLANETAS | Â¿CÃ³mo nace un mini-planeta?</title>
+		<title>MINIPLANETAS | ¿Cómo nace un mini-planeta?</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -29,15 +29,15 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<button class="menu-toggle" type="button" aria-label="Abrir menÃº" aria-controls="main-nav" aria-expanded="false">
+			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
 				<span></span>
 				<span></span>
 				<span></span>
 			</button>
 			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('catalogo')}>CatÃ¡logo</a>
-				<a href={toBasePath('como-nace-un-mini-planeta')} aria-current="page">Â¿CÃ³mo nace un mini-planeta?</a>
+				<a href={toBasePath('catalogo')}>Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')} aria-current="page">¿Cómo nace un mini-planeta?</a>
 				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
@@ -46,30 +46,30 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 			<section class="process-layout">
 				<div class="process-copy">
 					<p class="eyebrow">Proceso creativo</p>
-					<h1>Â¿CÃ³mo nace un mini-planeta?</h1>
+					<h1>¿Cómo nace un mini-planeta?</h1>
 					<div class="process-body">
 						<div class="process-text">
 							<p>
-								Primero llega el territorio: caminar, estudiar el horizonte y decidir desde dÃ³nde puede
+								Primero llega el territorio: caminar, estudiar el horizonte y decidir desde dónde puede
 								nacer una esfera visual con personalidad.
 							</p>
 							<p>
-								DespuÃ©s se captura la panorÃ¡mica 360Â°, cuidando continuidad de luz, texturas y
-								profundidad para que la escena tenga coherencia al cerrarse en cÃ­rculo.
+								Después se captura la panorámica 360°, cuidando continuidad de luz, texturas y
+								profundidad para que la escena tenga coherencia al cerrarse en círculo.
 							</p>
 							<p>
-								En ediciÃ³n, la panorÃ¡mica se proyecta en formato polar, se ajusta color y contraste, y se
-								reencuadra para que el resultado final conserve emociÃ³n, escala y detalle.
+								En edición, la panorámica se proyecta en formato polar, se ajusta color y contraste, y se
+								reencuadra para que el resultado final conserve emoción, escala y detalle.
 							</p>
 							<p>
-								El resultado es un mundo pequeÃ±o con memoria de lugar real: una sÃ­ntesis entre tÃ©cnica y
+								El resultado es un mundo pequeño con memoria de lugar real: una síntesis entre técnica y
 								sensibilidad.
 							</p>
 						</div>
-						<figure class="process-photo" aria-label="Mini planeta Fiordo de MontearagÃ³n">
+						<figure class="process-photo" aria-label="Mini planeta Fiordo de Montearagón">
 							<img
 								src={processPhotoPath}
-								alt="Mini planeta Fiordo de MontearagÃ³n"
+								alt="Mini planeta Fiordo de Montearagón"
 								class="process-photo-img"
 								loading="lazy"
 							/>
@@ -78,56 +78,56 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 					<section class="step-box" aria-label="Paso 1">
 						<h2>PASO 1</h2>
 						<p>
-							Una vez que he elegido el lugar, llega el momento de tomar la fotografÃ­a esfÃ©rica
-							(PanorÃ¡mica 360Âº). Existen diversas tÃ©cnicas pero yo principalmente me baso en
+							Una vez que he elegido el lugar, llega el momento de tomar la fotografía esférica
+							(Panorámica 360º). Existen diversas técnicas pero yo principalmente me baso en
 							estas:
 						</p>
-						<div class="step-grid" aria-label="TÃ©cnicas principales de captura 360Âº">
+						<div class="step-grid" aria-label="Técnicas principales de captura 360º">
 							<article class="step-item">
 								<img
 									src={tripodeNodalImage.src}
-									alt="CÃ¡mara de fotos con trÃ­pode y rÃ³tula nodal"
+									alt="Cámara de fotos con trípode y rótula nodal"
 									class="step-item-image"
 									loading="lazy"
 								/>
-								<span class="step-item-title">CÃ¡mara de fotos + TrÃ­pode con rÃ³tula nodal</span>
+								<span class="step-item-title">Cámara de fotos + Trípode con rótula nodal</span>
 							</article>
 							<article class="step-item">
 								<img
 									src={dronImage.src}
-									alt="FotografÃ­a esfÃ©rica con dron DJI"
+									alt="Fotografía esférica con dron DJI"
 									class="step-item-image"
 									loading="lazy"
 								/>
-								<span class="step-item-title">FotografÃ­a esfÃ©rica con el dron DJI</span>
+								<span class="step-item-title">Fotografía esférica con el dron DJI</span>
 							</article>
 							<article class="step-item">
 								<img
 									src={myriAppImage.src}
-									alt="FotografÃ­a esfÃ©rica con telÃ©fono y app MyriApp"
+									alt="Fotografía esférica con teléfono y app MyriApp"
 									class="step-item-image"
 									loading="lazy"
 								/>
-								<span class="step-item-title">PanoSphere con el telÃ©fono y la App de CÃ¡mara de Google</span>
+								<span class="step-item-title">PanoSphere con el teléfono y la App de Cámara de Google</span>
 							</article>
 							<article class="step-item">
 								<img
 									src={goproPanoImage.src}
-									alt="FotografÃ­as panorÃ¡micas con cÃ¡mara de acciÃ³n GoPro"
+									alt="Fotografías panorámicas con cámara de acción GoPro"
 									class="step-item-image"
 									loading="lazy"
 								/>
-								<span class="step-item-title">FotografÃ­as con cÃ¡mara de acciÃ³n (GoPro, DJI)</span>
+								<span class="step-item-title">Fotografías con cámara de acción (GoPro, DJI)</span>
 							</article>
 						</div>
 					</section>
 					<section class="step-box" aria-label="Paso 2">
 						<h2>PASO 2</h2>
 						<p>
-							Si las fotografÃ­as son del drone o de la App del mÃ³vil, ya la tenemos. En los
-							otros casos, llegamos a casa con un montÃ³n de fotografÃ­as y ahora debemos
-							'coserlas' para montar la panorÃ¡mica. Utilizo el software Hugin, y selecciono
-							la proyecciÃ³n equirectangular. Esto nos da una imagen de proporciÃ³n 2X1.
+							Si las fotografías son del drone o de la App del móvil, ya la tenemos. En los
+							otros casos, llegamos a casa con un montón de fotografías y ahora debemos
+							'coserlas' para montar la panorámica. Utilizo el software Hugin, y selecciono
+							la proyección equirectangular. Esto nos da una imagen de proporción 2X1.
 						</p>
 					</section>
 					<section class="step-box" aria-label="Paso 3">
@@ -138,32 +138,32 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 							efecto distorsionar, convirtiendo la imagen de coordenadas rectangulares a
 							polares.
 						</p>
-						<div class="step-highlight" aria-label="Magia matemÃ¡tica del Tiny Planet">
-							<p class="step-highlight-kicker">MAGIA MATEMÃTICA</p>
+						<div class="step-highlight" aria-label="Magia matemática del Tiny Planet">
+							<p class="step-highlight-kicker">MAGIA MATEMÁTICA</p>
 							<img
 								src={procesoImage.src}
-								alt="Esquema del proceso matemÃ¡tico Tiny Planet"
+								alt="Esquema del proceso matemático Tiny Planet"
 								class="step-highlight-image"
 								loading="lazy"
 							/>
 							<p class="step-highlight-intro">
 								<em class="step-highlight-intro-em">
 									Es un efecto visual fascinante. En este contexto, un Tiny Planet (o
-									"PequeÃ±o Planeta") es una tÃ©cnica de ediciÃ³n fotogrÃ¡fica que transforma una
-									imagen panorÃ¡mica de 360Â° en una esfera que parece un mundo flotando en el
+									"Pequeño Planeta") es una técnica de edición fotográfica que transforma una
+									imagen panorámica de 360° en una esfera que parece un mundo flotando en el
 									espacio.
 								</em>
 							</p>
-							<p>AquÃ­ te explico la "magia" matemÃ¡tica detrÃ¡s del proceso:</p>
-							<p class="step-highlight-title">El proceso: De rectÃ¡ngulos a cÃ­rculos</p>
+							<p>Aquí te explico la "magia" matemática detrás del proceso:</p>
+							<p class="step-highlight-title">El proceso: De rectángulos a círculos</p>
 							<p>
-								Todo empieza con una fotografÃ­a equirectangular. Imagina el mapa del mundo
-								(proyecciÃ³n de Mercator): es un rectÃ¡ngulo donde el eje x representa la
-								longitud (360Â°) y el eje y la latitud (180Â°).
+								Todo empieza con una fotografía equirectangular. Imagina el mapa del mundo
+								(proyección de Mercator): es un rectángulo donde el eje x representa la
+								longitud (360°) y el eje y la latitud (180°).
 							</p>
-							<p>Para crear el efecto, aplicamos una transformaciÃ³n de coordenadas polares:</p>
+							<p>Para crear el efecto, aplicamos una transformación de coordenadas polares:</p>
 							<p>
-								<strong>La deformaciÃ³n:</strong> El software toma el borde inferior de tu foto rectangular y
+								<strong>La deformación:</strong> El software toma el borde inferior de tu foto rectangular y
 								lo encoge hasta convertirlo en un solo punto (el centro del planeta).
 							</p>
 							<p>
@@ -171,33 +171,33 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 								circunferencia exterior (el cielo).
 							</p>
 							<p>
-								<strong>La uniÃ³n:</strong> Los bordes laterales de la foto se curvan y se pegan entre sÃ­. Por
-								eso es vital que la foto original sea una panorÃ¡mica perfecta de 360Â°, para
+								<strong>La unión:</strong> Los bordes laterales de la foto se curvan y se pegan entre sí. Por
+								eso es vital que la foto original sea una panorámica perfecta de 360°, para
 								que la "costura" no se note.
 							</p>
-							<p class="step-highlight-title">Â¿CÃ³mo se ve matemÃ¡ticamente?</p>
+							<p class="step-highlight-title">¿Cómo se ve matemáticamente?</p>
 							<p>
-								En tÃ©rminos simples, pasamos de un sistema de coordenadas cartesianas (x,y) a
-								uno polar (r,Î¸). La posiciÃ³n de cada pÃ­xel se redefine:
+								En términos simples, pasamos de un sistema de coordenadas cartesianas (x,y) a
+								uno polar (r,θ). La posición de cada píxel se redefine:
 							</p>
 							<p>
-								La distancia al centro (r) viene determinada por la altura original del pÃ­xel
+								La distancia al centro (r) viene determinada por la altura original del píxel
 								(y).
 							</p>
 							<p>
-								El Ã¡ngulo alrededor del centro (Î¸) viene determinado por la posiciÃ³n
+								El ángulo alrededor del centro (θ) viene determinado por la posición
 								horizontal (x).
 							</p>
 						</div>
 						<p>
-							<br>Ya tenemos el mini planeta! Ahora nos falta reencuadrar la imagen, podemos ajustar un poco los coloresâ€¦ Y listo!
+							<br>Ya tenemos el mini planeta! Ahora nos falta reencuadrar la imagen, podemos ajustar un poco los colores… Y listo!
 						</p>
 					</section>
 					<section class="step-box" aria-label="El Know-How">
 						<h2>EL KNOW-HOW</h2>
 						<p>
-							Evidentemente, no te desanimes si sales por ahÃ­ despuÃ©s de leer esto lleno de
-							ilusiÃ³n por crear tu primer mini planeta... Y el resultado no es tan
+							Evidentemente, no te desanimes si sales por ahí después de leer esto lleno de
+							ilusión por crear tu primer mini planeta... Y el resultado no es tan
 							maravilloso como pintaba en tu cabeza.
 						</p>
 						<p>
@@ -208,13 +208,13 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 
 					<div class="actions">
 						<a class="back" href={toBasePath('')}>Volver a portada</a>
-						<a class="back secondary" href={toBasePath('catalogo')}>Ir al catÃ¡logo</a>
+						<a class="back secondary" href={toBasePath('catalogo')}>Ir al catálogo</a>
 					</div>
 				</div>
 			</section>
 		</main>
 		<footer class="footer">
-			<p>Â© 2026 MINIPLANETAS .:. SQLP .:. Made with â¤ï¸ in Tierz for the entire Universe...</p>
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
 		</footer>
 
 		<script is:inline>
@@ -228,7 +228,7 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 				const closeMenu = () => {
 					topNav.classList.remove('is-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
-					menuToggle.setAttribute('aria-label', 'Abrir menÃº');
+					menuToggle.setAttribute('aria-label', 'Abrir menú');
 				};
 
 				menuToggle.addEventListener('click', () => {
@@ -236,7 +236,7 @@ const processPhotoPath = toBasePath('planets/Planeta_Fiordo-de-MontearagÃ³n.jp
 					const shouldOpen = !isOpen;
 					topNav.classList.toggle('is-open', shouldOpen);
 					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menÃº' : 'Abrir menÃº');
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
 				});
 
 				topNav.querySelectorAll('a').forEach((link) => {

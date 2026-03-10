@@ -1,4 +1,4 @@
-﻿---
+---
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
@@ -11,7 +11,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
 		<link rel="icon" href={toBasePath('favicon.ico')} />
 		<meta name="viewport" content="width=device-width" />
-		<title>MINIPLANETAS | Sobre el Creador y TÃ©cnica</title>
+		<title>MINIPLANETAS | Sobre el Creador y Técnica</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -22,36 +22,36 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<button class="menu-toggle" type="button" aria-label="Abrir menÃº" aria-controls="main-nav" aria-expanded="false">
+			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
 				<span></span>
 				<span></span>
 				<span></span>
 			</button>
 			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('catalogo')}>CatÃ¡logo</a>
-				<a href={toBasePath('como-nace-un-mini-planeta')}>Â¿CÃ³mo nace un mini-planeta?</a>
+				<a href={toBasePath('catalogo')}>Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
 				<a href={toBasePath('sobre-el-creador')} aria-current="page">Sobre el creador</a>
 			</nav>
 		</header>
 
 		<main class="container">
-			<p class="eyebrow">Sobre el Creador / TÃ©cnica</p>
-			<h1>CÃ³mo nace un mini planeta 360Â°</h1>
+			<p class="eyebrow">Sobre el Creador / Técnica</p>
+			<h1>Cómo nace un mini planeta 360°</h1>
 			<p>
-				Una foto 360Â° captura todo el entorno en una sola esfera visual. Al proyectarla en
-				formato polar, el horizonte se cierra sobre sÃ­ mismo y aparece el â€œminiplanetaâ€: un
+				Una foto 360° captura todo el entorno en una sola esfera visual. Al proyectarla en
+				formato polar, el horizonte se cierra sobre sí mismo y aparece el “miniplaneta”: un
 				mundo compacto donde cielo, suelo y textura cuentan una historia nueva.
 			</p>
 			<p>
-				El proceso combina toma panorÃ¡mica, uniÃ³n de imÃ¡genes, correcciÃ³n de color y
-				reencuadre para resaltar volumen y atmÃ³sfera. El objetivo no es solo documentar un
+				El proceso combina toma panorámica, unión de imágenes, corrección de color y
+				reencuadre para resaltar volumen y atmósfera. El objetivo no es solo documentar un
 				lugar, sino transformarlo en una pieza visual con identidad propia.
 			</p>
-			<a class="back" href={toBasePath('catalogo')}>Ir al catÃ¡logo</a>
+			<a class="back" href={toBasePath('catalogo')}>Ir al catálogo</a>
 		</main>
 		<footer class="footer">
-			<p>Â© 2026 MINIPLANETAS .:. SQLP .:. Made with â¤ï¸ in Tierz for the entire Universe...</p>
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
 		</footer>
 
 		<script is:inline>
@@ -65,7 +65,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 				const closeMenu = () => {
 					topNav.classList.remove('is-open');
 					menuToggle.setAttribute('aria-expanded', 'false');
-					menuToggle.setAttribute('aria-label', 'Abrir menÃº');
+					menuToggle.setAttribute('aria-label', 'Abrir menú');
 				};
 
 				menuToggle.addEventListener('click', () => {
@@ -73,7 +73,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 					const shouldOpen = !isOpen;
 					topNav.classList.toggle('is-open', shouldOpen);
 					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menÃº' : 'Abrir menÃº');
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
 				});
 
 				topNav.querySelectorAll('a').forEach((link) => {
@@ -226,4 +226,3 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		}
 	}
 </style>
-

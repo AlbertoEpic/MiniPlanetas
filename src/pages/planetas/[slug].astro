@@ -243,6 +243,7 @@ const shareDescription =
 		<div class="viewer" data-viewer aria-hidden="true">
 			<div class="viewer-controls">
 				<button class="viewer-control" type="button" aria-label="Reducir" title="Reducir" data-zoom-out>-</button>
+				<button class="viewer-control" type="button" aria-label="Restaurar" title="Restaurar" data-zoom-reset><span aria-hidden="true">↺</span></button>
 				<button class="viewer-control" type="button" aria-label="Ampliar" title="Ampliar" data-zoom-in>+</button>
 				<button class="viewer-control viewer-close" type="button" aria-label="Cerrar visor" title="Cerrar" data-close-viewer>x</button>
 			</div>
@@ -295,19 +296,72 @@ const shareDescription =
 			const closeViewerButton = document.querySelector('[data-close-viewer]');
 			const zoomInButton = document.querySelector('[data-zoom-in]');
 			const zoomOutButton = document.querySelector('[data-zoom-out]');
+			const zoomResetButton = document.querySelector('[data-zoom-reset]');
 
-			const MIN_ZOOM = 0.6;
-			const MAX_ZOOM = 4;
+			const BASE_MIN_ZOOM = 0.02;
+			const BASE_MAX_ZOOM = 1;
 			const ZOOM_STEP = 0.2;
 			let zoomLevel = 1;
+			let minZoom = BASE_MIN_ZOOM;
+			let maxZoom = BASE_MAX_ZOOM;
+
+			const getImageNaturalWidth = () => {
+				if (viewerImage?.naturalWidth) {
+					return viewerImage.naturalWidth;
+				}
+				if (mainImage?.naturalWidth) {
+					return mainImage.naturalWidth;
+				}
+				return 0;
+			};
+
+			const getFitToWidthZoom = () => {
+				if (!viewerStage) {
+					return 1;
+				}
+
+				const naturalWidth = getImageNaturalWidth();
+				if (!naturalWidth) {
+					return 1;
+				}
+
+				const targetWidth = viewerStage.clientWidth;
+				return targetWidth / naturalWidth;
+			};
+
+			const updateZoomBounds = () => {
+				const fitToWidthZoom = getFitToWidthZoom();
+				minZoom = Math.max(BASE_MIN_ZOOM, fitToWidthZoom || BASE_MIN_ZOOM);
+				maxZoom = BASE_MAX_ZOOM;
+
+				// If fitting width requires scaling above original size, collapse bounds safely.
+				if (minZoom > maxZoom) {
+					minZoom = maxZoom;
+				}
+			};
 
 			const updateZoomButtons = () => {
 				if (zoomInButton) {
-					zoomInButton.disabled = zoomLevel >= MAX_ZOOM;
+					zoomInButton.disabled = zoomLevel >= maxZoom;
 				}
 				if (zoomOutButton) {
-					zoomOutButton.disabled = zoomLevel <= MIN_ZOOM;
+					zoomOutButton.disabled = zoomLevel <= minZoom;
 				}
+			};
+
+			const updateViewerImageVerticalCenter = () => {
+				if (!viewerImage || !viewerStage) {
+					return;
+				}
+
+				const imageHeight = viewerImage.naturalHeight > 0
+					? viewerImage.naturalHeight * zoomLevel
+					: viewerImage.clientHeight;
+				const freeVerticalSpace = Math.max(viewerStage.clientHeight - imageHeight, 0);
+				const verticalMargin = freeVerticalSpace / 2;
+
+				viewerImage.style.marginTop = `${verticalMargin}px`;
+				viewerImage.style.marginBottom = `${verticalMargin}px`;
 			};
 
 			const applyZoom = (nextZoom, preserveCenter = true, focusClientX = null, focusClientY = null) => {
@@ -315,7 +369,7 @@ const shareDescription =
 					return;
 				}
 
-				const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
+				const clamped = Math.min(maxZoom, Math.max(minZoom, nextZoom));
 				const previousZoom = zoomLevel;
 				if (Math.abs(clamped - previousZoom) < 0.001) {
 					updateZoomButtons();
@@ -342,6 +396,8 @@ const shareDescription =
 					viewerImage.style.height = `${naturalHeight * zoomLevel}px`;
 				}
 
+				updateViewerImageVerticalCenter();
+
 				if (preserveCenter && previousZoom > 0) {
 					const zoomRatio = zoomLevel / previousZoom;
 					viewerStage.scrollLeft = Math.max(previousFocusX * zoomRatio - localFocusX, 0);
@@ -356,10 +412,11 @@ const shareDescription =
 					return;
 				}
 				viewerImage.setAttribute('src', mainImage.getAttribute('src') || '');
-				applyZoom(1, false);
 				viewer.classList.add('is-open');
 				viewer.setAttribute('aria-hidden', 'false');
 				document.body.classList.add('viewer-open');
+				updateZoomBounds();
+				applyZoom(getFitToWidthZoom(), false);
 				requestAnimationFrame(() => {
 					viewerStage.scrollLeft = Math.max((viewerStage.scrollWidth - viewerStage.clientWidth) / 2, 0);
 					viewerStage.scrollTop = Math.max((viewerStage.scrollHeight - viewerStage.clientHeight) / 2, 0);
@@ -470,7 +527,21 @@ const shareDescription =
 			closeViewerButton?.addEventListener('click', closeViewer);
 			zoomInButton?.addEventListener('click', () => applyZoom(zoomLevel + ZOOM_STEP));
 			zoomOutButton?.addEventListener('click', () => applyZoom(zoomLevel - ZOOM_STEP));
+			zoomResetButton?.addEventListener('click', () => {
+				updateZoomBounds();
+				applyZoom(getFitToWidthZoom());
+			});
 			viewerImage?.addEventListener('load', () => {
+				updateZoomBounds();
+				applyZoom(zoomLevel, false);
+			});
+
+			window.addEventListener('resize', () => {
+				if (!viewer?.classList.contains('is-open')) {
+					return;
+				}
+
+				updateZoomBounds();
 				applyZoom(zoomLevel, false);
 			});
 			viewer?.addEventListener('click', (event) => {
