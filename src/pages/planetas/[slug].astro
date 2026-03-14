@@ -1172,18 +1172,18 @@ const feedbackTextareaId = `feedback-message-${planet.slug}`;
 	}
 	.feedback-popup {
 		position: fixed;
-		right: 1rem;
-		bottom: 1rem;
+		top: 50%;
+		left: 50%;
 		width: min(27rem, calc(100vw - 2rem));
 		z-index: 90;
 		opacity: 0;
-		transform: translateY(14px) scale(.98);
+		transform: translate(-50%, calc(-50% + 14px)) scale(.98);
 		transition: opacity 220ms ease, transform 220ms ease;
 		pointer-events: none;
 	}
 	.feedback-popup.is-visible {
 		opacity: 1;
-		transform: translateY(0) scale(1);
+		transform: translate(-50%, -50%) scale(1);
 		pointer-events: auto;
 	}
 	.feedback-head {
@@ -1490,10 +1490,7 @@ const feedbackTextareaId = `feedback-message-${planet.slug}`;
 			flex-wrap: wrap;
 		}
 		.feedback-popup {
-			right: .7rem;
-			left: .7rem;
-			bottom: .7rem;
-			width: auto;
+			width: min(27rem, calc(100vw - 2rem));
 		}
 		.feedback-buttons {
 			grid-template-columns: 1fr;
