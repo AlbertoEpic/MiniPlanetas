@@ -188,7 +188,7 @@ const feedbackTextareaId = `feedback-message-${planet.slug}`;
 						<span>Pantalla completa</span>
 					</button>
 					{hasEquirectangularImage && sphericalPublicPath ? (
-						<a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer" title="Click para aterrizar en este planeta">
+						<a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} title="Click para aterrizar en este planeta">
 							<img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
 							<span>Aterrizar</span>
 						</a>
