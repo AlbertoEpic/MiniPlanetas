@@ -271,7 +271,7 @@
 	},
 	{
 		slug: 'planeta-puntarbenuso',
-		name: 'Planeta Punt Arbenuso',
+		name: 'Planeta Punta Arbenuso',
 		image: '/planets/Planeta_PuntArbenuso.jpg',
 		image360: '/pano360/PANO_PuntArbenuso.jpg',
 		description:
@@ -335,6 +335,7 @@
 		slug: 'planeta-tournelon-blanc',
 		name: 'Planeta Tournelon Blanc',
 		image: '/planets/Planeta_Tournelon-Blanc.jpg',
+		image360: '/pano360/PANO_TournelonBlanc.jpg',
 		description:
 			'Este pequeño planeta es una exhibición de glaciología masiva. Su superficie está casi totalmente cubierta por un manto de nieve y hielo de un blanco cegador, que se adapta a las formas redondeadas de su núcleo rocoso. Es un mundo de geometría suave y orgánica, donde las aristas de piedra apenas logran asomar entre las capas acumuladas de precipitación sólida. La característica más fascinante de este astro es su luminosidad extrema. La luz estelar se refleja en el hielo con tal intensidad que el planeta parece emitir su propio brillo interno, justificando el nombre de este sector. No se detectan rastros de hidrosfera líquida ni de actividad biológica; es un desierto de cristal en estado de quietud absoluta. La atmósfera es extremadamente fina y fría, lo que mantiene las estructuras de hielo intactas frente a la erosión, convirtiendo a este mundo en una cápsula del tiempo criogénica que preserva la historia climática de la nebulosa.',
 		tone: 'Registro nuevo',
@@ -355,6 +356,7 @@
 		slug: 'planeta-tozal-de-las-comas',
 		name: 'Planeta Tozal de las Comas',
 		image: '/planets/Planeta_Tozal-de-Las-Comas.jpg',
+		image360: '/pano360/PANO_TozalDeLasComas.jpg',
 		description:
 			'Este pequeño planeta destaca por una orografía ondulada y fluida, diseñada casi por ingeniería natural para el tránsito rápido. Su superficie no es de roca agresiva, sino de una tierra compacta y cobriza que serpentea entre formaciones de vegetación baja y arbustiva. La característica más fascinante es la presencia de una infraestructura lineal orgánica: un sendero perfectamente definido que recorre la cresta del astro como una columna vertebral. La atmósfera es cálida y está cargada de partículas de polvo en suspensión, lo que sugiere una actividad cinemática constante. No se detectan grandes ciudades, solo la presencia de exploradores solitarios que utilizan la gravedad moderada de este mundo para alcanzar velocidades de descenso vertiginosas. Es un planeta-pista, un santuario para los amantes del movimiento que buscan el equilibrio perfecto entre la inercia y el relieve mineral.',
 		tone: 'Registro nuevo',
