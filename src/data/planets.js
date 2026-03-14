@@ -229,6 +229,7 @@
 		slug: 'planeta-pineta-500m',
 		name: 'Planeta Pineta 500 m',
 		image: '/planets/Planeta_Pineta500m.jpg',
+		image360: '/pano360/PANO-DRONE_Pineta.jpg',
 		description:
 			'A esta altitud, el planetoide revela su verdadera naturaleza como un anfiteatro colosal de roca. La perspectiva de 500 metros permite apreciar la curvatura perfecta del valle, donde las paredes de caliza grisácea se elevan como murallas infranqueables que protegen un núcleo de biodiversidad confinada. La geología en este nivel muestra una estratificación horizontal casi perfecta, con franjas de sedimentos que narran eras de compresión tectónica. En el fondo del abismo, el curso de un río de deshielo aparece como una fina vena de plata que serpentea entre densos bosques de hayas y abetos, los cuales, desde esta distancia, parecen una alfombra de musgo esmeralda. La atmósfera superior es gélida y volátil, con jirones de nubes que se aferran a las crestas como si intentaran no caer al vacío del valle. No hay rastro de tecnología, solo la majestuosidad del relieve en su estado más puro y sobrecogedor.',
 		tone: 'Registro nuevo',
