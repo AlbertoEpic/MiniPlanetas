@@ -378,6 +378,7 @@
 		slug: 'planeta-trollfjordvatnet',
 		name: 'Planeta Trollfjordvatnet',
 		image: '/planets/Planeta_Trollfjordvatnet.jpg',
+		image360: '/pano360/PANO_Trollfjordvatnet.jpg',
 		description:
 			'Planeta de aguas profundas y entorno glaciar, situado en las Islas Lofoten, Noruega. Su superficie refleja la luz polar y está rodeada de montañas abruptas que emergen directamente del fiordo. La atmósfera es fría y cristalina, ideal para observadores de auroras y exploradores de paisajes extremos.',
 		tone: 'Azul polar',
@@ -395,9 +396,27 @@
 		orbit: 'Órbita en estudio',
 		size: 'Variable',
 	},
+	{
+		slug: 'planeta-catedral-huesca',
+		name: 'Planeta Catedral de Huesca',
+		image: '/planets/Planeta_Catedral-Huesca.jpg',
+		image360: '/pano360/PANO_Catedral-Huesca.jpg',
+		description:
+			'En el corazón de la galaxia, entre nebulosas doradas y corrientes de energía ancestral, surge el Planeta Catedral de Huesca. Su núcleo urbano vibra con la presencia de una civilización recién descubierta, cuyos habitantes han erigido una catedral monumental que se alza como faro intergaláctico. Las plazas abiertas son portales de encuentro entre viajeros estelares y sabios locales, y la piedra dorada de sus muros resplandece bajo la luz de dos soles. En cada rincón, la arquitectura histórica revela inscripciones y símbolos de una cultura que ha aprendido a canalizar la energía cósmica, abriendo puertas a dimensiones desconocidas. La atmósfera es serena y luminosa, pero en el aire flota el misterio de un legado milenario: la catedral es el epicentro de rituales que conectan el planeta con el resto del universo, invitando a exploradores y soñadores a descifrar los secretos de una civilización que acaba de despertar al contacto galáctico.',
+		tone: 'Piedra dorada',
+		orbit: 'Órbita en estudio',
+		size: 'Variable',
+	},
 ];
 
 const planetProfiles = {
+	'planeta-catedral-huesca': {
+		location: 'Plaza de la catedral, Huesca',
+		coordinates: "42°08'25.4\"N 0°24'31.6\"W",
+		atmosphere: ['Urbano', 'Histórico', 'Sereno'],
+		discoveryDate: '2018-11-09',
+		equipment: 'GoPro Hero 7 Black',
+	},
 	'planeta-trollfjordvatnet': {
 		location: 'Islas Lofoten (Noruega)',
 		coordinates: "68°21'55.2\"N 14°51'48.3\"E",
