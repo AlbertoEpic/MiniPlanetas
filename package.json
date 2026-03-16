@@ -7,12 +7,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro deploy"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "astro": "^5.17.1"
   },
   "devDependencies": {
-    "@types/node": "^25.4.0"
+    "@types/node": "^25.4.0",
+    "gh-pages": "^6.3.0"
   }
 }

@@ -7,8 +7,7 @@ const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
 const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
-const formInitAction = import.meta.env.PUBLIC_FORMINIT_ACTION?.trim() ?? '';
-const contactAction = formInitAction || 'https://forminit.com/f/YOUR_FORM_ID';
+const serverlessFormsAction = 'http://localhost:8080/submit';
 const isContactSent = Astro.url.searchParams.get('enviado') === '1';
 ---
 
@@ -140,23 +139,19 @@ const isContactSent = Astro.url.searchParams.get('enviado') === '1';
 					<p>
 						Escríbeme y te respondo con disponibilidad, opciones técnicas y tiempos estimados.
 					</p>
-					{!formInitAction && (
-						<p class="contact-warning">
-							Configura PUBLIC_FORMINIT_ACTION para activar el envío real con FormInit.
-						</p>
-					)}
+					
 					{isContactSent && (
 						<p class="contact-success" role="status">
 							Mensaje enviado. Gracias, te responderé pronto.
 						</p>
 					)}
 				</div>
-				<form class="contact-form" action={contactAction} method="POST">
-					<input type="hidden" name="fi-redirect-url" value={toBasePath('sobre-el-creador?enviado=1#contacto')} />
-					<input type="hidden" name="fi-meta-page" value="sobre-el-creador" />
+				<form class="contact-form" action={serverlessFormsAction} method="POST">
+					<input type="hidden" name="redirect-url" value={toBasePath('sobre-el-creador?enviado=1#contacto')} />
+					<input type="hidden" name="meta-page" value="sobre-el-creador" />
 					<label>
 						<span>Nombre</span>
-						<input name="fi-sender-fullName" type="text" required />
+						<input name="fullName" type="text" required />
 					</label>
 					<label>
 						<span>Email</span>
