@@ -1,0 +1,3 @@
+[submodule "serverless-forms"]
+	path = serverless-forms
+	url = https://github.com/lexoyo/serverless-forms.git
