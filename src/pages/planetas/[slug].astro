@@ -965,7 +965,13 @@ const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='
 	.top-nav a:hover { opacity: 1; }
 	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
 
-/* .planet-view layout eliminado para unificar con arrows.css */
+	.planet-view {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+		align-items: start;
+		padding: 2rem 6vw 4rem;
+	}
 	.footer {
 		padding: 1rem 6vw 1.5rem;
 		border-top: 1px solid var(--stroke);
@@ -974,7 +980,28 @@ const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='
 		color: var(--muted);
 	}
 
-/* .visual layout eliminado para unificar con arrows.css */
+	.visual {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 1 / 1;
+		border-radius: 1rem;
+		overflow: hidden;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .78);
+	}
+	.visual > img,
+	.visual :global(picture) {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.visual :global(picture > img),
+	.visual > img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		cursor: zoom-in;
+	}
 
 	.story { display: grid; gap: .9rem; }
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
