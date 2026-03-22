@@ -1,25 +1,6 @@
-/* Asegura que las flechas se posicionen respecto al contenedor principal y la imagen quede centrada */
+/* Asegura que las flechas se posicionen respecto al contenedor principal */
 .planet-view {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 400px;
-}
-
-.planet-view .visual {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.planet-view .visual img,
-.planet-view .visual picture {
-  max-width: 100%;
-  height: auto;
-  display: block;
 }
 @media (max-width: 600px) {
   .arrow {
