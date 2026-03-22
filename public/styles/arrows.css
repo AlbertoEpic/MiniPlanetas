@@ -1,0 +1,37 @@
+@media (max-width: 600px) {
+  .arrow {
+    display: none !important;
+  }
+  .arrow-img {
+    display: none !important;
+  }
+}
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: none;
+}
+.arrow-left {
+  left: 0;
+  margin-left: 1em;
+}
+.arrow-right {
+  right: 0;
+  margin-right: 1em;
+}
+.arrow-img {
+  width: 48px;
+  height: auto;
+  max-width: 100%;
+  max-height: 100px;
+  display: block;
+}
