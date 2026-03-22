@@ -1,3 +1,7 @@
+/* Asegura que las flechas se posicionen respecto al contenedor principal */
+.planet-view {
+  position: relative;
+}
 @media (max-width: 600px) {
   .arrow {
     display: none !important;
