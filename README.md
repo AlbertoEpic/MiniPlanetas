@@ -18,6 +18,8 @@ Landing page para el proyecto MINIPLANETAS con diseño visual y animaciones suav
 
 - Edita la portada en `src/pages/index.astro`.
 - Los assets estaticos van en `public/`.
+
+_Deploy forzado: 2026-03-23_
 - Para activar el formulario de contacto con FormInit, define `PUBLIC_FORMINIT_ACTION` en tu entorno, por ejemplo: `PUBLIC_FORMINIT_ACTION=https://forminit.com/f/TU_FORM_ID`.
 
 - Para activar el widget de feedback en las fichas de planetas, define `PUBLIC_FORMINIT_FEEDBACK_FORM_ID` con el ID de formulario de FormInit.
