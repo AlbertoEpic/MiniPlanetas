@@ -71,6 +71,7 @@ const planetAbsoluteUrl = new URL(planetRelativeUrl, siteUrl).toString();
 // Fuerza extensión JPG para redes sociales
 const shareImageFileName = planet.image.split('/').pop()?.replace(/\.(webp|png|jpeg)$/i, '.jpg') ?? '';
 const shareImagePath = `/planets-share/${shareImageFileName}`;
+const shareImageUrl = shareImagePath; // Para uso en el DOM (relativo)
 const shareImageAbsoluteUrl = new URL(shareImagePath, siteUrl).toString();
 const shareDescription =
 	planet.description.length > 200
@@ -188,7 +189,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 					</script>
 			<section class="visual">
 				{optimizedPlanetImage ? (
-					<Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={optimizedPlanetImage.width} height={optimizedPlanetImage.height} data-main-image data-share-src={shareImageUrl} />
+					   <Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={optimizedPlanetImage.width} height={optimizedPlanetImage.height} data-main-image data-share-src={shareImageUrl} />
 				) : (
 					<span style={{color:'red'}}>Imagen no encontrada</span>
 				)}
