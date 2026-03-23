@@ -29,15 +29,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-        run: npm run build
-        env:
-          PUBLIC_FORMINIT_FEEDBACK_FORM_ID: j3j4vrhhlgi
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
