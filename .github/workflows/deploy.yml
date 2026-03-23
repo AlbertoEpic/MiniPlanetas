@@ -1,11 +1,11 @@
 name: Deploy Astro site to GitHub Pages
 
-
+on:
   push:
     branches:
       - main
 
-      - name: Build site
+jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
