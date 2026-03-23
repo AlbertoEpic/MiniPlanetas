@@ -100,9 +100,9 @@ const canRenderPanorama = Boolean(sphericalImage);
 		</style>
 	</head>
 	<body>
-		{canRenderPanorama ? (
-			<>
-				<div class="hud">
+		   {canRenderPanorama ? (
+			   <Fragment>
+				   <div class="hud">
 					<button type="button" data-fullscreen>Pantalla completa</button>
 					<a href={toBasePath(`planetas/${planet.slug}`)}>Volver a la ficha</a>
 				</div>
@@ -114,8 +114,8 @@ const canRenderPanorama = Boolean(sphericalImage);
 						<p>No se pudo cargar el visor 360.</p>
 						<p>Comprueba que la imagen equirectangular sea válida y vuelve a intentarlo.</p>
 					</div>
-				</div>
-			</>
+				   </div>
+			   </Fragment>
 		) : (
 			<div class="error is-visible">
 				<div>

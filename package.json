@@ -10,7 +10,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "astro": "^6.0.5"
+    "astro": "^6.0.8"
   },
   "devDependencies": {
     "@types/node": "^25.4.0",

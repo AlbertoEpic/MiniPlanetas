@@ -274,9 +274,9 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 					<p class="feedback-question"><strong>¿Te gusta este MINIPLANETA?</strong></p>
 					<button type="button" class="feedback-close" data-feedback-close aria-label="Cerrar popup de feedback">×</button>
 				</div>
-				{feedbackAction ? (
-					<>
-						<form class="feedback-form" data-feedback-form action={feedbackAction} method="POST">
+				   {feedbackAction ? (
+					   <Fragment>
+						   <form class="feedback-form" data-feedback-form action={feedbackAction} method="POST">
 							<input type="hidden" name="fi-select-pageUrl" data-feedback-page-url value="" />
 							<input type="hidden" name="fi-select-helpful" data-feedback-helpful value="" />
 							<div class="feedback-buttons" data-feedback-buttons>
@@ -314,11 +314,11 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 							<p class="feedback-error" data-feedback-error hidden>
 								No se pudo enviar el feedback. Intentalo de nuevo en unos segundos.
 							</p>
-						</form>
-						<div class="feedback-thanks" data-feedback-thanks hidden>
-							<p>Gracias por tu feedback.</p>
-						</div>
-					</>
+						   </form>
+						   <div class="feedback-thanks" data-feedback-thanks hidden>
+							   <p>Gracias por tu feedback.</p>
+						   </div>
+					   </Fragment>
 				) : (
 					<p class="feedback-warning">
 						Define PUBLIC_FORMINIT_FEEDBACK_FORM_ID para activar este widget.
