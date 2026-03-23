@@ -54,8 +54,13 @@ const discoveryDate = new Date(planet.discoveryDate).toLocaleDateString('es-ES',
 });
 const sphericalImage = planet.image360;
 const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) : null;
+// Comprobación robusta de existencia de imagen 360 usando import.meta.glob
+const pano360Images = import.meta.glob('../../assets/pano360/*.{jpg,jpeg,png,JPG,JPEG,PNG}', {eager: true});
+const pano360FileName = typeof planet.image360 === 'string' ? planet.image360.split('/').pop() : '';
 const hasEquirectangularImage = Boolean(
-	sphericalPublicPath?.startsWith('/pano360/')
+	sphericalPublicPath?.startsWith('/pano360/') &&
+	pano360FileName &&
+	Object.keys(pano360Images).some(filePath => filePath.endsWith(`/${pano360FileName}`))
 );
 const fullScreenIcon = toBasePath('FullScreen.png');
 const landingIcon = toBasePath('Landing.png');
@@ -78,6 +83,8 @@ const prevPlanet = planetData[planetIndex - 1] ?? planetData[planetData.length -
 const nextPlanet = planetData[planetIndex + 1] ?? planetData[0];
 const leftArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='M15 18l-6-6 6-6' stroke='currentColor' stroke-width='2' fill='none'/></svg>`;
 const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='M9 6l6 6-6 6' stroke='currentColor' stroke-width='2' fill='none'/></svg>`;
+const prevUrl = toBasePath(`planetas/${prevPlanet.slug}`);
+const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 ---
 
 <html lang="es">
@@ -130,13 +137,53 @@ const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='
 			</nav>
 		</header>
 
-		<main class="planet-view">
-			<a class="arrow arrow-left" href={toBasePath(`planetas/${prevPlanet.slug}`)} title="Anterior">
+		<main class="planet-view" data-prev-url={prevUrl} data-next-url={nextUrl}>
+			<a class="arrow arrow-left planet-arrows" href={toBasePath(`planetas/${prevPlanet.slug}`)} title="Anterior">
 				<img src="/ui/anterior.png" alt="Anterior" class="arrow-img" />
 			</a>
-			<a class="arrow arrow-right" href={toBasePath(`planetas/${nextPlanet.slug}`)} title="Siguiente">
+			<a class="arrow arrow-right planet-arrows" href={toBasePath(`planetas/${nextPlanet.slug}`)} title="Siguiente">
 				<img src="/ui/siguiente.png" alt="Siguiente" class="arrow-img" />
 			</a>
+					<style>
+					@media (max-width: 768px) {
+						.planet-arrows {
+							display: none !important;
+						}
+					}
+					</style>
+					<script is:inline>
+					// Swipe navigation for mobile
+					(function() {
+						let touchStartX = 0;
+						let touchEndX = 0;
+						const threshold = 50; // px
+						const main = document.querySelector('.planet-view');
+						// Leer las URLs desde los atributos data del main
+						const prevUrl = main?.getAttribute('data-prev-url');
+						const nextUrl = main?.getAttribute('data-next-url');
+						if (!main) return;
+						main.addEventListener('touchstart', function(e) {
+							if (e.touches.length === 1) {
+								touchStartX = e.touches[0].clientX;
+							}
+						});
+						main.addEventListener('touchend', function(e) {
+							if (e.changedTouches.length === 1) {
+								touchEndX = e.changedTouches[0].clientX;
+								const diff = touchEndX - touchStartX;
+								if (Math.abs(diff) > threshold) {
+									if (diff < 0) {
+										// Swipe izquierda (dedo va de derecha a izquierda): siguiente planeta
+										window.location.href = nextUrl;
+									} else if (diff > 0) {
+										// Swipe derecha (dedo va de izquierda a derecha): planeta anterior
+										window.location.href = prevUrl;
+									}
+								}
+							}
+						});
+					})();
+					</script>
 			<section class="visual">
 				{optimizedPlanetImage ? (
 					<Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={optimizedPlanetImage.width} height={optimizedPlanetImage.height} data-main-image data-share-src={shareImageUrl} />
@@ -176,23 +223,42 @@ const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='
 						<img src={fullScreenIcon} alt="" class="action-icon" aria-hidden="true" />
 						<span>Pantalla completa</span>
 					</button>
-					{hasEquirectangularImage && sphericalPublicPath ? (
-						<a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} title="Click para aterrizar en este planeta">
-							<img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
-							<span>Aterrizar</span>
-						</a>
-					) : (
-						<button type="button" class="highlight action-card" disabled aria-disabled="true" title="Click para aterrizar en este planeta">
-							<img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
-							<span>Aterrizar</span>
-						</button>
-					)}
+					       {hasEquirectangularImage && sphericalPublicPath ? (
+						       <a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} title="Click para aterrizar en este planeta">
+							       <img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
+							       <span>Aterrizar</span>
+						       </a>
+					       ) : (
+						       <span class="highlight action-card action-card-disabled" title="No hay imagen 360 disponible">
+							       <img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
+							       <span>Aterrizar</span>
+						       </span>
+					       )}
 					<button type="button" class="highlight action-card" data-share-planet title="Click para compartir este planeta">
 						<img src={shareIcon} alt="" class="action-icon" aria-hidden="true" />
 						<span>Compartir</span>
 					</button>
 				</div>
-				<div class="actions-secondary">
+					       <style>
+					       .action-card-disabled {
+						       opacity: 0.55;
+						       pointer-events: none;
+						       cursor: not-allowed;
+							   filter: grayscale(0.85) blur(2.5px) brightness(0.92);
+						       background: linear-gradient(120deg, rgba(120,120,120,0.13), rgba(44,44,44,0.18));
+						       box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+						       transition: filter 0.18s, opacity 0.18s;
+					       }
+					       .action-card-disabled .action-icon {
+							   filter: grayscale(1) blur(1.2px) brightness(0.85);
+						       opacity: 0.7;
+					       }
+					       .action-card-disabled span {
+						       color: var(--muted);
+						       text-shadow: 0 1px 2px rgba(0,0,0,0.13);
+					       }
+					       </style>
+				       <div class="actions-secondary">
 					<a class="solid" href={toBasePath('catalogo')}>Volver al catálogo</a>
 					<a class="ghost" href={toBasePath('')}>Ver muro universo</a>
 				</div>
