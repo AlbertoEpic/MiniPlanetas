@@ -68,9 +68,10 @@ const shareIcon = toBasePath('compartir.png');
 const siteUrl = Astro.site ?? new URL('https://albertoepic.github.io');
 const planetRelativeUrl = toBasePath(`planetas/${planet.slug}`);
 const planetAbsoluteUrl = new URL(planetRelativeUrl, siteUrl).toString();
-const shareImagePath = planet.image.replace('/planets/', '/planets-share/');
-const shareImageUrl = toAssetPath(shareImagePath);
-const shareImageAbsoluteUrl = new URL(shareImageUrl, siteUrl).toString();
+// Fuerza extensión JPG para redes sociales
+const shareImageFileName = planet.image.split('/').pop()?.replace(/\.(webp|png|jpeg)$/i, '.jpg') ?? '';
+const shareImagePath = `/planets-share/${shareImageFileName}`;
+const shareImageAbsoluteUrl = new URL(shareImagePath, siteUrl).toString();
 const shareDescription =
 	planet.description.length > 200
 		? `${planet.description.slice(0, 197)}...`
@@ -104,6 +105,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 		<meta property="og:description" content={shareDescription} />
 		<meta property="og:url" content={planetAbsoluteUrl} />
 		<meta property="og:image" content={shareImageAbsoluteUrl} />
+		<meta property="og:image:type" content="image/jpeg" />
 		<meta property="og:image:alt" content={`Mini-planeta ${planet.name}`} />
 
 		<meta name="twitter:card" content="summary_large_image" />
