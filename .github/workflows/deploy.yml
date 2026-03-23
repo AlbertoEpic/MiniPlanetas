@@ -29,8 +29,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-        with:
-          path: ./dist
 
   deploy:
     needs: build
