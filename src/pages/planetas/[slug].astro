@@ -106,7 +106,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 		<meta property="og:title" content={`${planet.name} | MINIPLANETAS`} />
 		<meta property="og:description" content={shareDescription} />
 		<meta property="og:url" content={planetAbsoluteUrl} />
-		<meta property="og:image" content={`https://raw.githubusercontent.com/AlbertoEpic/MINIPLANETAS/refs/heads/gh-pages/planets-share/${encodeURIComponent(planet.imageShareFileName || planet.image || `${planet.name.replace(/\s+/g, '_')}.jpg`)}`} />
+		<meta property="og:image" content={`https://raw.githubusercontent.com/AlbertoEpic/MINIPLANETAS/refs/heads/gh-pages/planets-share/${encodeURIComponent(planet.imageShareFileName ? planet.imageShareFileName : (planet.image ? planet.image.split('/').pop() ?? `${planet.name.replace(/\s+/g, '_')}.jpg` : `${planet.name.replace(/\s+/g, '_')}.jpg`))}`} />
 		<meta property="og:image:type" content="image/jpeg" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="1200" />
