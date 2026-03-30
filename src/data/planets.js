@@ -78,7 +78,7 @@
     description: 'Textura tropical y ritmo cálido, pensado para proyectos de alto contraste.',
     nombreCientifico: 'C0M0D0T0',
     location: 'Comodoto',
-    coordinates: '',
+    coordinates: '42.763800, -0.565887',
     discoveryDate: '',
     equipment: ''
   },
@@ -232,6 +232,18 @@
     coordinates: '',
     discoveryDate: '',
     equipment: ''
+  },
+  {
+    slug: 'planeta-aspe',
+    name: 'Planeta Aspe',
+    image: '../../assets/planets/Planeta_Aspe.jpg',
+    image360: '/pano360/PANO_Aspe.jpg',
+    description: 'En las cumbres indómitas de Aspe, donde las montañas se alzan como colosos de hielo bajo un cielo cristalino, la vida desafía lo imposible. Entre ventiscas eternas y valles esculpidos por el frío, los exploradores han logrado captar, por primera vez, un ejemplar de la esquiva Myrium Pomensis en su hábitat natural: una criatura legendaria que se oculta entre los riscos y glaciares. El clima extremo mantiene el agua en perpetuo estado sólido, envolviendo el paisaje en un manto blanco y azul. La atmósfera, pura y limpia, permite que la luz de las estrellas bañe el planeta con un fulgor sobrenatural, haciendo de Aspe un mundo tan bello como implacable, donde solo los más audaces se atreven a soñar.',
+    nombreCientifico: '45P3',
+    location: 'Aspe',
+    coordinates: "42°45'49.9\"N 0°33'57.2\"W",
+    discoveryDate: '24 marzo 2026',
+    equipment: 'DJI Osmo Action 5 Pro'
   },
   {
     slug: 'planeta-penanevera',

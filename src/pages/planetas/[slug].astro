@@ -201,10 +201,12 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 			<section class="story">
 				<p class="eyebrow">Ficha del Planeta</p>
 				<h1>{planet.name}</h1>
-				<div class="lead-wrap">
-					<p class="lead is-collapsed" data-description id="planet-description-text">{planet.description}</p>
-					<button type="button" class="lead-toggle" data-toggle-description aria-controls="planet-description-text" aria-expanded="false">Leer más...</button>
-				</div>
+				   <div class="lead-wrap">
+					   <p class="lead is-collapsed" data-description id="planet-description-text"
+						   set:html={planet.description.replace(/\n\n/g, '<br><br>')}
+					   ></p>
+					   <button type="button" class="lead-toggle" data-toggle-description aria-controls="planet-description-text" aria-expanded="false">Leer más...</button>
+				   </div>
 				{planet.slug !== 'planeta-alquezar' && (
 					<p>
 						Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
