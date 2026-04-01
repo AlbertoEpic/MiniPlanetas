@@ -33,6 +33,7 @@ const queryPanoImage = isValidPanoPath(imageParam) ? imageParam : null;
 const sphericalImage = queryPanoImage || planetPanoImage || null;
 const viewerImagePath = sphericalImage ? `${normalizedBase}${toPublicAssetPath(sphericalImage)}` : null;
 const canRenderPanorama = Boolean(sphericalImage);
+const canonicalLandingUrl = toBasePath(`planetas/${planet.slug}/aterrizar/`);
 ---
 
 <html lang="es">
@@ -40,7 +41,7 @@ const canRenderPanorama = Boolean(sphericalImage);
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{planet.name} | Aterrizaje 360°</title>
-		{!canRenderPanorama && <meta http-equiv="refresh" content={`0;url=${toBasePath(`planetas/${planet.slug}`)}`} />}
+		{!canRenderPanorama && <meta http-equiv="refresh" content={`0;url=${toBasePath(`planetas/${planet.slug}/`)}`} />}
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
 		<style>
 			:root {
@@ -104,7 +105,7 @@ const canRenderPanorama = Boolean(sphericalImage);
 			   <Fragment>
 				   <div class="hud">
 					<button type="button" data-fullscreen>Pantalla completa</button>
-					<a href={toBasePath(`planetas/${planet.slug}`)}>Volver a la ficha</a>
+					<a href={toBasePath(`planetas/${planet.slug}/`)}>Volver a la ficha</a>
 				</div>
 				<div class="viewer" data-panorama={viewerImagePath}>
 					<div id="pannellum-viewer" aria-label={`Vista esférica 360 de ${planet.name}`}></div>
@@ -120,7 +121,7 @@ const canRenderPanorama = Boolean(sphericalImage);
 			<div class="error is-visible">
 				<div>
 					<p>Este planeta no tiene imagen equirectangular disponible.</p>
-					<p><a href={toBasePath(`planetas/${planet.slug}`)}>Volver a la ficha</a></p>
+					<p><a href={toBasePath(`planetas/${planet.slug}/`)}>Volver a la ficha</a></p>
 				</div>
 			</div>
 		)}

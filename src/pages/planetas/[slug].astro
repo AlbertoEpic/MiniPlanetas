@@ -25,7 +25,9 @@ export function getStaticPaths() {
 	}));
 }
 
-const { planet } = Astro.props as { planet: Planet };
+const { planet } = Astro.props as {
+	planet: Planet;
+};
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
@@ -67,7 +69,7 @@ const fullScreenIcon = toBasePath('FullScreen.png');
 const landingIcon = toBasePath('Landing.png');
 const shareIcon = toBasePath('compartir.png');
 const siteUrl = Astro.site ?? new URL('https://albertoepic.github.io');
-const planetRelativeUrl = toBasePath(`planetas/${planet.slug}`);
+const planetRelativeUrl = toBasePath(`planetas/${planet.slug}/`);
 const planetAbsoluteUrl = new URL(planetRelativeUrl, siteUrl).toString();
 // Fuerza extensión JPG para redes sociales
 const shareImageFileName = planet.image.split('/').pop()?.replace(/\.(webp|png|jpeg)$/i, '.jpg') ?? '';
@@ -86,8 +88,8 @@ const prevPlanet = planetData[planetIndex - 1] ?? planetData[planetData.length -
 const nextPlanet = planetData[planetIndex + 1] ?? planetData[0];
 const leftArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='M15 18l-6-6 6-6' stroke='currentColor' stroke-width='2' fill='none'/></svg>`;
 const rightArrowSVG = `<svg width='32' height='32' viewBox='0 0 24 24'><path d='M9 6l6 6-6 6' stroke='currentColor' stroke-width='2' fill='none'/></svg>`;
-const prevUrl = toBasePath(`planetas/${prevPlanet.slug}`);
-const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
+const prevUrl = toBasePath(`planetas/${prevPlanet.slug}/`);
+const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 ---
 
 <html lang="es">
@@ -144,10 +146,10 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 		</header>
 
 		<main class="planet-view" data-prev-url={prevUrl} data-next-url={nextUrl}>
-			<a class="arrow arrow-left planet-arrows" href={toBasePath(`planetas/${prevPlanet.slug}`)} title="Anterior">
+			<a class="arrow arrow-left planet-arrows" href={toBasePath(`planetas/${prevPlanet.slug}/`)} title="Anterior">
 				<img src="/ui/anterior.png" alt="Anterior" class="arrow-img" />
 			</a>
-			<a class="arrow arrow-right planet-arrows" href={toBasePath(`planetas/${nextPlanet.slug}`)} title="Siguiente">
+			<a class="arrow arrow-right planet-arrows" href={toBasePath(`planetas/${nextPlanet.slug}/`)} title="Siguiente">
 				<img src="/ui/siguiente.png" alt="Siguiente" class="arrow-img" />
 			</a>
 					<style>
@@ -232,7 +234,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}`);
 						<span>Pantalla completa</span>
 					</button>
 					       {hasEquirectangularImage && sphericalPublicPath ? (
-						       <a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} title="Click para aterrizar en este planeta">
+						       <a class="highlight action-card" href={toBasePath(`planetas/${planet.slug}/aterrizar/?img=${encodeURIComponent(sphericalPublicPath)}`)} title="Click para aterrizar en este planeta">
 							       <img src={landingIcon} alt="" class="action-icon" aria-hidden="true" />
 							       <span>Aterrizar</span>
 						       </a>

@@ -82,7 +82,7 @@ const nombresCientificos = [...new Set(planets.map((planet) => planet.nombreCien
 
 			<section id="catalog-grid" class="grid">
 				{planets.map((planet, idx) => {
-					const detailPath = toBasePath(`planetas/${planet.slug}`);
+					const detailPath = toBasePath(`planetas/${planet.slug}/`);
 					return (
 					<article
 						class="card"

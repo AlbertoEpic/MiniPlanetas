@@ -272,6 +272,18 @@
     equipment: 'GoPro Hero 7 Black'
   },
   {
+    slug: 'planeta-pelopin',
+    name: 'Planeta Pelopín',
+    image: '../../assets/planets/Planeta_Pelopin.jpg',
+    image360: '/pano360/PANO_Pelopin.jpg',
+    description: 'Este pequeño planeta se eleva sobre una cresta pirenaica de gran amplitud visual, con laderas cubiertas por un mosaico de bosque y pastizal que desciende hacia valles profundos. Su superficie combina una cumbre amable con un perímetro quebrado de barrancos y alineaciones montañosas que se pierden en el horizonte, dando la impresión de un observatorio natural suspendido sobre el sistema. La atmósfera es limpia y muy estable, ideal para registrar con nitidez la transición entre las masas forestales oscuras y las cimas todavía marcadas por el invierno. No se aprecian grandes estructuras artificiales; Pelopín transmite la sensación de un mundo frontera, situado justo en el punto donde el relieve se abre para mostrar la escala completa del territorio que lo rodea.',
+    nombreCientifico: 'P3L0P1Z',
+    location: 'Pico Pelopín',
+    coordinates: '42°35\'49.7"N 0°11\'22.9"W',
+    discoveryDate: '2026-02-24',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-pineta-120m',
     name: 'Planeta Pineta 120 m',
     image: '../../assets/planets/Planeta_Pineta120m.jpg',
