@@ -308,18 +308,6 @@
     equipment: ''
   },
   {
-    slug: 'planeta-porron-2',
-    name: 'Planeta Porrón II',
-    image: '../../assets/planets/Planeta-Porrón.jpg',
-    image360: '/pano360/PANO_Porrón.jpg',
-    description: 'Este pequeño planeta está dominado por una protuberancia granítica de una verticalidad extrema. Su superficie no busca la horizontalidad; es una sucesión de aristas y placas de roca desnuda que convergen en una cima estrecha, como un colmillo mineral que perfora la atmósfera superior. La geología aquí es severa y monocromática, con predominio de grises profundos y texturas rugosas que delatan siglos de erosión por vientos de alta montaña. No hay rastro de hidrosfera superficial, aunque las manchas de nieve perpetua en las grietas de su cara oculta sugieren una reserva de humedad congelada. La vida es inexistente en este monolito espacial, un mundo que parece haber sido despojado de todo lo superfluo para quedar reducido a su esqueleto de piedra más resistente.',
-    nombreCientifico: 'P0RRÓZ 11',
-    location: 'Tramacastilla de Tena',
-    coordinates: '42°44\'13.1\"N 0°25\'48.5\"W',
-    discoveryDate: '2021-09-19',
-    equipment: 'DJI mini 3 Pro'
-  },
-  {
     slug: 'planeta-punta-cochaldo',
     name: 'Planeta Punta Cochaldo',
     image: '../../assets/planets/Planeta_Punta-Cochaldo.jpg',
