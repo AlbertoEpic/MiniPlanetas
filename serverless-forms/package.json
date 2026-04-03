@@ -1,0 +1,13 @@
+{
+  "name": "miniplanetas-likes-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env ./planet-likes-api.mjs",
+    "start": "node ./planet-likes-api.mjs"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.35.3",
+    "redis": "^4.7.0"
+  }
+}
