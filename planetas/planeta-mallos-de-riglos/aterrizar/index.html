@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="es" data-astro-cid-t6sfaumv> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Planeta Mallos de Riglos | Aterrizaje 360°</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"><style>:root{--text: #f7f2ff;--stroke: rgba(255, 255, 255, .2)}[data-astro-cid-t6sfaumv]{box-sizing:border-box}body{margin:0;background:#05030c;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;height:100vh;overflow:hidden}.viewer[data-astro-cid-t6sfaumv]{position:fixed;inset:0;z-index:1}#pannellum-viewer[data-astro-cid-t6sfaumv]{width:100%;height:100%}.error[data-astro-cid-t6sfaumv]{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:1.5rem;color:#ffd3d3;z-index:3}.error[data-astro-cid-t6sfaumv].is-visible{display:grid}.hud[data-astro-cid-t6sfaumv]{position:fixed;top:1rem;right:1rem;display:flex;gap:.6rem;z-index:2}.hud[data-astro-cid-t6sfaumv] button[data-astro-cid-t6sfaumv],.hud[data-astro-cid-t6sfaumv] a[data-astro-cid-t6sfaumv]{padding:.5rem .8rem;border-radius:999px;border:1px solid var(--stroke);background:#0006;color:var(--text);text-decoration:none;font-size:.84rem;cursor:pointer}
+</style></head> <body data-astro-cid-t6sfaumv>  <div class="hud" data-astro-cid-t6sfaumv> <button type="button" data-fullscreen data-astro-cid-t6sfaumv>Pantalla completa</button> <a href="/planetas/planeta-mallos-de-riglos/" data-astro-cid-t6sfaumv>Volver a la ficha</a> </div> <div class="viewer" data-panorama="/pano360/PANO-DRONE_MallosDeRiglos.jpg" data-astro-cid-t6sfaumv> <div id="pannellum-viewer" aria-label="Vista esférica 360 de Planeta Mallos de Riglos" data-astro-cid-t6sfaumv></div> </div> <div class="error" data-error data-astro-cid-t6sfaumv> <div data-astro-cid-t6sfaumv> <p data-astro-cid-t6sfaumv>No se pudo cargar el visor 360.</p> <p data-astro-cid-t6sfaumv>Comprueba que la imagen equirectangular sea válida y vuelve a intentarlo.</p> </div> </div>  <script>
+			const viewerHost = document.querySelector('.viewer');
+			const panoramaSrc = viewerHost?.dataset.panorama || '';
+			const normalizedPanoramaSrc = encodeURI(panoramaSrc);
+			const errorBox = document.querySelector('[data-error]');
+			const button = document.querySelector('[data-fullscreen]');
+			const panoramaContainer = document.querySelector('#pannellum-viewer');
+			let panorama = null;
+			let initAttempts = 0;
+			let hasInitialized = false;
+
+			const showError = () => {
+				errorBox?.classList.add('is-visible');
+			};
+
+			const hideError = () => {
+				errorBox?.classList.remove('is-visible');
+			};
+
+			const tryInitPannellum = () => {
+				if (hasInitialized) {
+					return;
+				}
+
+				if (!normalizedPanoramaSrc || !panoramaContainer) {
+					showError();
+					return;
+				}
+
+				if (!window.pannellum) {
+					initAttempts += 1;
+					if (initAttempts > 20) {
+						showError();
+						return;
+					}
+					setTimeout(tryInitPannellum, 150);
+					return;
+				}
+
+				try {
+					panorama = window.pannellum.viewer('pannellum-viewer', {
+						type: 'equirectangular',
+						panorama: normalizedPanoramaSrc,
+						autoLoad: true,
+						showZoomCtrl: true,
+						showFullscreenCtrl: false,
+						showControls: true,
+						compass: false,
+						mouseZoom: true,
+						draggable: true,
+						pitch: 0,
+						yaw: 0,
+						hfov: 100,
+					});
+					hasInitialized = true;
+					hideError();
+				} catch {
+					showError();
+				}
+			};
+
+			const loadPannellumScript = (src) =>
+				new Promise((resolve, reject) => {
+					const script = document.createElement('script');
+					script.src = src;
+					script.async = true;
+					script.onload = () => resolve(true);
+					script.onerror = () => reject(new Error('No se pudo cargar ' + src));
+					document.head.appendChild(script);
+				});
+
+			(async () => {
+				if (window.pannellum) {
+					tryInitPannellum();
+					return;
+				}
+
+				try {
+					await loadPannellumScript('https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js');
+				} catch {
+					try {
+						await loadPannellumScript('https://unpkg.com/pannellum@2.5.6/build/pannellum.js');
+					} catch {
+						showError();
+						return;
+					}
+				}
+
+				tryInitPannellum();
+			})();
+
+			const goFullscreen = async () => {
+				if (!panoramaContainer || !panoramaContainer.requestFullscreen) {
+					return;
+				}
+				try {
+					await panoramaContainer.requestFullscreen();
+				} catch {
+					// El navegador puede bloquear el auto fullscreen.
+				}
+			};
+
+			button?.addEventListener('click', goFullscreen);
+			window.addEventListener('load', () => {
+				goFullscreen();
+			});
+			</script> </body> </html>
