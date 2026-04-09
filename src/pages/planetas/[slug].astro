@@ -6,7 +6,8 @@ import logoImage from '../../assets/ui/logoMiniPlanetas.png';
 import likeButtonImage from '../../assets/ui/megusta.png';
 
 type Planet = {
-imageShareFileName: string;
+	imageShareFileName?: string;
+	imageFull?: string;
 	slug: string;
 	name: string;
 	image: string;
@@ -51,6 +52,9 @@ const planetImageFileName = planet.image.split('/').pop() ?? '';
 const optimizedPlanetImage = Object.entries(planetImages).find(([filePath]) =>
 	filePath.endsWith(`/${planetImageFileName}`)
 )?.[1] as ImageMetadata | undefined;
+const viewerImagePath = planet.imageFull
+	? toAssetPath(planet.imageFull)
+	: optimizedPlanetImage?.src ?? toAssetPath(planet.image);
 const discoveryDate = new Date(planet.discoveryDate).toLocaleDateString('es-ES', {
 	day: '2-digit',
 	month: 'long',
@@ -304,11 +308,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 				<button class="viewer-control viewer-close" type="button" aria-label="Cerrar visor" title="Cerrar" data-close-viewer>x</button>
 			</div>
 			<div class="viewer-stage" data-viewer-stage>
-				{optimizedPlanetImage ? (
-					<Image src={optimizedPlanetImage} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
-				) : (
-					<img src={toAssetPath(planet.image)} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
-				)}
+				<img src={viewerImagePath} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
 			</div>
 		</div>
 
