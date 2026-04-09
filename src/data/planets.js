@@ -289,10 +289,10 @@
     image: '../../assets/planets/Planeta_Pico-de-la-Garganta.jpg',
     image360: '/pano360/PANO-DRONE_Pico-de-la-Garganta.jpg',
     description: 'Este pequeño planeta se eleva como una atalaya mineral de aristas limpias y horizonte abierto. Su núcleo rocoso domina un relieve abrupto donde la luz resbala sobre la piedra y perfila una silueta poderosa, casi ceremonial, suspendida sobre el vacío. La atmósfera es clara y cortante, ideal para observaciones lejanas y travesías de altura, convirtiendo a este astro en un enclave sobrio, elegante y lleno de carácter.',
-    nombreCientifico: 'P1C0 D3 L4 G4RG4ZT4',
+    nombreCientifico: 'P1C0-D3-I4-64R64ZT4',
     location: 'Pico de la Garganta',
-    coordinates: '',
-    discoveryDate: '2026-04-09',
+    coordinates: '42°46\'33.9"N 0°25\'36.5"W',
+    discoveryDate: '2026-04-08',
     equipment: 'DJI Mini 5 Pro'
   },
   {
