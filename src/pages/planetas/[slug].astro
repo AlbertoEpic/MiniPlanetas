@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { planetData } from '../../data/planets';
 import logoImage from '../../assets/ui/logoMiniPlanetas.png';
+import likeButtonImage from '../../assets/ui/megusta.png';
 
 type Planet = {
 imageShareFileName: string;
@@ -80,9 +81,7 @@ const shareDescription =
 	planet.description.length > 200
 		? `${planet.description.slice(0, 197)}...`
 		: planet.description;
-const feedbackFormId = import.meta.env.PUBLIC_FORMINIT_FEEDBACK_FORM_ID?.trim() ?? '';
-const feedbackAction = feedbackFormId ? `https://forminit.com/f/${feedbackFormId}` : '';
-const feedbackTextareaId = `feedback-message-${planet.slug}`;
+const likesApiUrl = import.meta.env.PUBLIC_PLANET_LIKES_API_URL?.trim() ?? '';
 const planetIndex = planetData.findIndex(p => p.slug === planet.slug);
 const prevPlanet = planetData[planetIndex - 1] ?? planetData[planetData.length - 1];
 const nextPlanet = planetData[planetIndex + 1] ?? planetData[0];
@@ -145,7 +144,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 			</nav>
 		</header>
 
-		<main class="planet-view" data-prev-url={prevUrl} data-next-url={nextUrl}>
+		<main class="planet-view" data-prev-url={prevUrl} data-next-url={nextUrl} data-likes-api-url={likesApiUrl} data-planet-slug={planet.slug}>
 			<a class="arrow arrow-left planet-arrows" href={toBasePath(`planetas/${prevPlanet.slug}/`)} title="Anterior">
 				<img src="/ui/anterior.png" alt="Anterior" class="arrow-img" />
 			</a>
@@ -202,7 +201,26 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 
 			<section class="story">
 				<p class="eyebrow">Ficha del Planeta</p>
-				<h1>{planet.name}</h1>
+				<div class="title-row">
+					<div class="title-main">
+						<h1>{planet.name}</h1>
+						<p class="title-likes-meta" data-like-count-wrap aria-live="polite">
+							<span class="title-likes-heart" aria-hidden="true">❤</span>
+							<span class="title-like-count" data-like-count>A nadie le gusta ☹️</span>
+						</p>
+					</div>
+					<button
+						type="button"
+						class="title-like-button"
+						data-like-planet
+						aria-pressed="false"
+						aria-label="Marcar este planeta con Me gusta"
+						title="Me gusta"
+					>
+						<Image src={likeButtonImage} alt="" class="title-like-icon" aria-hidden="true" loading="eager" />
+						<span class="title-like-label" data-like-label aria-hidden="false">Me gusta</span>
+					</button>
+				</div>
 				   <div class="lead-wrap">
 					   <p class="lead is-collapsed" data-description id="planet-description-text"
 						   set:html={planet.description.replace(/\n\n/g, '<br><br>')}
@@ -278,65 +296,6 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
 		</footer>
 
-		<div class="feedback-popup" data-feedback-popup hidden aria-hidden="true">
-			<section class="feedback-widget" data-feedback-widget aria-label="Feedback de la ficha">
-				<div class="feedback-head">
-					<p class="feedback-question"><strong>¿Te gusta este MINIPLANETA?</strong></p>
-					<button type="button" class="feedback-close" data-feedback-close aria-label="Cerrar popup de feedback">×</button>
-				</div>
-				   {feedbackAction ? (
-					   <Fragment>
-						   <form class="feedback-form" data-feedback-form action={feedbackAction} method="POST">
-							<input type="hidden" name="fi-select-pageUrl" data-feedback-page-url value="" />
-							<input type="hidden" name="fi-select-helpful" data-feedback-helpful value="" />
-							<div class="feedback-buttons" data-feedback-buttons>
-								<button type="button" class="feedback-btn feedback-btn-positive" data-feedback-value="yes">
-									<span class="feedback-icon" aria-hidden="true">
-										<svg class="feedback-icon-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-											<path d="M9 11V20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-											<path d="M14.45 4.5c.55.09.95.58.95 1.13v2.74h4.18c1.38 0 2.37 1.33 1.97 2.65l-1.47 4.87a2.7 2.7 0 0 1-2.59 1.92H9V10.7l2.8-2.26 1.1-2.7c.21-.75.83-1.34 1.55-1.24Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-											<path d="M6.05 10.2H9v9.6H6.05A1.25 1.25 0 0 1 4.8 18.55v-7.1c0-.69.56-1.25 1.25-1.25Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-										</svg>
-									</span>
-									<span class="feedback-btn-label">Sí</span>
-								</button>
-								<button type="button" class="feedback-btn feedback-btn-negative" data-feedback-value="no">
-									<span class="feedback-icon feedback-icon-negative" aria-hidden="true">
-										<svg class="feedback-icon-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-											<path d="M9 4V13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-											<path d="M14.45 19.5c.55-.09.95-.58.95-1.13v-2.74h4.18c1.38 0 2.37-1.33 1.97-2.65l-1.47-4.87a2.7 2.7 0 0 0-2.59-1.92H9v7.11l2.8 2.26 1.1 2.7c.21.75.83 1.34 1.55 1.24Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-											<path d="M6.05 4.2H9v9.6H6.05A1.25 1.25 0 0 1 4.8 12.55v-7.1c0-.69.56-1.25 1.25-1.25Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
-										</svg>
-									</span>
-									<span class="feedback-btn-label">No</span>
-								</button>
-							</div>
-							<div class="feedback-details" data-feedback-details hidden>
-								<label for={feedbackTextareaId}>¿Qué mejorarías en esta ficha?</label>
-								<textarea
-									name="fi-text-feedback"
-									id={feedbackTextareaId}
-									rows="3"
-									placeholder="Informacion que falta, detalles poco claros, ideas de mejora..."
-								></textarea>
-								<button type="submit" class="feedback-submit">Enviar feedback</button>
-							</div>
-							<p class="feedback-error" data-feedback-error hidden>
-								No se pudo enviar el feedback. Intentalo de nuevo en unos segundos.
-							</p>
-						   </form>
-						   <div class="feedback-thanks" data-feedback-thanks hidden>
-							   <p>Gracias por tu feedback.</p>
-						   </div>
-					   </Fragment>
-				) : (
-					<p class="feedback-warning">
-						Define PUBLIC_FORMINIT_FEEDBACK_FORM_ID para activar este widget.
-					</p>
-				)}
-			</section>
-		</div>
-
 		<div class="viewer" data-viewer aria-hidden="true">
 			<div class="viewer-controls">
 				<button class="viewer-control" type="button" aria-label="Reducir" title="Reducir" data-zoom-out>-</button>
@@ -386,8 +345,12 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 				});
 			}
 
+			const planetView = document.querySelector('.planet-view');
+			const likesApiUrl = planetView?.getAttribute('data-likes-api-url')?.trim() || '';
+			const currentPlanetSlug = planetView?.getAttribute('data-planet-slug')?.trim() || '';
 			const fullButton = document.querySelector('[data-open-fullscreen]');
 			const shareButton = document.querySelector('[data-share-planet]');
+			const likeButton = document.querySelector('[data-like-planet]');
 			const descriptionEl = document.querySelector('[data-description]');
 			const descriptionToggle = document.querySelector('[data-toggle-description]');
 			const mainImage = document.querySelector('[data-main-image]');
@@ -612,8 +575,187 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 				}
 			};
 
+			const LIKE_STORAGE_KEY = `planet-like:${window.location.pathname}`;
+			const LIKE_COUNT_STORAGE_KEY = `planet-like-count:${window.location.pathname}`;
+			const LIKE_VISITOR_ID_STORAGE_KEY = 'planet-like-visitor-id';
+			let likeRequestPending = false;
+
+			const getLikedState = () => {
+				try {
+					return window.localStorage.getItem(LIKE_STORAGE_KEY) === 'true';
+				} catch {
+					return false;
+				}
+			};
+
+			const getLikeCount = () => {
+				try {
+					const stored = Number.parseInt(window.localStorage.getItem(LIKE_COUNT_STORAGE_KEY) || '0', 10);
+					return Number.isFinite(stored) && stored > 0 ? stored : 0;
+				} catch {
+					return 0;
+				}
+			};
+
+			const getVisitorId = () => {
+				try {
+					const stored = window.localStorage.getItem(LIKE_VISITOR_ID_STORAGE_KEY);
+					if (stored) {
+						return stored;
+					}
+
+					const generated = window.crypto?.randomUUID?.()
+						?? `visitor-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+					window.localStorage.setItem(LIKE_VISITOR_ID_STORAGE_KEY, generated);
+					return generated;
+				} catch {
+					return 'anonymous-visitor';
+				}
+			};
+
+			const setLikedState = (liked) => {
+				try {
+					window.localStorage.setItem(LIKE_STORAGE_KEY, String(liked));
+				} catch {
+					// Ignorar si el navegador bloquea el almacenamiento.
+				}
+			};
+
+			const setLikeCount = (count) => {
+				try {
+					window.localStorage.setItem(LIKE_COUNT_STORAGE_KEY, String(Math.max(0, count)));
+				} catch {
+					// Ignorar si el navegador bloquea el almacenamiento.
+				}
+			};
+
+			const formatLikeCountText = (likeCount) => {
+				if (likeCount <= 0) {
+					return 'A nadie le gusta ☹️';
+				}
+
+				return likeCount === 1
+					? 'A 1 persona le gusta'
+					: `A ${likeCount} personas les gusta`;
+			};
+
+			const updateLikeButton = () => {
+				if (!likeButton) {
+					return;
+				}
+
+				const liked = getLikedState();
+				let likeCount = getLikeCount();
+
+				if (liked && likeCount === 0) {
+					likeCount = 1;
+					setLikeCount(likeCount);
+				}
+
+				likeButton.classList.toggle('is-liked', liked);
+				likeButton.setAttribute('aria-pressed', String(liked));
+				likeButton.setAttribute('title', liked ? 'Te gusta este planeta' : 'Me gusta');
+				likeButton.setAttribute('aria-label', liked ? 'Quitar Me gusta de este planeta' : 'Marcar este planeta con Me gusta');
+				likeButton.disabled = likeRequestPending;
+
+				const likeLabel = likeButton.querySelector('[data-like-label]');
+				if (likeLabel) {
+					likeLabel.textContent = liked ? 'Te gusta' : 'Me gusta';
+					likeLabel.setAttribute('aria-hidden', 'false');
+				}
+
+				const likeCountEl = document.querySelector('[data-like-count]');
+				if (likeCountEl) {
+					likeCountEl.textContent = formatLikeCountText(likeCount);
+				}
+			};
+
+			const syncLikeStateFromApi = async () => {
+				if (!likesApiUrl || !currentPlanetSlug || !likeButton) {
+					updateLikeButton();
+					return;
+				}
+
+				try {
+					const requestUrl = new URL(likesApiUrl);
+					requestUrl.searchParams.set('slug', currentPlanetSlug);
+					requestUrl.searchParams.set('visitorId', getVisitorId());
+
+					const response = await fetch(requestUrl.toString(), {
+						method: 'GET',
+						headers: {
+							Accept: 'application/json',
+						},
+					});
+
+					if (!response.ok) {
+						throw new Error('No se pudo leer el contador remoto');
+					}
+
+					const payload = await response.json();
+					setLikedState(Boolean(payload?.liked));
+					setLikeCount(Number.isFinite(Number(payload?.count)) ? Number(payload.count) : 0);
+				} catch {
+					// Si la API no responde, se mantiene el fallback local.
+				}
+
+				updateLikeButton();
+			};
+
 			fullButton?.addEventListener('click', openViewer);
 			shareButton?.addEventListener('click', sharePlanet);
+			likeButton?.addEventListener('click', async () => {
+				if (likeRequestPending) {
+					return;
+				}
+
+				const nextLiked = !getLikedState();
+				likeRequestPending = true;
+				updateLikeButton();
+
+				try {
+					if (likesApiUrl && currentPlanetSlug) {
+						const response = await fetch(likesApiUrl, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Accept: 'application/json',
+							},
+							body: JSON.stringify({
+								slug: currentPlanetSlug,
+								visitorId: getVisitorId(),
+								liked: nextLiked,
+							}),
+						});
+
+						if (!response.ok) {
+							throw new Error('No se pudo actualizar el contador remoto');
+						}
+
+						const payload = await response.json();
+						setLikedState(Boolean(payload?.liked));
+						setLikeCount(Number.isFinite(Number(payload?.count)) ? Number(payload.count) : 0);
+						updateLikeButton();
+						return;
+					}
+
+					const currentCount = getLikeCount();
+					const nextCount = nextLiked ? Math.max(1, currentCount + 1) : Math.max(0, currentCount - 1);
+					setLikedState(nextLiked);
+					setLikeCount(nextCount);
+					updateLikeButton();
+				} catch {
+					const currentCount = getLikeCount();
+					const nextCount = nextLiked ? Math.max(1, currentCount + 1) : Math.max(0, currentCount - 1);
+					setLikedState(nextLiked);
+					setLikeCount(nextCount);
+					updateLikeButton();
+				} finally {
+					likeRequestPending = false;
+					updateLikeButton();
+				}
+			});
+			void syncLikeStateFromApi();
 			descriptionToggle?.addEventListener('click', () => {
 				if (!descriptionEl || !descriptionToggle) {
 					return;
@@ -783,179 +925,6 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 				viewerStage.addEventListener('touchcancel', resetTouchInteraction);
 			}
 
-			const feedbackPopup = document.querySelector('[data-feedback-popup]');
-			const feedbackWidget = feedbackPopup?.querySelector('[data-feedback-widget]');
-			const feedbackForm = feedbackPopup?.querySelector('[data-feedback-form]');
-			const feedbackClose = feedbackPopup?.querySelector('[data-feedback-close]');
-			const footer = document.querySelector('.footer');
-
-			if (feedbackPopup && feedbackWidget && feedbackForm && footer) {
-				const STORAGE_VERSION = 'v2';
-				const STORAGE_KEY = `fi-feedback-submitted-${STORAGE_VERSION}`;
-				const DISMISSED_KEY = `fi-feedback-dismissed-${STORAGE_VERSION}`;
-				const DISMISS_TTL_DAYS = 7;
-				const DAY_MS = 24 * 60 * 60 * 1000;
-				const now = Date.now();
-				const pageUrl = window.location.pathname;
-				const submittedStored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-				const dismissedStored = JSON.parse(localStorage.getItem(DISMISSED_KEY) || '{}');
-				const submittedPages = Array.isArray(submittedStored) ? submittedStored : [];
-				let dismissedByPage = {};
-
-				if (Array.isArray(dismissedStored)) {
-					dismissedByPage = Object.fromEntries(
-						dismissedStored.map((url) => [url, now])
-					);
-				} else if (dismissedStored && typeof dismissedStored === 'object') {
-					dismissedByPage = dismissedStored;
-				}
-
-				Object.keys(dismissedByPage).forEach((url) => {
-					const timestamp = Number(dismissedByPage[url]);
-					const isExpired = !Number.isFinite(timestamp) || now - timestamp > DISMISS_TTL_DAYS * DAY_MS;
-					if (isExpired) {
-						delete dismissedByPage[url];
-					}
-				});
-				localStorage.setItem(DISMISSED_KEY, JSON.stringify(dismissedByPage));
-
-				const pageUrlInput = feedbackForm.querySelector('[data-feedback-page-url]');
-				const helpfulInput = feedbackForm.querySelector('[data-feedback-helpful]');
-				const detailsSection = feedbackForm.querySelector('[data-feedback-details]');
-				const thanksMessage = feedbackWidget.querySelector('[data-feedback-thanks]');
-				const errorMessage = feedbackForm.querySelector('[data-feedback-error]');
-				const buttons = feedbackForm.querySelectorAll('[data-feedback-value]');
-				const submitButton = feedbackForm.querySelector('.feedback-submit');
-
-				const showPopup = () => {
-					if (feedbackPopup.hidden) {
-						feedbackPopup.hidden = false;
-						feedbackPopup.setAttribute('aria-hidden', 'false');
-						requestAnimationFrame(() => {
-							feedbackPopup.classList.add('is-visible');
-						});
-					}
-				};
-
-				const hidePopup = () => {
-					feedbackPopup.classList.remove('is-visible');
-					feedbackPopup.setAttribute('aria-hidden', 'true');
-					setTimeout(() => {
-						if (feedbackPopup.getAttribute('aria-hidden') === 'true') {
-							feedbackPopup.hidden = true;
-						}
-					}, 220);
-				};
-
-				const shouldSkipPopup = submittedPages.includes(pageUrl) || Boolean(dismissedByPage[pageUrl]);
-
-				if (pageUrlInput && helpfulInput && thanksMessage && buttons.length > 0) {
-					pageUrlInput.value = pageUrl;
-					if (detailsSection) {
-						detailsSection.setAttribute('hidden', '');
-						detailsSection.classList.remove('is-visible');
-					}
-					feedbackClose?.addEventListener('click', () => {
-						if (detailsSection) {
-							detailsSection.setAttribute('hidden', '');
-							detailsSection.classList.remove('is-visible');
-						}
-						dismissedByPage[pageUrl] = Date.now();
-						localStorage.setItem(DISMISSED_KEY, JSON.stringify(dismissedByPage));
-						hidePopup();
-					});
-
-					if (!shouldSkipPopup) {
-						const footerObserver = new IntersectionObserver((entries, observer) => {
-							const reachedFooter = entries.some((entry) => entry.isIntersecting);
-							if (!reachedFooter) {
-								return;
-							}
-
-							showPopup();
-							observer.disconnect();
-						}, {
-							threshold: 0.08,
-							rootMargin: '0px 0px -20px 0px',
-						});
-
-						footerObserver.observe(footer);
-					}
-
-					const setBusy = (isBusy) => {
-						buttons.forEach((button) => {
-							button.disabled = isBusy;
-						});
-						if (submitButton) {
-							submitButton.disabled = isBusy;
-						}
-					};
-
-					const submitFeedback = async () => {
-						errorMessage?.setAttribute('hidden', '');
-						setBusy(true);
-
-						try {
-							const response = await fetch(feedbackForm.action, {
-								method: 'POST',
-								body: new FormData(feedbackForm),
-								headers: {
-									Accept: 'application/json',
-								},
-							});
-
-							if (!response.ok) {
-								throw new Error('Feedback submission failed');
-							}
-
-							if (!submittedPages.includes(pageUrl)) {
-								submittedPages.push(pageUrl);
-								localStorage.setItem(STORAGE_KEY, JSON.stringify(submittedPages));
-							}
-
-							if (dismissedByPage[pageUrl]) {
-								delete dismissedByPage[pageUrl];
-								localStorage.setItem(DISMISSED_KEY, JSON.stringify(dismissedByPage));
-							}
-
-							feedbackForm.hidden = true;
-							thanksMessage.hidden = false;
-							setTimeout(hidePopup, 1400);
-						} catch {
-							errorMessage?.removeAttribute('hidden');
-						} finally {
-							setBusy(false);
-						}
-					};
-
-					buttons.forEach((button) => {
-						button.addEventListener('click', async () => {
-							buttons.forEach((item) => item.classList.remove('is-selected'));
-							button.classList.add('is-selected');
-							helpfulInput.value = button.getAttribute('data-feedback-value') || '';
-
-							if (helpfulInput.value === 'no') {
-								if (detailsSection) {
-									detailsSection.removeAttribute('hidden');
-									detailsSection.classList.add('is-visible');
-								}
-								return;
-							}
-
-							if (detailsSection) {
-								detailsSection.setAttribute('hidden', '');
-								detailsSection.classList.remove('is-visible');
-							}
-							await submitFeedback();
-						});
-					});
-
-					feedbackForm.addEventListener('submit', async (event) => {
-						event.preventDefault();
-						await submitFeedback();
-					});
-				}
-			}
 
 		</script>
 	</body>
@@ -1081,7 +1050,137 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 
 	.story { display: grid; gap: .9rem; }
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
+	.title-row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: start;
+		column-gap: .9rem;
+		width: 100%;
+	}
+	.title-main {
+		min-width: 0;
+		display: grid;
+		gap: .35rem;
+	}
 	h1 { margin: 0; font-family: 'Fraunces', serif; font-size: clamp(2rem, 3.3vw, 3rem); }
+	.title-like-button {
+		justify-self: end;
+		position: relative;
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		gap: .2rem;
+		min-width: 6.1rem;
+		min-height: 5.4rem;
+		padding: .35rem .45rem;
+		border: 1px solid rgba(255, 160, 190, 0.42);
+		border-radius: .95rem;
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 105, 135, 0.12));
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+		overflow: visible;
+		cursor: pointer;
+		appearance: none;
+		-webkit-appearance: none;
+		transition: transform 220ms ease, opacity 180ms ease, filter 220ms ease, border-color 180ms ease;
+	}
+	.title-like-button::before {
+		content: '';
+		position: absolute;
+		top: .15rem;
+		left: 50%;
+		width: 4.2rem;
+		height: 4.2rem;
+		border-radius: 999px;
+		background: radial-gradient(circle, rgba(255, 105, 135, 0.22), rgba(255, 183, 77, 0.05) 68%, transparent 72%);
+		opacity: 0;
+		transform: translateX(-50%) scale(0.82);
+		transition: opacity 220ms ease, transform 220ms ease;
+	}
+	.title-like-button:hover {
+		transform: translateY(-2px) scale(1.08) rotate(-4deg);
+		filter: drop-shadow(0 6px 14px rgba(255, 92, 138, 0.25));
+	}
+	.title-like-button:hover::before {
+		opacity: 1;
+		transform: translateX(-50%) scale(1.12);
+	}
+	.title-like-icon {
+		display: block;
+		width: 3.35rem;
+		height: 3.35rem;
+		object-fit: contain;
+		background: transparent;
+		transition: transform 220ms ease, filter 220ms ease, opacity 180ms ease;
+		z-index: 1;
+	}
+	.title-like-button:hover .title-like-icon {
+		transform: scale(1.1);
+		filter: drop-shadow(0 0 14px rgba(255, 92, 138, 0.42));
+	}
+	.title-like-label {
+		display: block;
+		min-height: 1rem;
+		opacity: .96;
+		white-space: nowrap;
+		font-size: .82rem;
+		font-weight: 700;
+		color: #fff2f7;
+		line-height: 1;
+		text-align: center;
+		transform: translateY(0);
+		text-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+		transition: opacity 180ms ease, transform 220ms ease;
+		pointer-events: none;
+	}
+	.title-likes-meta {
+		display: inline-flex;
+		align-items: baseline;
+		justify-content: flex-start;
+		gap: .16rem;
+		margin: 0;
+		font-size: .92rem;
+		line-height: 1;
+		white-space: nowrap;
+	}
+	.title-likes-heart {
+		display: inline-block;
+		color: #ff0000;
+		font-size: .92rem;
+		line-height: 1;
+		margin-right: .02rem;
+		filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.38));
+	}
+	.title-like-count {
+		display: inline;
+		margin: 0;
+		font-size: .92rem;
+		font-weight: 600;
+		color: #ffffff;
+		line-height: 1;
+		text-align: left;
+		white-space: nowrap;
+		letter-spacing: 0;
+		transform: none;
+		transition: color 180ms ease, transform 220ms ease;
+		pointer-events: none;
+	}
+	.title-like-button.is-liked {
+		background: transparent;
+		filter: drop-shadow(0 0 14px rgba(255, 92, 138, 0.28));
+	}
+	.title-like-button.is-liked::before {
+		opacity: 1;
+		transform: translateX(-50%) scale(1.14);
+	}
+	.title-like-button.is-liked .title-like-icon {
+		transform: scale(1.12);
+		filter: drop-shadow(0 0 16px rgba(255, 92, 138, 0.5));
+	}
+	.title-like-button.is-liked .title-like-label {
+		opacity: 1;
+		transform: translateY(0);
+	}
 	.lead-wrap {
 		display: grid;
 		gap: .35rem;
@@ -1208,6 +1307,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 		object-fit: contain;
 	}
 
+
 	.actions-secondary {
 		display: flex;
 		gap: .7rem;
@@ -1226,211 +1326,6 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 		color: var(--text);
 	}
 
-	.feedback-widget {
-		display: grid;
-		gap: .65rem;
-		padding: .9rem;
-		border-radius: .9rem;
-		border: 1px solid rgba(255, 255, 255, .18);
-		background: rgba(18, 12, 32, .94);
-		backdrop-filter: blur(10px);
-	}
-	.feedback-popup {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		width: min(27rem, calc(100vw - 2rem));
-		z-index: 90;
-		opacity: 0;
-		transform: translate(-50%, calc(-50% + 14px)) scale(.98);
-		transition: opacity 220ms ease, transform 220ms ease;
-		pointer-events: none;
-	}
-	.feedback-popup.is-visible {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1);
-		pointer-events: auto;
-	}
-	.feedback-head {
-		display: flex;
-		align-items: start;
-		justify-content: space-between;
-		gap: .65rem;
-	}
-	.feedback-close {
-		border: 1px solid var(--stroke);
-		background: rgba(255, 255, 255, .08);
-		color: var(--text);
-		font: inherit;
-		line-height: 1;
-		font-size: 1.1rem;
-		padding: .26rem .46rem;
-		border-radius: .5rem;
-		cursor: pointer;
-	}
-	.feedback-question {
-		margin: 0;
-		color: #fff;
-	}
-	.feedback-form {
-		display: grid;
-		gap: .65rem;
-	}
-	.feedback-buttons {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: .45rem;
-		align-items: stretch;
-	}
-	.feedback-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: .4rem;
-		height: 100%;
-		width: 100%;
-		padding: .5rem .8rem;
-		border-radius: 999px;
-		border: 1px solid var(--stroke);
-		background: rgba(255, 255, 255, .06);
-		color: var(--text);
-		font: inherit;
-		font-size: .84rem;
-		cursor: pointer;
-	}
-	.feedback-btn-positive {
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		gap: .3rem;
-		padding: .62rem .8rem .66rem;
-		background:
-			radial-gradient(circle at 30% 20%, rgba(255, 183, 77, .22), transparent 58%),
-			rgba(255, 255, 255, .06);
-	}
-	.feedback-btn-negative {
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		gap: .3rem;
-		padding: .62rem .8rem .66rem;
-		background:
-			radial-gradient(circle at 30% 20%, rgba(255, 120, 120, .2), transparent 58%),
-			rgba(255, 255, 255, .06);
-	}
-	.feedback-btn-label {
-		display: block;
-		width: 100%;
-		line-height: 1.15;
-		font-size: .86rem;
-		font-weight: 600;
-		text-align: center;
-	}
-	.feedback-btn.is-selected {
-		border-color: rgba(77, 208, 225, .72);
-		background: rgba(77, 208, 225, .16);
-	}
-	.feedback-icon {
-		display: inline-grid;
-		place-items: center;
-		width: 3rem;
-		height: 3rem;
-		border-radius: 999px;
-		color: #fff3d5;
-		line-height: 1;
-		background:
-			radial-gradient(circle at 24% 20%, rgba(255, 183, 77, .52), rgba(255, 183, 77, .24) 46%, transparent 70%),
-			linear-gradient(145deg, rgba(34, 28, 56, .9), rgba(18, 14, 33, .95));
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, .24) inset,
-			0 0 0 2px rgba(77, 208, 225, .2),
-			0 18px 32px rgba(2, 4, 10, .4);
-	}
-	.feedback-icon-negative {
-		color: #ffdfe0;
-		background:
-			radial-gradient(circle at 24% 20%, rgba(255, 120, 120, .5), rgba(255, 120, 120, .22) 46%, transparent 70%),
-			linear-gradient(145deg, rgba(34, 28, 56, .9), rgba(18, 14, 33, .95));
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, .24) inset,
-			0 0 0 2px rgba(255, 120, 120, .2),
-			0 18px 32px rgba(2, 4, 10, .4);
-	}
-	.feedback-icon-svg {
-		width: 1.8rem;
-		height: 1.8rem;
-		display: block;
-	}
-	.feedback-btn:disabled,
-	.feedback-submit:disabled {
-		opacity: .55;
-		cursor: wait;
-	}
-	.feedback-details {
-		display: none;
-		gap: .45rem;
-	}
-	.feedback-details.is-visible {
-		display: grid;
-	}
-	.feedback-details[hidden] {
-		display: none !important;
-	}
-	.feedback-details label {
-		font-size: .84rem;
-		color: var(--muted);
-	}
-	.feedback-details textarea {
-		width: 100%;
-		padding: .6rem .72rem;
-		border-radius: .65rem;
-		border: 1px solid var(--stroke);
-		background: rgba(22, 16, 38, .82);
-		color: var(--text);
-		font: inherit;
-		resize: vertical;
-		min-height: 6.5rem;
-	}
-	.feedback-submit {
-		justify-self: start;
-		padding: .55rem .95rem;
-		border-radius: 999px;
-		border: 0;
-		background: linear-gradient(120deg, var(--accent), var(--accent-2));
-		color: #1b0d2b;
-		font: inherit;
-		font-weight: 700;
-		cursor: pointer;
-	}
-	.feedback-warning,
-	.feedback-error,
-	.feedback-thanks p {
-		margin: 0;
-		font-size: .84rem;
-	}
-	.feedback-warning {
-		padding: .55rem .65rem;
-		border-radius: .65rem;
-		background: rgba(255, 183, 77, .17);
-		border: 1px solid rgba(255, 183, 77, .42);
-		color: #ffe0af;
-	}
-	.feedback-error {
-		padding: .55rem .65rem;
-		border-radius: .65rem;
-		background: rgba(255, 120, 120, .14);
-		border: 1px solid rgba(255, 120, 120, .38);
-		color: #ffcccc;
-	}
-	.feedback-thanks p {
-		padding: .55rem .65rem;
-		border-radius: .65rem;
-		background: rgba(77, 208, 225, .18);
-		border: 1px solid rgba(77, 208, 225, .42);
-		color: #d9fbff;
-	}
 
 	:global(body.viewer-open) {
 		overflow: hidden;

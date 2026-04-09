@@ -212,6 +212,18 @@
     equipment: 'GoPro Hero 7 Black'
   },
   {
+    slug: 'planeta-mallos-de-riglos',
+    name: 'Planeta Mallos de Riglos',
+    image: '../../assets/planets/Planeta_MallosDeRiglos.jpg',
+    image360: '/pano360/PANO-DRONE_MallosDeRiglos.jpg',
+    description: 'Los observatorios del sistema han enviado recientemente un satélite de exploración a este célebre planeta, y su misión ha revelado datos tan extraordinarios que han sacudido a toda la cartografía galáctica. Gracias a imágenes de una calidad jamás alcanzada, se ha descubierto la verdadera magnitud de sus colosales formaciones rocosas: agujas titánicas de piedra roja que se alzan hacia el cielo como los restos petrificados de antiguos dioses. A los pies de estas moles imposibles, los sensores han detectado inequívocas señales de una civilización ancestral alienígena, dispersas entre relieves y construcciones que parecían simples sombras hasta ahora. La imagen más valiosa de la expedición fue obtenida en el instante sublime en que la estrella del planeta se ocultaba en el horizonte, envolviendo los mallos en un resplandor dorado y crepuscular que confirmó que este mundo no solo es monumental, sino también legendario.',
+    nombreCientifico: 'M4II05-D3-R16I05',
+    location: 'Riglos, Huesca.',
+    coordinates: '42°20\'15.5"N 0°42\'18.3"W',
+    discoveryDate: '2026-04-07',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-peine-del-viento-san-sebastian',
     name: 'Planeta Peine del Viento, San Sebastián',
     image: '/planets/Planeta_Peine-del-Viento---San-Sebastián.jpg',
@@ -272,11 +284,23 @@
     equipment: 'GoPro Hero 7 Black'
   },
   {
+    slug: 'planeta-pico-de-la-garganta',
+    name: 'Planeta Pico de la Garganta',
+    image: '../../assets/planets/Planeta_Pico-de-la-Garganta.jpg',
+    image360: '/pano360/PANO-DRONE_Pico-de-la-Garganta.jpg',
+    description: 'Este pequeño planeta se eleva como una atalaya mineral de aristas limpias y horizonte abierto. Su núcleo rocoso domina un relieve abrupto donde la luz resbala sobre la piedra y perfila una silueta poderosa, casi ceremonial, suspendida sobre el vacío. La atmósfera es clara y cortante, ideal para observaciones lejanas y travesías de altura, convirtiendo a este astro en un enclave sobrio, elegante y lleno de carácter.',
+    nombreCientifico: 'P1C0 D3 L4 G4RG4ZT4',
+    location: 'Pico de la Garganta',
+    coordinates: '',
+    discoveryDate: '2026-04-09',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-pelopin',
     name: 'Planeta Pelopín',
     image: '../../assets/planets/Planeta_Pelopin.jpg',
     image360: '/pano360/PANO_Pelopin.jpg',
-    description: 'Este pequeño planeta se eleva sobre una cresta pirenaica de gran amplitud visual, con laderas cubiertas por un mosaico de bosque y pastizal que desciende hacia valles profundos. Su superficie combina una cumbre amable con un perímetro quebrado de barrancos y alineaciones montañosas que se pierden en el horizonte, dando la impresión de un observatorio natural suspendido sobre el sistema. La atmósfera es limpia y muy estable, ideal para registrar con nitidez la transición entre las masas forestales oscuras y las cimas todavía marcadas por el invierno. No se aprecian grandes estructuras artificiales; Pelopín transmite la sensación de un mundo frontera, situado justo en el punto donde el relieve se abre para mostrar la escala completa del territorio que lo rodea.',
+    description: 'Esta misma mañana, los vigías del sistema han reportado un hallazgo imposible sobre el asteroide P3L0P1N: una fatbike reposando en la cresta helada como si fuera una reliquia sagrada dejada por antiguos viajeros de las cumbres. Su sola presencia constituye la primera prueba de vida inteligente... ¿o, al menos, de una civilización lo bastante sabia como para dominar el noble arte de construir máquinas de hacer felicidad? La superficie de este mundo es abrupta, salvaje y muy accidentada, surcada por lomas quebradas, barrancos y abundantes reservas de agua en estado sólido que relucen como cristales bajo la luz del alba. Su atmósfera, ligeramente contaminada por gases de composición aún desconocida, añade a Pelopín un velo de misterio que lo convierte en uno de los enclaves más fascinantes y legendarios del sistema.',
     nombreCientifico: 'P3L0P1Z',
     location: 'Pico Pelopín',
     coordinates: '42°35\'49.7"N 0°11\'22.9"W',
