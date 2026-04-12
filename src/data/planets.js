@@ -71,6 +71,19 @@
     equipment: 'DJI Mini 5 Pro'
   },
   {
+    slug: 'planeta-collarada',
+    name: 'Planeta Collarada',
+    image: '../../assets/planets/Planeta_Collarada.jpg',
+    imageFull: '/planets-full/Planeta_Collarada.jpg',
+    image360: '/pano360/PANO_Collarada.jpg',
+    description: 'Seguimos con la ronda de exploraciones por la galaxia Oscam Pyrenum y regresamos al planeta C0II4R4D4; gracias a los nuevos sensores de mayor precisión, obtenemos datos revolucionarios. Al igual que en el planeta 45P3, descubrimos a un ejemplar de la esquiva Myrium Pomensis: se confirma así que se trata de una especie interplanetaria. No descartamos hallarla en más mundos a lo largo de nuestra travesía galáctica. C0II4R4D4 alberga vida, no hay duda: se observan zonas de vegetación y señales de una remota civilización. Esta teoría se refuerza con la existencia de grandes reservas de agua en estado sólido en más del 50% de su superficie.',
+    nombreCientifico: 'C0II4R4D4',
+    location: 'Macizo de Collarada, Valle del Aragón',
+    coordinates: '42°42\'51.0"N 0°28\'12.8"W',
+    discoveryDate: '2026-04-12',
+    equipment: 'DJI Osmo Action 5 Pro'
+  },
+  {
     slug: 'planeta-comodoto',
     name: 'Planeta Comodoto',
     image: '../../assets/planets/Planeta_Comodoto.jpg',
@@ -80,7 +93,7 @@
     location: 'Comodoto',
     coordinates: '42.763800, -0.565887',
     discoveryDate: '',
-    equipment: ''
+    equipment: 'DJI Osmo Action 5 Pro'
   },
   {
     slug: 'planeta-dunedupilat',
