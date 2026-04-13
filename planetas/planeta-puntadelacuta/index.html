@@ -310,9 +310,12 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 				}
 			};
 
-			const LIKE_STORAGE_KEY = `planet-like:${window.location.pathname}`;
-			const LIKE_COUNT_STORAGE_KEY = `planet-like-count:${window.location.pathname}`;
+			const likeStorageScope = currentPlanetSlug || window.location.pathname;
+			const LIKE_STORAGE_KEY = `planet-like:${likeStorageScope}`;
+			const LIKE_COUNT_STORAGE_KEY = `planet-like-count:${likeStorageScope}`;
 			const LIKE_VISITOR_ID_STORAGE_KEY = 'planet-like-visitor-id';
+			const LIKE_REQUEST_TIMEOUT_MS = 6000;
+			const LIKE_SYNC_INTERVAL_MS = 15000;
 			let likeRequestPending = false;
 
 			const getLikedState = () => {
@@ -364,6 +367,17 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 				}
 			};
 
+			const normalizeLikeCount = (value) => {
+				const parsed = Number(value);
+				return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : 0;
+			};
+
+			const applyLikeState = (liked, count) => {
+				setLikedState(Boolean(liked));
+				setLikeCount(normalizeLikeCount(count));
+				updateLikeButton();
+			};
+
 			const formatLikeCountText = (likeCount) => {
 				if (likeCount <= 0) {
 					return 'A nadie le gusta ☹️';
@@ -405,9 +419,34 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 				}
 			};
 
+			const fetchJsonWithTimeout = async (url, options = {}) => {
+				const controller = new AbortController();
+				const timeoutId = window.setTimeout(() => controller.abort(), LIKE_REQUEST_TIMEOUT_MS);
+
+				try {
+					const response = await fetch(url, {
+						...options,
+						signal: controller.signal,
+					});
+
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+
+					return response.json();
+				} finally {
+					window.clearTimeout(timeoutId);
+				}
+			};
+
 			const syncLikeStateFromApi = async () => {
+				updateLikeButton();
+
 				if (!likesApiUrl || !currentPlanetSlug || !likeButton) {
-					updateLikeButton();
+					return;
+				}
+
+				if (likeRequestPending) {
 					return;
 				}
 
@@ -415,26 +454,20 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 					const requestUrl = new URL(likesApiUrl);
 					requestUrl.searchParams.set('slug', currentPlanetSlug);
 					requestUrl.searchParams.set('visitorId', getVisitorId());
+					requestUrl.searchParams.set('_t', String(Date.now()));
 
-					const response = await fetch(requestUrl.toString(), {
+					const payload = await fetchJsonWithTimeout(requestUrl.toString(), {
 						method: 'GET',
+						cache: 'no-store',
 						headers: {
 							Accept: 'application/json',
 						},
 					});
-
-					if (!response.ok) {
-						throw new Error('No se pudo leer el contador remoto');
-					}
-
-					const payload = await response.json();
-					setLikedState(Boolean(payload?.liked));
-					setLikeCount(Number.isFinite(Number(payload?.count)) ? Number(payload.count) : 0);
+					applyLikeState(Boolean(payload?.liked), payload?.count);
 				} catch {
 					// Si la API no responde, se mantiene el fallback local.
+					updateLikeButton();
 				}
-
-				updateLikeButton();
 			};
 
 			fullButton?.addEventListener('click', openViewer);
@@ -444,13 +477,16 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 					return;
 				}
 
+				const currentCount = getLikeCount();
 				const nextLiked = !getLikedState();
+				const nextCount = nextLiked ? Math.max(1, currentCount + 1) : Math.max(0, currentCount - 1);
+				applyLikeState(nextLiked, nextCount);
 				likeRequestPending = true;
 				updateLikeButton();
 
 				try {
 					if (likesApiUrl && currentPlanetSlug) {
-						const response = await fetch(likesApiUrl, {
+						const payload = await fetchJsonWithTimeout(likesApiUrl, {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json',
@@ -462,35 +498,48 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 								liked: nextLiked,
 							}),
 						});
-
-						if (!response.ok) {
-							throw new Error('No se pudo actualizar el contador remoto');
-						}
-
-						const payload = await response.json();
-						setLikedState(Boolean(payload?.liked));
-						setLikeCount(Number.isFinite(Number(payload?.count)) ? Number(payload.count) : 0);
-						updateLikeButton();
+						applyLikeState(Boolean(payload?.liked), payload?.count);
 						return;
 					}
-
-					const currentCount = getLikeCount();
-					const nextCount = nextLiked ? Math.max(1, currentCount + 1) : Math.max(0, currentCount - 1);
-					setLikedState(nextLiked);
-					setLikeCount(nextCount);
-					updateLikeButton();
 				} catch {
-					const currentCount = getLikeCount();
-					const nextCount = nextLiked ? Math.max(1, currentCount + 1) : Math.max(0, currentCount - 1);
-					setLikedState(nextLiked);
-					setLikeCount(nextCount);
-					updateLikeButton();
+					// Mantener fallback local si la API falla temporalmente.
+					applyLikeState(nextLiked, nextCount);
 				} finally {
 					likeRequestPending = false;
 					updateLikeButton();
 				}
 			});
 			void syncLikeStateFromApi();
+
+			let likeSyncIntervalId = null;
+			if (likesApiUrl && currentPlanetSlug) {
+				likeSyncIntervalId = window.setInterval(() => {
+					if (document.visibilityState === 'visible') {
+						void syncLikeStateFromApi();
+					}
+				}, LIKE_SYNC_INTERVAL_MS);
+
+				window.addEventListener('focus', () => {
+					void syncLikeStateFromApi();
+				});
+
+				window.addEventListener('online', () => {
+					void syncLikeStateFromApi();
+				});
+
+				document.addEventListener('visibilitychange', () => {
+					if (document.visibilityState === 'visible') {
+						void syncLikeStateFromApi();
+					}
+				});
+
+				window.addEventListener('beforeunload', () => {
+					if (likeSyncIntervalId !== null) {
+						window.clearInterval(likeSyncIntervalId);
+					}
+				});
+			}
+
 			descriptionToggle?.addEventListener('click', () => {
 				if (!descriptionEl || !descriptionToggle) {
 					return;
