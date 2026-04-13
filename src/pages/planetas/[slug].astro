@@ -166,8 +166,12 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 					// Swipe navigation for mobile
 					(function() {
 						let touchStartX = 0;
+						let touchStartY = 0;
 						let touchEndX = 0;
-						const threshold = 50; // px
+						let touchEndY = 0;
+						const horizontalThreshold = 90; // px
+						const maxVerticalDrift = 70; // px
+						const horizontalDominanceRatio = 1.5;
 						const main = document.querySelector('.planet-view');
 						// Leer las URLs desde los atributos data del main
 						const prevUrl = main?.getAttribute('data-prev-url');
@@ -176,17 +180,26 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 						main.addEventListener('touchstart', function(e) {
 							if (e.touches.length === 1) {
 								touchStartX = e.touches[0].clientX;
+								touchStartY = e.touches[0].clientY;
 							}
 						});
 						main.addEventListener('touchend', function(e) {
 							if (e.changedTouches.length === 1) {
 								touchEndX = e.changedTouches[0].clientX;
-								const diff = touchEndX - touchStartX;
-								if (Math.abs(diff) > threshold) {
-									if (diff < 0) {
+								touchEndY = e.changedTouches[0].clientY;
+								const diffX = touchEndX - touchStartX;
+								const diffY = touchEndY - touchStartY;
+								const absDiffX = Math.abs(diffX);
+								const absDiffY = Math.abs(diffY);
+								const isIntentionalHorizontalSwipe = absDiffX > horizontalThreshold
+									&& absDiffY < maxVerticalDrift
+									&& absDiffX > absDiffY * horizontalDominanceRatio;
+
+								if (isIntentionalHorizontalSwipe) {
+									if (diffX < 0 && nextUrl) {
 										// Swipe izquierda (dedo va de derecha a izquierda): siguiente planeta
 										window.location.href = nextUrl;
-									} else if (diff > 0) {
+									} else if (diffX > 0 && prevUrl) {
 										// Swipe derecha (dedo va de izquierda a derecha): planeta anterior
 										window.location.href = prevUrl;
 									}
