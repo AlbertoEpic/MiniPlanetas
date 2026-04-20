@@ -167,6 +167,19 @@
     equipment: 'DJI Mini 5 Pro'
   },
   {
+    slug: 'planeta-fenias',
+    name: 'Planeta Feniás',
+    image: '../../assets/planets/Planeta_Fenias2.jpg',
+    imageFull: '/planets-full/Planeta_Fenias2.jpg',
+    image360: '/pano360/PANO-DRONE_Fenias.jpg',
+    description: 'Nuestros exploradores intergalácticos han puesto por fin el pie sobre el planeta F3ZI45, y los primeros informes describen un mundo de una ferocidad geológica casi indomable. Su superficie presenta una orografía muy accidentada: una sucesión de crestas abruptas, laderas quebradas y enormes grietas que desgarran la corteza del astro como cicatrices abiertas hacia su núcleo. La climatología extrema no ha impedido, sin embargo, que este cuerpo conserve inmensas reservas de agua en los tres estados de la materia. Se han identificado masas sólidas aferradas a las umbrías, corrientes líquidas ocultas en sectores resguardados y densas formaciones de vapor ascendiendo desde las fracturas más profundas, como si el propio planeta respirara a través de ellas. Lo más inquietante y fascinante del hallazgo ha llegado al descender la mirada hacia esos abismos: en el fondo de las grandes grietas, allí donde el clima parece menos hostil y la violencia atmosférica pierde intensidad, los sensores han detectado claros indicios de civilización. Estructuras, trazas y patrones imposibles de atribuir al azar sugieren que Feniás no es solo un mundo salvaje, sino también un refugio oculto donde una inteligencia antigua podría haber aprendido a sobrevivir bajo la roca.',
+    nombreCientifico: 'F3ZI45',
+    location: 'Nebulosa Beta de Panticosa',
+    coordinates: '42°45\'46.7"N 0°16\'30.4"W',
+    discoveryDate: '2026-04-17',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-gracionepel',
     name: 'Planeta Gracionepel',
     image: '../../assets/planets/Planeta_Gracionepel.jpg',

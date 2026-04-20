@@ -22,6 +22,8 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          PUBLIC_PLANET_LIKES_API_URL: https://miniplanetas-likes2.vercel.app/api/likes
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
