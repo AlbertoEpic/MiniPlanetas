@@ -210,12 +210,11 @@ Este mini planeta surge de una captura 360° reinterpretada en formato polar. Su
 				if (!viewer || !viewerStage || !viewerImage || !mainImage) {
 					return;
 				}
-				viewerImage.setAttribute('src', mainImage.getAttribute('src') || '');
 				viewer.classList.add('is-open');
 				viewer.setAttribute('aria-hidden', 'false');
 				document.body.classList.add('viewer-open');
 				updateZoomBounds();
-				applyZoom(getFitToWidthZoom(), false);
+				applyZoom(maxZoom, false);
 				requestAnimationFrame(() => {
 					viewerStage.scrollLeft = Math.max((viewerStage.scrollWidth - viewerStage.clientWidth) / 2, 0);
 					viewerStage.scrollTop = Math.max((viewerStage.scrollHeight - viewerStage.clientHeight) / 2, 0);
