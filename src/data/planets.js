@@ -71,6 +71,19 @@
     equipment: 'DJI Mini 5 Pro'
   },
   {
+    slug: 'planeta-castillo-de-montearagon',
+    name: 'Planeta Castillo de Montearagón',
+    image: '../../assets/planets/Planeta_Montearagón.jpg',
+    imageFull: '/planets-full/Planeta_Montearagón.jpg',
+    image360: '/pano360/PANO-DRONE_Montearagón.jpg',
+    description: 'Tras semanas de observación con los nuevos telescopios de largo alcance y altísima resolución del consorcio SQLP, por fin hemos obtenido imágenes nítidas de este célebre mundo fronterizo. Lo que en expediciones anteriores parecían simples irregularidades del relieve se revela ahora como una red de asentamientos y trazas arquitectónicas repartidas por toda su superficie: la existencia de civilización inteligente queda demostrada sin margen de duda. En el sector central distinguimos con claridad los restos de una gran fortaleza pétrea, erigida -según nuestros analistas- para dominar las extensas llanuras fértiles del planeta, allí donde más prolifera la vida. Sin embargo, su estado actual, parcialmente destruido y marcado por cicatrices de colapso y asedio, sugiere un pasado de confrontaciones brutales. La presencia de ese bastión arruinado nos ofrece un diagnóstico inquietante: los habitantes de este astro no solo conocen la guerra, sino que arrastran un lamentable carácter belicista que aún deja huella en su paisaje.',
+    nombreCientifico: 'C45T1II0 D3 M0Z734R46ÓZ',
+    location: 'Castillo de Montearagón, Huesca',
+    coordinates: '42°09\'10.5"N 0°20\'42.6"W',
+    discoveryDate: '28 abril 2026',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-collarada',
     name: 'Planeta Collarada',
     image: '../../assets/planets/Planeta_Collarada.jpg',
@@ -177,6 +190,18 @@
     location: 'Nebulosa Beta de Panticosa',
     coordinates: '42°45\'46.7"N 0°16\'30.4"W',
     discoveryDate: '2026-04-17',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
+    slug: 'planeta-garmo-negro',
+    name: 'Planeta Garmo Negro',
+    image: '../../assets/planets/Planeta_GarmoNegro.jpg',
+    image360: '/pano360/PANO-DRONE_GarmoNegro.jpg',
+    description: 'En la misma Nebulosa que el planeta F3ZI45, nuestros cartógrafos estelares han descubierto un nuevo mundo que irradia señales claras de vida inteligente: el enigmático G4RM0 Z36R0. Su orografía es feroz, una corona de crestas quebradas, barrancos imposibles y placas de roca negra donde el equilibrio parece una leyenda; aun así, los sensores confirman vastas reservas de agua en estado sólido aferradas a sus umbrías. En mitad de este paisaje indómito se produjo el hallazgo que ya sacude todos los archivos de la exploración intergaláctica: un ejemplar del apreciado Susanitas Autóctonus viviendo en libertad en su hábitat natural. Es la primera confirmación real de esta especie, hasta ahora únicamente catalogada en los cuadernos de vitácora de legendarios viajeros interestelares. La misión se tornó aún más inquietante cuando nuestro satélite explorador fue detectado por los seres presentes en este asteroide; lo deducimos al observar que uno de ellos intenta comunicarse con nosotros por gestos, en una forma de lenguaje ancestral tan básico como inequívoco. La atmósfera de Garmo Negro, sin embargo, sigue siendo su mayor enigma: extrema, tormentosa y dramática, envuelta en densos velos que podrían ser vapores de agua... o señales de contaminación. Falta investigar más, pero todo indica que este planeta no solo guarda vida: guarda historia.',
+    nombreCientifico: '64RM0 Z36R0',
+    location: 'Nebulosa Beta de Panticosa',
+    coordinates: '42°46\'17.0"N 0°15\'46.8"W',
+    discoveryDate: '21 abril 2026',
     equipment: 'DJI Mini 5 Pro'
   },
   {

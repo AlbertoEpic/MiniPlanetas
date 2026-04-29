@@ -52,23 +52,32 @@ const planetImageFileName = planet.image.split('/').pop() ?? '';
 const optimizedPlanetImage = Object.entries(planetImages).find(([filePath]) =>
 	filePath.endsWith(`/${planetImageFileName}`)
 )?.[1] as ImageMetadata | undefined;
+const mainImageWidth = optimizedPlanetImage
+	? Math.min(optimizedPlanetImage.width, 1400)
+	: 1400;
+const mainImageHeight = optimizedPlanetImage
+	? Math.round((optimizedPlanetImage.height * mainImageWidth) / optimizedPlanetImage.width)
+	: 1400;
 const viewerImagePath = planet.imageFull
 	? toAssetPath(planet.imageFull)
 	: optimizedPlanetImage?.src ?? toAssetPath(planet.image);
-const discoveryDate = new Date(planet.discoveryDate).toLocaleDateString('es-ES', {
-	day: '2-digit',
-	month: 'long',
-	year: 'numeric',
-});
+
+const parsedDiscoveryDate = new Date(planet.discoveryDate);
+const discoveryDate =
+	!planet.discoveryDate
+		? ''
+		: Number.isNaN(parsedDiscoveryDate.getTime())
+			? planet.discoveryDate
+			: parsedDiscoveryDate.toLocaleDateString('es-ES', {
+				day: '2-digit',
+				month: 'long',
+				year: 'numeric',
+			});
+
 const sphericalImage = planet.image360;
 const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) : null;
-// Comprobación robusta de existencia de imagen 360 usando import.meta.glob
-const pano360Images = import.meta.glob('../../assets/pano360/*.{jpg,jpeg,png,JPG,JPEG,PNG}', {eager: true});
-const pano360FileName = typeof planet.image360 === 'string' ? planet.image360.split('/').pop() : '';
 const hasEquirectangularImage = Boolean(
-	sphericalPublicPath?.startsWith('/pano360/') &&
-	pano360FileName &&
-	Object.keys(pano360Images).some(filePath => filePath.endsWith(`/${pano360FileName}`))
+	sphericalPublicPath?.startsWith('/pano360/')
 );
 const fullScreenIcon = toBasePath('FullScreen.png');
 const landingIcon = toBasePath('Landing.png');
@@ -210,7 +219,7 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 					</script>
 			<section class="visual">
 				{optimizedPlanetImage ? (
-					   <Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={optimizedPlanetImage.width} height={optimizedPlanetImage.height} data-main-image data-share-src={shareImageUrl} />
+					   <Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={mainImageWidth} height={mainImageHeight} data-main-image data-share-src={shareImageUrl} />
 				) : (
 					<span style={{color:'red'}}>Imagen no encontrada</span>
 				)}
@@ -488,12 +497,11 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 				if (!viewer || !viewerStage || !viewerImage || !mainImage) {
 					return;
 				}
-				viewerImage.setAttribute('src', mainImage.getAttribute('src') || '');
 				viewer.classList.add('is-open');
 				viewer.setAttribute('aria-hidden', 'false');
 				document.body.classList.add('viewer-open');
 				updateZoomBounds();
-				applyZoom(getFitToWidthZoom(), false);
+				applyZoom(maxZoom, false);
 				requestAnimationFrame(() => {
 					viewerStage.scrollLeft = Math.max((viewerStage.scrollWidth - viewerStage.clientWidth) / 2, 0);
 					viewerStage.scrollTop = Math.max((viewerStage.scrollHeight - viewerStage.clientHeight) / 2, 0);
