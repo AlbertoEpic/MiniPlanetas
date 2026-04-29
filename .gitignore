@@ -33,3 +33,6 @@ System Volume Information/
 .idea/
 .vercel
 .env*.local
+
+# proyecto separado
+ZENITH/
