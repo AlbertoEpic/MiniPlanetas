@@ -7,6 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "images:optimize": "node scripts/optimize_images_web.cjs",
     "deploy": "gh-pages -d dist",
     "likes:install": "npm --prefix serverless-forms install",
     "likes:dev": "npm --prefix serverless-forms run dev"

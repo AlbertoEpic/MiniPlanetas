@@ -49,6 +49,8 @@ const planetImages = import.meta.glob('../../assets/planets/*.{jpg,jpeg,png,JPG,
 	import: 'default',
 });
 const planetImageFileName = planet.image.split('/').pop() ?? '';
+const planetImageBaseName = planetImageFileName.replace(/\.[^.]+$/, '');
+const encodedPlanetImageBaseName = encodeURIComponent(planetImageBaseName);
 const optimizedPlanetImage = Object.entries(planetImages).find(([filePath]) =>
 	filePath.endsWith(`/${planetImageFileName}`)
 )?.[1] as ImageMetadata | undefined;
@@ -58,6 +60,27 @@ const mainImageWidth = optimizedPlanetImage
 const mainImageHeight = optimizedPlanetImage
 	? Math.round((optimizedPlanetImage.height * mainImageWidth) / optimizedPlanetImage.width)
 	: 1400;
+const responsiveWidths = [480, 768, 1024, 1400];
+const hasResponsivePlanetImage = Boolean(planetImageBaseName);
+const responsiveWebpSrcSet = hasResponsivePlanetImage
+	? responsiveWidths
+		.map((width) => `${toBasePath(`planets-responsive/${encodedPlanetImageBaseName}-${width}.webp`)} ${width}w`)
+		.join(', ')
+	: '';
+const responsiveJpgSrcSet = hasResponsivePlanetImage
+	? responsiveWidths
+		.map((width) => `${toBasePath(`planets-responsive/${encodedPlanetImageBaseName}-${width}.jpg`)} ${width}w`)
+		.join(', ')
+	: '';
+const responsiveImageFallback = hasResponsivePlanetImage
+	? toBasePath(`planets-responsive/${encodedPlanetImageBaseName}-1024.jpg`)
+	: '';
+const detailImageSizes = '(max-width: 900px) 95vw, 78vw';
+const preloadImageHref = hasResponsivePlanetImage
+	? responsiveImageFallback
+	: optimizedPlanetImage?.src ?? toAssetPath(planet.image);
+const preloadImageSrcSet = hasResponsivePlanetImage ? responsiveJpgSrcSet : '';
+const preloadImageSizes = hasResponsivePlanetImage ? detailImageSizes : '';
 const viewerImagePath = planet.imageFull
 	? toAssetPath(planet.imageFull)
 	: optimizedPlanetImage?.src ?? toAssetPath(planet.image);
@@ -125,6 +148,14 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="1200" />
 		<meta property="og:image:alt" content={`Mini-planeta ${planet.name}`} />
+		<link
+			rel="preload"
+			as="image"
+			href={preloadImageHref}
+			imagesrcset={preloadImageSrcSet || undefined}
+			imagesizes={preloadImageSizes || undefined}
+			fetchpriority="high"
+		/>
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={`${planet.name} | MINIPLANETAS`} />
@@ -219,7 +250,27 @@ const nextUrl = toBasePath(`planetas/${nextPlanet.slug}/`);
 					</script>
 			<section class="visual">
 				{optimizedPlanetImage ? (
-					   <Image src={optimizedPlanetImage} alt={`Vista grande de ${planet.name}`} loading="eager" width={mainImageWidth} height={mainImageHeight} data-main-image data-share-src={shareImageUrl} />
+					<picture>
+						{hasResponsivePlanetImage && (
+							<source srcset={responsiveWebpSrcSet} sizes={detailImageSizes} type="image/webp" />
+						)}
+						{hasResponsivePlanetImage && (
+							<source srcset={responsiveJpgSrcSet} sizes={detailImageSizes} type="image/jpeg" />
+						)}
+						<img
+							src={hasResponsivePlanetImage ? responsiveImageFallback : optimizedPlanetImage.src}
+							srcset={hasResponsivePlanetImage ? responsiveJpgSrcSet : undefined}
+							sizes={hasResponsivePlanetImage ? detailImageSizes : undefined}
+							alt={`Vista grande de ${planet.name}`}
+							loading="eager"
+							decoding="async"
+							fetchpriority="high"
+							width={mainImageWidth}
+							height={mainImageHeight}
+							data-main-image
+							data-share-src={shareImageUrl}
+						/>
+					</picture>
 				) : (
 					<span style={{color:'red'}}>Imagen no encontrada</span>
 				)}

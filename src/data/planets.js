@@ -477,6 +477,18 @@
     equipment: ''
   },
   {
+    slug: 'planeta-torre-vigilancia-saso',
+    name: 'Planeta Torre Vigilancia Saso',
+    image: '../../assets/planets/Planeta_TorreSasoTierz.jpg',
+    image360: '/pano360/PANO-DRONE_TorreSasoTierz.jpg',
+    description: 'Impresionante descubrimiento en este cercano planeta: durante siglos fue catalogado como un astro yermo, sin rastro de vida inteligente, hasta que nuestros observatorios detectaron en su hemisferio norte una nave espacial posada sobre la superficie. Su tecnología es inequívocamente extraterrestre, probablemente impulsada por velas de viento solar o por algún principio aún desconocido para la ciencia humana. La estructura, etérea y estilizada, carece de depósitos de combustible y de motores del formato que conocemos; parece más una aguja cósmica que un cohete convencional. Una larga antena, elevada como un mástil ritual, la mantendría enlazada con su base intergaláctica a través del vacío. Todo indica que los alienígenas se nos han adelantado en la conquista de este mundo. La atmósfera del planeta es feroz y tormentosa, un océano de turbulencias que azota sus relieves, y en el hemisferio sur se adivinan señales de una civilización agrícola menos desarrollada, silenciosa y ausente durante el aterrizaje de la nave en el norte, como si dos eras distintas coexistieran en un mismo horizonte estelar.',
+    nombreCientifico: '70RR3 V161l4ZC14 5450',
+    location: 'Saso de Tierz, Nebulosa de la H0Y4',
+    coordinates: '42°07\'16.1"N 0°20\'29.8"W',
+    discoveryDate: '2 mayo 2026',
+    equipment: 'DJI Mini 5 Pro'
+  },
+  {
     slug: 'planeta-tournelon-blanc',
     name: 'Planeta Tournelon Blanc',
     image: '../../assets/planets/Planeta_Tournelon-Blanc.jpg',
